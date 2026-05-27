@@ -1,0 +1,52 @@
+using ContaNexo.API.Data;
+using ContaNexo.API.DTOs;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+
+namespace ContaNexo.API.Controllers;
+
+[ApiController]
+[Route("api/[controller]")]
+public class CompanyController(AppDbContext db) : ControllerBase
+{
+    [HttpGet("public")]
+    public async Task<ActionResult<CompanyDto>> GetPublic()
+    {
+        var c = await db.CompanySettings.FirstOrDefaultAsync();
+        if (c == null) return NotFound();
+        return Ok(ToDto(c));
+    }
+
+    [HttpGet]
+    [Authorize(Roles = "Administrador,Contador")]
+    public async Task<ActionResult<CompanyDto>> Get() => await GetPublic();
+
+    [HttpPut]
+    [Authorize(Roles = "Administrador")]
+    public async Task<ActionResult<CompanyDto>> Update([FromBody] UpdateCompanyRequest req)
+    {
+        var c = await db.CompanySettings.FirstOrDefaultAsync();
+        if (c == null)
+        {
+            c = new Models.CompanySettings();
+            db.CompanySettings.Add(c);
+        }
+        c.BusinessName = req.BusinessName;
+        c.Tagline = req.Tagline;
+        c.Description = req.Description;
+        c.Address = req.Address;
+        c.Phone = req.Phone;
+        c.Email = req.Email;
+        c.Website = req.Website;
+        c.LogoUrl = req.LogoUrl;
+        c.TaxId = req.TaxId;
+        c.Currency = req.Currency;
+        c.UpdatedAt = DateTime.UtcNow;
+        await db.SaveChangesAsync();
+        return Ok(ToDto(c));
+    }
+
+    private static CompanyDto ToDto(Models.CompanySettings c) =>
+        new(c.Id, c.BusinessName, c.Tagline, c.Description, c.Address, c.Phone, c.Email, c.Website, c.LogoUrl, c.TaxId, c.Currency);
+}
