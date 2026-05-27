@@ -1,6 +1,6 @@
-# ContaNexo API
+# Jhon Calcas API
 
-Backend REST en **ASP.NET Core 9** con JWT, EF Core y MySQL.
+Backend REST en **ASP.NET Core 9** (ContaNexo) con JWT, EF Core y MySQL.
 
 ## Requisitos
 
@@ -35,4 +35,4 @@ API: `http://localhost:5001`
 
 ## Repositorio relacionado
 
-Frontend Angular: [ContaNexo-Front](https://github.com/alvaroaraujo2010/ContaNexo-Front)
+Frontend Angular: repositorio `frontend` del mismo proyecto.
