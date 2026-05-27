@@ -1,0 +1,58 @@
+<div class="module-page">
+  <app-module-header title="Compras" subtitle="Registro de compras a proveedores y entrada a inventario" badge="Operaciones">
+    <button class="btn" type="button" (click)="showForm = !showForm">{{ showForm ? 'Cancelar' : 'Nueva compra' }}</button>
+  </app-module-header>
+
+  @if (showForm) {
+    <form class="card-form" [formGroup]="form" (ngSubmit)="save()">
+      <div class="card-form__head">
+        <h3>Nueva compra</h3>
+        <p>Seleccione proveedor y agregue lineas de productos</p>
+      </div>
+      <div class="form-grid">
+        <label>Proveedor
+          <select formControlName="supplierId">
+            <option [value]="0">Seleccione</option>
+            @for (s of suppliers(); track s.id) { <option [value]="s.id">{{ s.name }}</option> }
+          </select>
+        </label>
+        <label>IVA (decimal)<input type="number" step="0.01" formControlName="taxRate" /></label>
+        <label>Producto
+          <select formControlName="productId">
+            <option [value]="0">Seleccione</option>
+            @for (p of products(); track p.id) { <option [value]="p.id">{{ p.name }}</option> }
+          </select>
+        </label>
+        <label>Cantidad<input type="number" formControlName="quantity" /></label>
+        <label>Costo unitario<input type="number" formControlName="unitCost" /></label>
+      </div>
+      <div class="form-actions">
+        <button class="btn" type="button" (click)="addLine()">Agregar linea</button>
+        <button class="btn primary" type="submit">Registrar compra</button>
+      </div>
+    </form>
+    @if (lines.length) {
+      <ul class="line-list">@for (l of lines; track l.productId) { <li>{{ l.name }} x {{ l.quantity }} @ {{ l.unitCost | currency:'COP':'symbol-narrow':'1.0-0' }}</li> }</ul>
+    }
+  }
+
+  <section class="data-card">
+    <div class="data-card__head"><h2>Historial de compras</h2><span>{{ items().length }} registro(s)</span></div>
+    <table class="data">
+      <thead><tr><th>Documento</th><th>Proveedor</th><th>Fecha</th><th>Total</th><th>Estado</th></tr></thead>
+      <tbody>
+        @for (p of items(); track p.id) {
+          <tr>
+            <td><strong>{{ p.documentNumber }}</strong></td>
+            <td>{{ p.supplierName }}</td>
+            <td>{{ p.purchaseDate | date:'short' }}</td>
+            <td>{{ p.total | currency:'COP':'symbol-narrow':'1.0-0' }}</td>
+            <td><span class="badge-ok">{{ p.status }}</span></td>
+          </tr>
+        } @empty {
+          <tr><td colspan="5"><div class="empty-state"><strong>Sin compras</strong><p>Registre la primera compra al inventario.</p></div></td></tr>
+        }
+      </tbody>
+    </table>
+  </section>
+</div>

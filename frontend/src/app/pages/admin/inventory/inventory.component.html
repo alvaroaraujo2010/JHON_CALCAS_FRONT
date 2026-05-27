@@ -1,0 +1,52 @@
+<div class="module-page">
+  <app-module-header title="Inventario" subtitle="Movimientos de entrada, salida y ajustes de stock" badge="Almacen" />
+
+  <form class="card-form" [formGroup]="form" (ngSubmit)="adjust()">
+    <div class="card-form__head">
+      <h3>Registrar movimiento</h3>
+      <p>Entrada, salida o ajuste de inventario</p>
+    </div>
+    <div class="form-grid">
+      <label class="full">Producto
+        <select formControlName="productId">
+          <option [value]="0">Seleccione</option>
+          @for (p of products(); track p.id) {
+            <option [value]="p.id">{{ p.sku }} - {{ p.name }} (Stock: {{ p.stock }})</option>
+          }
+        </select>
+      </label>
+      <label>Tipo
+        <select formControlName="type">
+          <option value="Entrada">Entrada</option>
+          <option value="Salida">Salida</option>
+          <option value="Ajuste">Ajuste</option>
+        </select>
+      </label>
+      <label>Cantidad<input type="number" formControlName="quantity" /></label>
+      <label>Notas<input formControlName="notes" /></label>
+    </div>
+    <div class="form-actions"><button class="btn primary" type="submit">Registrar movimiento</button></div>
+  </form>
+
+  <section class="data-card">
+    <div class="data-card__head"><h2>Historial de movimientos</h2><span>{{ movements().length }} registro(s)</span></div>
+    <table class="data">
+      <thead><tr><th>Fecha</th><th>Producto</th><th>Tipo</th><th>Cant.</th><th>Antes</th><th>Despues</th><th>Ref.</th></tr></thead>
+      <tbody>
+        @for (m of movements(); track m.id) {
+          <tr>
+            <td>{{ m.createdAt | date:'short' }}</td>
+            <td><strong>{{ m.productName }}</strong></td>
+            <td>{{ m.type }}</td>
+            <td>{{ m.quantity }}</td>
+            <td>{{ m.stockBefore }}</td>
+            <td>{{ m.stockAfter }}</td>
+            <td>{{ m.reference }}</td>
+          </tr>
+        } @empty {
+          <tr><td colspan="7"><div class="empty-state"><strong>Sin movimientos</strong><p>Los ajustes y operaciones apareceran aqui.</p></div></td></tr>
+        }
+      </tbody>
+    </table>
+  </section>
+</div>

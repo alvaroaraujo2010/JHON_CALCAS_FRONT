@@ -1,0 +1,331 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  background: #121212;
+}
+
+.jc-site {
+  --jc-red: #dd1d1d;
+  --jc-red-dark: #c40303;
+  --jc-text: #121212;
+  --jc-muted: rgba(18, 18, 18, 0.75);
+  --jc-page: #121212;
+  --jc-on-dark: #f3f3f3;
+  --jc-card: #ffffff;
+  --jc-page-width: 120rem;
+
+  font-family: 'Montserrat', system-ui, sans-serif;
+  color: var(--jc-on-dark);
+  background: var(--jc-page);
+}
+
+.jc-site main {
+  background: var(--jc-page);
+}
+
+.page-width {
+  max-width: var(--jc-page-width);
+  margin: 0 auto;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+.jc-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 3rem;
+  min-height: 4.5rem;
+  min-width: 12rem;
+  border-radius: 0;
+  font-size: 1.05rem;
+  font-weight: 600;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.jc-btn--collection {
+  background: var(--jc-red);
+  color: #fff;
+  margin-top: 0.5rem;
+
+  &:hover {
+    background: var(--jc-red-dark);
+    color: #fff;
+  }
+}
+
+.jc-btn--primary {
+  background: #fff;
+  color: var(--jc-text);
+  min-height: auto;
+  min-width: auto;
+  padding: 0.75rem 1.75rem;
+
+  &:hover {
+    background: #f3f3f3;
+    color: #000;
+  }
+}
+
+/* —— Hero poster —— */
+.jc-hero {
+  width: 100%;
+  background: #000;
+}
+
+.jc-hero__poster {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 5921 / 2161;
+  object-fit: cover;
+}
+
+/* —— Filas imagen + texto (estilo Dawn / Shopify) —— */
+.jc-multirow {
+  padding: 1rem 0;
+  background: var(--jc-page);
+}
+
+.jc-multirow__inner {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.jc-image-text {
+  width: 100%;
+}
+
+/* Una columna: imagen arriba, texto abajo (como grid--1-col del tema Dawn) */
+.jc-image-text__grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  width: 100%;
+}
+
+.jc-image-text__media {
+  width: 100%;
+  line-height: 0;
+  background: #121212;
+  overflow: visible;
+
+  img {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+    object-fit: contain;
+    object-position: center center;
+  }
+}
+
+.global-media-settings {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.jc-image-text__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 100%;
+  padding: 4rem 1.5rem 5rem;
+  background: var(--jc-card);
+  color: var(--jc-text);
+}
+
+.jc-image-text__heading {
+  margin: 0 0 1rem;
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.jc-image-text__text {
+  margin: 0 0 1.5rem;
+  max-width: 36rem;
+  color: var(--jc-muted);
+  line-height: 1.65;
+  font-size: 1rem;
+}
+
+/* —— CTA distribuidores —— */
+.jc-cta {
+  background: var(--jc-red);
+  color: #fff;
+  padding: 2.5rem 0;
+}
+
+.jc-cta__inner {
+  text-align: center;
+
+  h2 {
+    margin: 0 0 1rem;
+    font-size: clamp(1.5rem, 3.5vw, 2rem);
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  p {
+    margin: 0 auto 1.5rem;
+    max-width: 52rem;
+    line-height: 1.65;
+    color: rgba(255, 255, 255, 0.92);
+  }
+}
+
+/* —— Pagos —— */
+.jc-payments {
+  padding: 2.5rem 0 3rem;
+  background: var(--jc-page);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.jc-payments__title {
+  margin: 0 0 1rem;
+  text-align: center;
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--jc-on-dark);
+}
+
+.jc-payments__grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.75rem 1.25rem;
+
+  img {
+    width: auto;
+    max-width: 12%;
+    min-width: 56px;
+    height: auto;
+    object-fit: contain;
+  }
+}
+
+/* —— Footer —— */
+.jc-footer {
+  background: #121212;
+  color: rgba(255, 255, 255, 0.78);
+  padding: 2.5rem 0;
+  text-align: center;
+}
+
+.jc-footer__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.jc-footer__logo {
+  width: auto;
+  height: 3.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.jc-footer p {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.jc-footer a {
+  color: #fff;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.jc-footer__admin {
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: rgba(255, 255, 255, 0.65) !important;
+
+  &:hover {
+    color: #fff !important;
+  }
+}
+
+.jc-whatsapp {
+  position: fixed;
+  right: 1.25rem;
+  bottom: 1.25rem;
+  z-index: 200;
+  line-height: 0;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.25));
+
+  img {
+    width: 60px;
+    height: 60px;
+    display: block;
+  }
+}
+
+@media (min-width: 750px) {
+  .page-width {
+    padding-left: 5rem;
+    padding-right: 5rem;
+  }
+
+  .jc-multirow {
+    padding: 1.25rem 0;
+  }
+
+  .jc-multirow__inner {
+    gap: 0.65rem;
+  }
+
+  .jc-image-text__grid {
+    flex-direction: row;
+    align-items: stretch;
+  }
+
+  .jc-image-text--reverse .jc-image-text__grid {
+    flex-direction: row-reverse;
+  }
+
+  .jc-image-text__media,
+  .jc-image-text__content {
+    flex: 1 1 50%;
+    min-width: 0;
+  }
+
+  .jc-image-text__media {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .jc-image-text__content {
+    padding: 6rem 4rem 7rem;
+  }
+
+  .jc-payments__grid img {
+    max-width: 90px;
+  }
+}

@@ -1,0 +1,28 @@
+<div class="admin-shell">
+  <aside class="sidebar">
+    <a routerLink="/admin" class="sidebar-brand">
+      <img [src]="logoSrc" alt="Jhon Calcas" class="sidebar-brand__logo" width="56" height="56" />
+      <div>
+        <strong>Jhon Calcas</strong>
+        <small>Panel administrativo</small>
+      </div>
+    </a>
+    <nav>
+      @for (item of menu; track item.path) {
+        <a [routerLink]="item.path" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: item.path === '/admin' }">
+          <span class="ico"><app-sidebar-icon [name]="item.icon" /></span>
+          {{ item.label }}
+        </a>
+      }
+    </nav>
+    <div class="sidebar-foot">
+      <p>{{ auth.user()?.fullName }}</p>
+      <small>{{ auth.user()?.role }}</small>
+      <button type="button" (click)="auth.logout()">Cerrar sesion</button>
+      <a routerLink="/">Sitio publico</a>
+    </div>
+  </aside>
+  <main class="content">
+    <router-outlet />
+  </main>
+</div>

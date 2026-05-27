@@ -1,0 +1,31 @@
+<div class="login-page">
+  <aside class="login-visual" aria-hidden="true">
+    <div class="login-visual__inner">
+      <img [src]="logoSrc" alt="Jhon Calcas" class="login-visual__logo" />
+      <p class="login-visual__tagline">Calcomanías para motocicletas</p>
+      <p class="login-visual__hint">Panel interno de gestión — inventario, ventas y operación.</p>
+    </div>
+  </aside>
+
+  <div class="panel">
+    <a routerLink="/" class="brand">
+      <img [src]="logoSrc" alt="Jhon Calcas" class="brand__logo" />
+    </a>
+    <h1>Zona administrativa</h1>
+    <p class="sub">Ingrese sus credenciales para acceder al sistema</p>
+
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <label>Nombre de usuario</label>
+      <input type="text" formControlName="username" placeholder="administrador" autocomplete="username" />
+
+      <label>Contrasena</label>
+      <input type="password" formControlName="password" placeholder="********" />
+
+      <button type="submit" [disabled]="loading || form.invalid">
+        {{ loading ? 'Ingresando...' : 'Iniciar sesion' }}
+      </button>
+    </form>
+
+    <a routerLink="/" class="back">Volver al sitio publico</a>
+  </div>
+</div>

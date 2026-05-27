@@ -1,0 +1,27 @@
+<div class="module-page">
+  <app-module-header
+    title="Empresa"
+    subtitle="Datos comerciales que se muestran en la pagina publica de Jhon Calcas"
+    badge="Configuracion" />
+
+  <form class="card-form" [formGroup]="form" (ngSubmit)="save()">
+    <div class="card-form__head">
+      <h3>Informacion del negocio</h3>
+      <p>Estos datos se muestran en la pagina publica</p>
+    </div>
+    <div class="form-grid">
+      <label>Nombre comercial<input formControlName="businessName" /></label>
+      <label>Eslogan<input formControlName="tagline" /></label>
+      <label>NIT<input formControlName="taxId" /></label>
+      <label>Moneda<input formControlName="currency" /></label>
+      <label>Telefono<input formControlName="phone" /></label>
+      <label>Email<input formControlName="email" /></label>
+      <label>Sitio web<input formControlName="website" /></label>
+      <label class="full">Direccion<input formControlName="address" /></label>
+      <label class="full">Descripcion publica<textarea formControlName="description" rows="4"></textarea></label>
+    </div>
+    <div class="form-actions">
+      <button class="btn primary" type="submit">Guardar cambios</button>
+    </div>
+  </form>
+</div>

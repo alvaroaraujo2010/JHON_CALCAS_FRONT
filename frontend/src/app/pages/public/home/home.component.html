@@ -1,0 +1,99 @@
+<div class="jc-site">
+  <app-jhon-calcas-header />
+
+  <section class="jc-hero" aria-label="Presentacion">
+    <img
+      class="jc-hero__poster"
+      [src]="images.heroPoster"
+      alt="Calcomanias para motocicletas Jhon Calcas"
+      width="5921"
+      height="2161"
+      fetchpriority="high"
+    />
+  </section>
+
+  <main>
+    <div class="jc-multirow">
+      <div class="jc-multirow__inner page-width">
+        @for (section of sections; track section.id) {
+          <article
+            [id]="section.id"
+            class="jc-image-text"
+            [class.jc-image-text--reverse]="section.reverse"
+          >
+            <div class="jc-image-text__grid">
+              <div class="jc-image-text__media global-media-settings">
+                <img
+                  [src]="section.image"
+                  [alt]="section.title"
+                  loading="lazy"
+                />
+              </div>
+              <div class="jc-image-text__content">
+                <h2 class="jc-image-text__heading">{{ section.title }}</h2>
+                <p class="jc-image-text__text">{{ section.description }}</p>
+                <a
+                  class="jc-btn jc-btn--collection"
+                  [href]="section.collectionUrl"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Ver Colecciones
+                </a>
+              </div>
+            </div>
+          </article>
+        }
+      </div>
+    </div>
+
+    <section id="distribuidores" class="jc-cta">
+      <div class="jc-cta__inner page-width">
+        <h2>¿Te gustaría ser distribuidor de nuestras calcomanías?</h2>
+        <p>
+          Ofrece a tus clientes calcomanías para motocicletas con calidad garantizada. Nuestros
+          productos para rines, protectores de tanque y emblemas destacan por su resistencia y
+          acabado impecable. ¡Contáctanos ahora mismo!
+        </p>
+        <a [href]="whatsappUrl" class="jc-btn jc-btn--primary" target="_blank" rel="noopener noreferrer">
+          Contáctanos
+        </a>
+      </div>
+    </section>
+
+    <section class="jc-payments" aria-labelledby="payments-title">
+      <div class="page-width">
+        <h2 id="payments-title" class="jc-payments__title">Medios de Pago Disponibles</h2>
+        <div class="jc-payments__grid">
+          @for (method of paymentMethods; track method.alt) {
+            <img [src]="method.src" [alt]="method.alt" loading="lazy" />
+          }
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="jc-footer">
+    <div class="page-width jc-footer__inner">
+      <img [src]="images.logo" alt="Jhon Calcas" class="jc-footer__logo" width="90" height="62" />
+      <p>{{ company().businessName }} — {{ company().tagline }}</p>
+      @if (company().phone) {
+        <p><a [href]="'tel:' + company().phone">{{ company().phone }}</a></p>
+      }
+      @if (company().email) {
+        <p><a [href]="'mailto:' + company().email">{{ company().email }}</a></p>
+      }
+      <a routerLink="/login" class="jc-footer__admin">Acceso administrativo</a>
+    </div>
+  </footer>
+
+  <a
+    [href]="whatsappUrl"
+    class="jc-whatsapp"
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="Contactar por WhatsApp"
+  >
+    <img [src]="images.whatsapp" alt="" width="60" height="60" />
+  </a>
+</div>

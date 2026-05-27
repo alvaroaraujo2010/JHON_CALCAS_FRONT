@@ -1,0 +1,139 @@
+<div class="module-page">
+  <app-module-header title="Contabilidad" subtitle="Plan de cuentas, asientos contables y balance de prueba" badge="Finanzas" />
+
+  <div class="tabs">
+    <button type="button" [class.active]="tab === 'accounts'" (click)="setTab('accounts')">Plan de cuentas</button>
+    <button type="button" [class.active]="tab === 'journal'" (click)="setTab('journal')">Asientos</button>
+    <button type="button" [class.active]="tab === 'trial'" (click)="setTab('trial')">Balance de prueba</button>
+  </div>
+
+  @if (tab === 'accounts') {
+    <div class="module-page" style="gap: 1rem;">
+      <div style="display:flex;justify-content:flex-end;">
+        <button class="btn primary" type="button" (click)="showAccountForm = !showAccountForm">{{ showAccountForm ? 'Cancelar' : 'Nueva cuenta' }}</button>
+      </div>
+      @if (showAccountForm) {
+        <form class="card-form" [formGroup]="accountForm" (ngSubmit)="saveAccount()">
+          <div class="card-form__head"><h3>Nueva cuenta contable</h3></div>
+          <div class="form-grid">
+            <label>Codigo<input formControlName="code" /></label>
+            <label>Nombre<input formControlName="name" /></label>
+            <label>Tipo<select formControlName="type"><option>Activo</option><option>Pasivo</option><option>Patrimonio</option><option>Ingreso</option><option>Gasto</option></select></label>
+          </div>
+          <div class="form-actions"><button class="btn primary" type="submit">Guardar cuenta</button></div>
+        </form>
+      }
+      <section class="data-card">
+        <div class="data-card__head"><h2>Plan de cuentas</h2><span>{{ accounts().length }} cuenta(s)</span></div>
+        <table class="data">
+          <thead><tr><th>Codigo</th><th>Nombre</th><th>Tipo</th></tr></thead>
+          <tbody>
+            @for (a of accounts(); track a.id) {
+              <tr><td><strong>{{ a.code }}</strong></td><td>{{ a.name }}</td><td>{{ a.type }}</td></tr>
+            } @empty {
+              <tr><td colspan="3"><div class="empty-state"><strong>Sin cuentas</strong></div></td></tr>
+            }
+          </tbody>
+        </table>
+      </section>
+    </div>
+  }
+
+  @if (tab === 'journal') {
+    <div style="display:flex;justify-content:flex-end;margin-bottom:0.5rem;">
+      <button class="btn primary" type="button" (click)="showJournalForm = !showJournalForm">{{ showJournalForm ? 'Cancelar' : 'Nuevo asiento' }}</button>
+    </div>
+    @if (showJournalForm) {
+      <form class="card-form" [formGroup]="journalForm" (ngSubmit)="saveJournal()">
+        <div class="card-form__head"><h3>Nuevo asiento contable</h3><p>Partida doble: debitos y creditos deben cuadrar</p></div>
+        <div class="form-grid">
+          <label class="full">Descripcion<input formControlName="description" /></label>
+          <label>Referencia<input formControlName="reference" /></label>
+          <label>Cuenta<select [formControl]="lineForm.controls.accountId"><option [value]="0">Seleccione</option>@for (a of accounts(); track a.id) { <option [value]="a.id">{{ a.code }} - {{ a.name }}</option> }</select></label>
+          <label>Debito<input type="number" [formControl]="lineForm.controls.debit" /></label>
+          <label>Credito<input type="number" [formControl]="lineForm.controls.credit" /></label>
+        </div>
+        <div class="form-actions">
+          <button class="btn" type="button" (click)="addJournalLine()">Agregar linea</button>
+          <button class="btn primary" type="submit">Registrar asiento</button>
+        </div>
+      </form>
+      @if (journalLines.length) {
+        <ul class="line-list">@for (l of journalLines; track $index) { <li>Cuenta {{ l.accountId }} — D: {{ l.debit }} / C: {{ l.credit }}</li> }</ul>
+      }
+    }
+    <section class="data-card">
+      <div class="data-card__head"><h2>Libro de asientos</h2><span>{{ journal().length }} registro(s)</span></div>
+      <table class="data">
+        <thead><tr><th>Numero</th><th>Fecha</th><th>Descripcion</th><th>Debito</th><th>Credito</th></tr></thead>
+        <tbody>
+          @for (j of journal(); track j.id) {
+            <tr>
+              <td><strong>{{ j.entryNumber }}</strong></td>
+              <td>{{ j.entryDate | date:'short' }}</td>
+              <td>{{ j.description }}</td>
+              <td>{{ j.totalDebit | currency:'COP':'symbol-narrow':'1.0-0' }}</td>
+              <td>{{ j.totalCredit | currency:'COP':'symbol-narrow':'1.0-0' }}</td>
+            </tr>
+          } @empty {
+            <tr><td colspan="5"><div class="empty-state"><strong>Sin asientos</strong><p>Registre movimientos contables de partida doble.</p></div></td></tr>
+          }
+        </tbody>
+      </table>
+    </section>
+  }
+
+  @if (tab === 'trial') {
+  <section class="data-card">
+    <div class="data-card__head">
+      <h2>Balance de prueba</h2>
+      <button class="btn sm" type="button" (click)="loadTrial()">Actualizar</button>
+    </div>
+    <p class="trial-hint">
+      Resume debitos, creditos y saldo por cuenta segun los asientos registrados.
+      Al emitir una factura electronica en Ventas se genera un asiento automatico.
+    </p>
+    @if (trial(); as trial) {
+      <table class="data">
+        <thead><tr><th>Codigo</th><th>Cuenta</th><th>Tipo</th><th>Debito</th><th>Credito</th><th>Saldo</th></tr></thead>
+        <tbody>
+          @for (l of trial.lines; track l.code) {
+            <tr>
+              <td><strong>{{ l.code }}</strong></td>
+              <td>{{ l.name }}</td>
+              <td>{{ l.type }}</td>
+              <td>{{ l.debit | currency:'COP':'symbol-narrow':'1.0-0' }}</td>
+              <td>{{ l.credit | currency:'COP':'symbol-narrow':'1.0-0' }}</td>
+              <td>{{ l.balance | currency:'COP':'symbol-narrow':'1.0-0' }}</td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="6">
+                <div class="empty-state">
+                  <strong>Sin movimientos en el balance</strong>
+                  <p>Emita una factura electronica en Ventas o registre un asiento en la pestana Asientos.</p>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+        <tfoot>
+          <tr class="trial-total">
+            <td colspan="3"><strong>Totales</strong></td>
+            <td><strong>{{ trial.totalDebit | currency:'COP':'symbol-narrow':'1.0-0' }}</strong></td>
+            <td><strong>{{ trial.totalCredit | currency:'COP':'symbol-narrow':'1.0-0' }}</strong></td>
+            <td></td>
+          </tr>
+        </tfoot>
+      </table>
+      @if (trial.totalDebit !== trial.totalCredit) {
+        <p class="trial-warn">Los totales no cuadran: revise los asientos de partida doble.</p>
+      } @else if (trial.lines.length) {
+        <p class="trial-ok">Balance cuadrado: debitos = creditos.</p>
+      }
+    } @else {
+      <p class="trial-hint">Cargando balance...</p>
+    }
+  </section>
+  }
+</div>

@@ -1,0 +1,56 @@
+<div class="module-page">
+  <app-module-header
+    title="Dashboard"
+    subtitle="Resumen operativo y financiero del mes en tiempo real"
+    badge="Inicio" />
+
+  @if (data(); as data) {
+    <div class="kpis">
+      <article><span>Ventas del mes</span><strong>{{ data.totalSalesMonth | currency:'COP':'symbol-narrow':'1.0-0' }}</strong></article>
+      <article><span>Compras del mes</span><strong>{{ data.totalPurchasesMonth | currency:'COP':'symbol-narrow':'1.0-0' }}</strong></article>
+      <article><span>Productos activos</span><strong>{{ data.productsCount }}</strong></article>
+      <article class="warn"><span>Stock bajo</span><strong>{{ data.lowStockCount }}</strong></article>
+      <article><span>Clientes</span><strong>{{ data.customersCount }}</strong></article>
+      <article><span>Proveedores</span><strong>{{ data.suppliersCount }}</strong></article>
+    </div>
+
+    <div class="panels">
+      <section class="data-card">
+        <div class="data-card__head"><h2>Ultimas ventas</h2><span>{{ data.recentSales.length }} registro(s)</span></div>
+        <table class="data">
+          <thead><tr><th>Documento</th><th>Cliente</th><th>Total</th><th>Fecha</th></tr></thead>
+          <tbody>
+            @for (s of data.recentSales; track s.id) {
+              <tr>
+                <td>{{ s.documentNumber }}</td>
+                <td>{{ s.customerName || 'Consumidor final' }}</td>
+                <td>{{ s.total | currency:'COP':'symbol-narrow':'1.0-0' }}</td>
+                <td>{{ s.saleDate | date:'short' }}</td>
+              </tr>
+            } @empty {
+              <tr><td colspan="4"><div class="empty-state"><strong>Sin ventas recientes</strong></div></td></tr>
+            }
+          </tbody>
+        </table>
+      </section>
+      <section class="data-card">
+        <div class="data-card__head"><h2>Alertas de inventario</h2><span>{{ data.lowStockProducts.length }} alerta(s)</span></div>
+        <table class="data">
+          <thead><tr><th>SKU</th><th>Producto</th><th>Stock</th><th>Minimo</th></tr></thead>
+          <tbody>
+            @for (p of data.lowStockProducts; track p.id) {
+              <tr>
+                <td>{{ p.sku }}</td>
+                <td>{{ p.name }}</td>
+                <td><span class="badge-warn">{{ p.stock }}</span></td>
+                <td>{{ p.minStock }}</td>
+              </tr>
+            } @empty {
+              <tr><td colspan="4"><div class="empty-state"><strong>Sin alertas de stock</strong><p>Todos los productos estan por encima del minimo.</p></div></td></tr>
+            }
+          </tbody>
+        </table>
+      </section>
+    </div>
+  }
+</div>
