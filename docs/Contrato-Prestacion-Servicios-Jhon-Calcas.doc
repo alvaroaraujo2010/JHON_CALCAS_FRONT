@@ -1,0 +1,177 @@
+<html xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:w="urn:schemas-microsoft-com:office:word"
+xmlns="http://www.w3.org/TR/REC-html40">
+<head>
+<meta charset="utf-8">
+<meta name="ProgId" content="Word.Document">
+<meta name="Generator" content="Microsoft Word">
+<title>Contrato de prestación de servicios — Jhon Calcas</title>
+<!--[if gte mso 9]>
+<xml>
+<w:WordDocument>
+<w:View>Print</w:View>
+<w:Zoom>100</w:Zoom>
+</w:WordDocument>
+</xml>
+<![endif]-->
+<style>
+@page { size: 21cm 29.7cm; margin: 2.5cm 2.2cm 2.5cm 2.2cm; }
+body { font-family: "Times New Roman", Times, serif; font-size: 12pt; line-height: 1.45; color: #000; }
+h1 { font-size: 14pt; text-align: center; margin: 0 0 12pt; font-weight: bold; }
+h2 { font-size: 12pt; margin: 14pt 0 6pt; font-weight: bold; }
+p { margin: 0 0 8pt; text-align: justify; }
+.clause { margin-left: 0; }
+ol { margin: 6pt 0 10pt; padding-left: 22pt; }
+ol li { margin-bottom: 6pt; text-align: justify; }
+table { border-collapse: collapse; width: 100%; margin: 10pt 0; font-size: 11pt; }
+td, th { border: 1px solid #000; padding: 6pt 8pt; vertical-align: top; }
+th { background: #f0f0f0; font-weight: bold; }
+.center { text-align: center; }
+.signature-block { margin-top: 28pt; }
+.sig-line { border-top: 1px solid #000; width: 260pt; margin-top: 36pt; padding-top: 4pt; font-size: 10pt; }
+.note { font-size: 10pt; font-style: italic; color: #333; }
+</style>
+</head>
+<body>
+
+<h1>CONTRATO DE PRESTACIÓN DE SERVICIOS<br />
+SITIO WEB (LANDING) Y ARRIENDO DE PLATAFORMA ADMINISTRATIVA</h1>
+
+<p class="center"><strong>Ciudad y fecha de firma:</strong> _________________________ &nbsp;&nbsp; <strong>Día:</strong> ___ / ___ / 2026</p>
+
+<h2>PARTES</h2>
+
+<p><strong>EL PRESTADOR</strong> (en adelante, «el Prestador»):</p>
+<p>Nombre / Razón social: _________________________________________________<br />
+Documento / NIT: _________________________ &nbsp;&nbsp; Correo: _________________________<br />
+Teléfono / WhatsApp: _________________________ &nbsp;&nbsp; Ciudad: _________________________</p>
+
+<p><strong>EL CLIENTE</strong> (en adelante, «el Cliente»), comercio conocido como <strong>Jhon Calcas</strong>:</p>
+<p>Nombre / Razón social: _________________________________________________<br />
+Documento / NIT: _________________________ &nbsp;&nbsp; Correo: _________________________<br />
+Teléfono / WhatsApp: _________________________ &nbsp;&nbsp; Ciudad: _________________________<br />
+Representante legal o responsable (si aplica): _________________________________________________</p>
+
+<p>Las partes, conjuntamente denominadas «las Partes», acuerdan celebrar el presente contrato, el cual se regirá por las siguientes cláusulas:</p>
+
+<h2>CLÁUSULA PRIMERA. OBJETO</h2>
+<p>El Prestador se obliga a entregar y mantener, según corresponda:</p>
+<ol>
+<li><strong>Sitio web público (landing page)</strong>, de acuerdo con el alcance de la Cláusula Segunda, sin cobro de honorarios al Cliente en virtud del acuerdo comercial especial descrito en la Cláusula Tercera.</li>
+<li><strong>Acceso a la plataforma administrativa</strong> (panel de gestión: inventario, productos, ventas, compras, contabilidad, usuarios y demás módulos disponibles), mediante <strong>modalidad de arriendo mensual (SaaS)</strong>, conforme a las Cláusulas Cuarta y siguientes.</li>
+</ol>
+
+<h2>CLÁUSULA SEGUNDA. ALCANCE DE LA LANDING (SITIO PÚBLICO)</h2>
+<p>Se entiende por landing entregada y cubierta sin costo para el Cliente lo siguiente:</p>
+<ol>
+<li>Página de inicio pública con diseño alineado a la identidad de <strong>jhoncalcas.com</strong> (tema oscuro, tipografía Montserrat o equivalente acordado).</li>
+<li>Sección hero a ancho completo e imágenes de las líneas de producto acordadas (calcas moto, rines, protectores de tanque, emblemas u otras definidas al momento de la entrega).</li>
+<li>Cabecera con menú principal y submenús de navegación hacia colecciones o enlaces externos acordados.</li>
+<li>Comportamiento del menú al desplazamiento (scroll): aparición con transición y fijación en pantalla.</li>
+<li>Bloques informativos con botones de llamado a la acción (por ejemplo, «Ver Colecciones»).</li>
+<li>Medios de pago, enlace o botón de WhatsApp, pie de página y enlace «Zona administrativa» hacia la pantalla de inicio de sesión del panel.</li>
+<li>Pantalla de login con branding Jhon Calcas (acceso al panel; el panel no se transfiere en propiedad).</li>
+<li>Adaptación responsive (móvil y escritorio).</li>
+<li>Hasta <strong>dos (2) rondas</strong> de ajustes menores posteriores a la entrega (textos, imágenes, enlaces y correcciones de detalle visual), dentro de los quince (15) días calendario siguientes a la puesta en línea acordada.</li>
+</ol>
+<p class="note">Quedan expresamente excluidos del alcance sin costo: carrito de compras, pasarela de pagos integrada, sincronización con Shopify u otras plataformas, facturación electrónica ante la DIAN, producción fotográfica o de video, redacción masiva de contenidos, SEO avanzado, nuevas secciones o idiomas adicionales, y cualquier desarrollo no listado, los cuales se cotizarán según la Cláusula Sexta.</p>
+
+<h2>CLÁUSULA TERCERA. VALOR DE LA LANDING Y NATURALEZA DEL BENEFICIO</h2>
+<ol>
+<li>El valor comercial de referencia de la landing descrita es de aproximadamente <strong>OCHO MILLONES ($8.000.000) a DIEZ MILLONES ($10.000.000) de pesos colombianos (COP)</strong>, según el mercado para un desarrollo a medida de complejidad similar.</li>
+<li>Por tratarse del <strong>primer proyecto del Prestador con el Cliente</strong> y por relación de confianza entre las Partes, el Prestador <strong>no cobrará honorarios</strong> por la entrega de la landing en el alcance de la Cláusula Segunda.</li>
+<li>Lo anterior constituye un beneficio particular para el Cliente y <strong>no constituye precedente</strong> ni tarifa aplicable a terceros ni a futuros desarrollos del Cliente.</li>
+<li>El Cliente reconoce el valor de referencia y acepta que la contraprestación principal del Prestador respecto del ecosistema digital se materializa en el arriendo del panel y en los servicios adicionales cotizados.</li>
+</ol>
+
+<h2>CLÁUSULA CUARTA. ARRIENDO DE LA PLATAFORMA ADMINISTRATIVA</h2>
+<ol>
+<li>El panel administrativo es propiedad intelectual y know-how del Prestador (o de quien este designe). El Cliente recibe un <strong>derecho de uso no exclusivo, no transferible y revocable</strong>, mientras se encuentre al día en el pago del arriendo.</li>
+<li>El arriendo mensual durante los <strong>primeros seis (6) meses</strong> contados desde la activación del servicio será de <strong>CIENTO CINCUENTA MIL PESOS ($150.000) COP</strong>, más impuestos si aplican según el régimen del Prestador.</li>
+<li>A partir del <strong>séptimo (7°) mes</strong>, el valor mensual será de <strong>CUATROCIENTOS CINCUENTA MIL PESOS ($450.000) COP</strong>, salvo que las Partes suscriban por escrito un valor distinto con al menos treinta (30) días de antelación al cambio.</li>
+<li>El arriendo incluye: acceso al panel en el estado funcional acordado, alojamiento de la aplicación en el servidor que defina el Prestador (o el acordado), respaldo periódico según capacidad del plan, y actualizaciones generales de la plataforma que el Prestador implemente para todos sus clientes.</li>
+<li>No incluye: ajustes a medida, nuevas funcionalidades exclusivas, capacitación extensa, migraciones de datos de terceros, ni costos de dominio o hosting del sitio público si estos están a cargo del Cliente (Cláusula Octava).</li>
+</ol>
+
+<h2>CLÁUSULA QUINTA. FORMA Y PLAZO DE PAGO DEL ARRIENDO</h2>
+<ol>
+<li>El arriendo se factura o cobra <strong>mensualmente por anticipado</strong>, dentro de los primeros cinco (5) días hábiles de cada mes.</li>
+<li>La primera mensualidad se causa en la fecha de <strong>activación productiva</strong> del panel para el Cliente (uso real o entrega de credenciales para operación), lo que ocurra primero.</li>
+<li>Mora: el retardo superior a diez (10) días calendario faculta al Prestador a suspender el acceso al panel previo aviso por escrito (correo o WhatsApp registrado), sin perjuicio del cobro de lo adeudado.</li>
+<li>Medios de pago acordados: _________________________________________________</li>
+</ol>
+
+<h2>CLÁUSULA SEXTA. AJUSTES, MODIFICACIONES Y SERVICIOS ADICIONALES</h2>
+<ol>
+<li>Todo trabajo solicitado por el Cliente <strong>fuera del alcance</strong> de la Cláusula Segunda o que exceda las dos (2) rondas de ajustes menores de la landing, así como cualquier cambio relevante en el panel, nueva sección, integración o funcionalidad, será cotizado <strong>por escrito antes de ejecutarse</strong>.</li>
+<li>Los honorarios de referencia para ajustes o modificaciones de mediana complejidad estarán entre <strong>TRESCIENTOS MIL ($300.000) y CUATROCIENTOS MIL ($400.000) COP</strong> por solicitud, según estimación del Prestador según tiempo y complejidad.</li>
+<li>Ajustes de muy baja complejidad (cambio de un texto, un enlace o una imagen puntual) podrán resolverse sin costo o con costo reducido, a criterio del Prestador y sin que ello genere obligación de gratuidad futura.</li>
+<li>El Cliente no podrá exigir desarrollos adicionales sin aceptación expresa del valor y plazo enviados por el Prestador.</li>
+</ol>
+
+<h2>CLÁUSULA SÉPTIMA. PROPIEDAD INTELECTUAL Y CONTENIDOS</h2>
+<ol>
+<li>Los textos, imágenes, logotipos y materiales aportados por el Cliente son de su responsabilidad y garantiza tener derecho para usarlos en la web.</li>
+<li>El código fuente específico de la landing entregada al Cliente y el contenido editorial definitivo aprobado podrán permanecer en uso del Cliente para su operación comercial, sin perjuicio de que el Prestador reutilice conocimientos, librerías y patrones de desarrollo.</li>
+<li>El software del panel administrativo, su arquitectura multiempresa y mejoras futuras son del Prestador. El Cliente no adquiere derechos de copia, reventa ni sublicencia del panel.</li>
+</ol>
+
+<h2>CLÁUSULA OCTAVA. HOSTING, DOMINIO Y CERTIFICADOS</h2>
+<p>Salvo pacto expreso por escrito, el Cliente asume o contrata por separado: registro y renovación de dominio, certificado SSL si aplica, y costos de hosting del sitio público. El Prestador puede gestionarlos cobrando el valor reembolsable o el margen acordado.</p>
+
+<h2>CLÁUSULA NOVENA. CONFIDENCIALIDAD Y DATOS</h2>
+<p>Las Partes mantendrán confidencial la información comercial y de acceso no pública. El tratamiento de datos personales de clientes o usuarios del Cliente en el panel deberá cumplir la normativa colombiana aplicable; el Cliente es responsable de la licitud de los datos que ingrese al sistema.</p>
+
+<h2>CLÁUSULA DÉCIMA. VIGENCIA Y TERMINACIÓN</h2>
+<ol>
+<li>Este contrato entra en vigencia desde la fecha de firma.</li>
+<li>El beneficio de landing sin costo se entiende cumplido con la entrega aceptada según la Cláusula Undécima.</li>
+<li>El arriendo del panel es de duración indefinida con renovación mensual tácita, salvo terminación con aviso de treinta (30) días calendario por cualquiera de las Partes.</li>
+<li>En caso de terminación, el Prestador podrá exportar o entregar datos del Cliente en formato razonable dentro de treinta (30) días, previo pago de sumas adeudadas. Transcurrido ese plazo, el Prestador podrá eliminar los datos según su política de retención.</li>
+</ol>
+
+<h2>CLÁUSULA UNDÉCIMA. ACEPTACIÓN DE ENTREGAS</h2>
+<p>La landing se considerará aceptada si el Cliente no reporta por escrito incumplimientos sustanciales del alcance de la Cláusula Segunda dentro de diez (10) días hábiles desde la notificación de «sitio en línea» o entrega de acceso. Los defectos sustanciales serán corregidos por el Prestador en plazo razonable.</p>
+
+<h2>CLÁUSULA DUODÉCIMA. LIMITACIÓN DE RESPONSABILIDAD</h2>
+<p>El Prestador no garantiza ingresos comerciales del Cliente ni disponibilidad del 100% del tiempo. La responsabilidad económica del Prestador frente al Cliente, por cualquier concepto derivado de este contrato, se limita al monto efectivamente pagado por el Cliente en los tres (3) meses anteriores al hecho que la motive, salvo dolo o culpa grave debidamente probada.</p>
+
+<h2>CLÁUSULA DECIMOTERCERA. SOLUCIÓN DE CONTROVERSIAS</h2>
+<p>Las Partes intentarán resolver diferencias de buena fe. En caso de persistir, se someterán a los jueces de la ciudad de _________________________, República de Colombia, renunciando a cualquier otro fuero que pudiera corresponderles.</p>
+
+<h2>CLÁUSULA DECIMOCUARTA. DOCUMENTOS Y COMUNICACIONES</h2>
+<p>Se aceptan como válidas las comunicaciones por correo electrónico y WhatsApp a los números o cuentas registrados en el encabezado de este contrato. Los anexos, cotizaciones y listados de alcance aprobados por escrito forman parte integrante del contrato.</p>
+
+<h2>RESUMEN ECONÓMICO (ANEXO RESUMIDO)</h2>
+<table>
+<tr><th>Concepto</th><th>Valor</th></tr>
+<tr><td>Landing (alcance Cláusula Segunda)</td><td><strong>$ 0</strong> (valor referencia mercado: $ 8.000.000 – $ 10.000.000)</td></tr>
+<tr><td>Arriendo panel — meses 1 a 6</td><td><strong>$ 150.000 / mes</strong></td></tr>
+<tr><td>Arriendo panel — desde mes 7</td><td><strong>$ 450.000 / mes</strong> (salvo acuerdo escrito distinto)</td></tr>
+<tr><td>Ajustes o modificaciones (referencia)</td><td><strong>$ 300.000 – $ 400.000</strong> c/u, según complejidad</td></tr>
+</table>
+
+<h2>FIRMAS</h2>
+<p>En constancia de haber leído y aceptado el contenido, las Partes firman en dos (2) ejemplares del mismo tenor (o un ejemplar con firma electrónica válida):</p>
+
+<table>
+<tr>
+<td width="50%" class="signature-block">
+<div class="sig-line"><strong>EL PRESTADOR</strong></div>
+<p>Nombre: _________________________________<br />
+Documento / NIT: _________________________________<br />
+Firma: _________________________________</p>
+</td>
+<td width="50%" class="signature-block">
+<div class="sig-line"><strong>EL CLIENTE — Jhon Calcas</strong></div>
+<p>Nombre: _________________________________<br />
+Documento / NIT: _________________________________<br />
+Firma: _________________________________</p>
+</td>
+</tr>
+</table>
+
+<p class="note center" style="margin-top:20pt;">Para abrir en Microsoft Word: clic derecho → Abrir con → Word → Archivo → Guardar como → Documento de Word (.docx)</p>
+
+</body>
+</html>

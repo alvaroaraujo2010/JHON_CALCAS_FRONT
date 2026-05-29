@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cotización — Landing Jhon Calcas</title>
+  <style>
+    :root {
+      --jc-red: #de0404;
+      --jc-dark: #121212;
+      --jc-muted: #555;
+      --jc-border: #e8e8e8;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      font-size: 11pt;
+      line-height: 1.55;
+      color: #1a1a1a;
+      background: #f5f5f5;
+    }
+
+    .page {
+      max-width: 210mm;
+      margin: 2rem auto;
+      padding: 18mm 16mm;
+      background: #fff;
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+    }
+
+    .brand-bar {
+      height: 6px;
+      background: linear-gradient(90deg, var(--jc-dark) 0%, var(--jc-red) 100%);
+      margin: -18mm -16mm 1.5rem;
+      border-radius: 0;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 1.5rem;
+      margin-bottom: 1.75rem;
+      padding-bottom: 1.25rem;
+      border-bottom: 2px solid var(--jc-dark);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 1.65rem;
+      font-weight: 800;
+      color: var(--jc-dark);
+      letter-spacing: -0.02em;
+    }
+
+    .doc-meta {
+      text-align: right;
+      font-size: 0.85rem;
+      color: var(--jc-muted);
+    }
+
+    .doc-meta strong { color: var(--jc-dark); display: block; }
+
+    h2 {
+      margin: 1.5rem 0 0.65rem;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--jc-red);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    h3 {
+      margin: 1rem 0 0.4rem;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--jc-dark);
+    }
+
+    p { margin: 0.4rem 0; }
+
+    .lead {
+      font-size: 1rem;
+      color: #333;
+      margin-bottom: 1rem;
+    }
+
+    .box {
+      background: #fafafa;
+      border: 1px solid var(--jc-border);
+      border-left: 4px solid var(--jc-red);
+      padding: 1rem 1.15rem;
+      margin: 0.75rem 0 1rem;
+      border-radius: 4px;
+    }
+
+    .box--dark {
+      background: var(--jc-dark);
+      color: #f3f3f3;
+      border: none;
+      border-left: 4px solid var(--jc-red);
+    }
+
+    .box--dark strong { color: #fff; }
+
+    ul { margin: 0.35rem 0; padding-left: 1.25rem; }
+    li { margin: 0.2rem 0; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 0.75rem 0 1rem;
+      font-size: 0.92rem;
+    }
+
+    th, td {
+      border: 1px solid var(--jc-border);
+      padding: 0.55rem 0.75rem;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: var(--jc-dark);
+      color: #fff;
+      font-weight: 600;
+    }
+
+    tr:nth-child(even) td { background: #fafafa; }
+
+    .price {
+      font-weight: 800;
+      color: var(--jc-red);
+      white-space: nowrap;
+    }
+
+    .note {
+      font-size: 0.85rem;
+      color: var(--jc-muted);
+      font-style: italic;
+    }
+
+    .signature {
+      margin-top: 2.5rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+
+    .signature-line {
+      border-top: 1px solid #333;
+      padding-top: 0.35rem;
+      font-size: 0.85rem;
+      color: var(--jc-muted);
+    }
+
+    .print-hint {
+      text-align: center;
+      font-size: 0.8rem;
+      color: #888;
+      margin: 1rem 0 0;
+    }
+
+    @media print {
+      body { background: #fff; }
+      .page {
+        margin: 0;
+        box-shadow: none;
+        max-width: none;
+      }
+      .no-print { display: none !important; }
+      .brand-bar { margin-top: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="brand-bar"></div>
+
+    <header>
+      <div>
+        <h1>Propuesta comercial</h1>
+        <p class="lead"><strong>Landing page</strong> — Jhon Calcas<br />
+        Calcomanías para motocicletas</p>
+      </div>
+      <div class="doc-meta">
+        <strong>Documento</strong>
+        Cotización v1.0<br />
+        Fecha: 27 de mayo de 2026<br />
+        Validez: 30 días calendario
+      </div>
+    </header>
+
+    <h2>1. Resumen ejecutivo</h2>
+    <p>
+      La presente propuesta cotiza únicamente el <strong>sitio público (landing page)</strong>,
+      diseñado y desarrollado a medida según la identidad visual de
+      <strong>jhoncalcas.com</strong>, con experiencia responsive y enlace a la zona de acceso administrativo.
+    </p>
+    <div class="box box--dark">
+      <strong>Importante:</strong> La <strong>zona administrativa</strong> (gestión de inventario, ventas,
+      compras, contabilidad y usuarios) <strong>no se incluye en esta venta</strong>. Se ofrece bajo
+      modalidad de <strong>arriendo mensual (SaaS)</strong>, dado que la plataforma seguirá evolucionando
+      para atender otras empresas con ajustes y mejoras continuas.
+    </div>
+
+    <h2>2. Alcance — Landing page (incluido)</h2>
+    <ul>
+      <li>Página de inicio pública con diseño alineado al sitio de referencia (tema oscuro, tipografía Montserrat).</li>
+      <li>Hero a ancho completo con imagen de marca y estructura tipo tienda profesional.</li>
+      <li>Secciones de contenido (calcas moto, rines, protectores, emblemas) con imagen, texto y botón «Ver Colecciones».</li>
+      <li>Cabecera con menú principal y submenús (navegación hacia colecciones en jhoncalcas.com).</li>
+      <li>Comportamiento de menú al hacer scroll (aparición con transición y fijación).</li>
+      <li>Bloque de medios de pago y llamados a acción (distribuidores, WhatsApp flotante).</li>
+      <li>Pie de página y enlace «Zona administrativa» hacia el login del panel interno.</li>
+      <li>Pantalla de login con branding Jhon Calcas (acceso al panel; el panel no se transfiere en propiedad).</li>
+      <li>Adaptación a dispositivos móviles y escritorio.</li>
+      <li>Entrega del código fuente del <strong>frontend de la landing</strong> y despliegue inicial acordado con el cliente.</li>
+    </ul>
+
+    <h2>3. Fuera de alcance de esta cotización</h2>
+    <ul>
+      <li>Venta o licencia perpetua del panel administrativo.</li>
+      <li>Carrito de compras, pasarela de pagos integrada o sincronización con Shopify.</li>
+      <li>Facturación electrónica ante la DIAN (proveedor tecnológico habilitado).</li>
+      <li>Redacción masiva de textos, fotografía profesional o producción de video (se usan assets acordados).</li>
+      <li>Dominio, hosting y certificado SSL (pueden cotizarse como servicio adicional).</li>
+    </ul>
+
+    <h2>4. Inversión — Landing page (pago único)</h2>
+    <p>Valores en pesos colombianos (COP). IVA u otros impuestos, si aplican, se facturan según régimen del prestador.</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Concepto</th>
+          <th>Descripción</th>
+          <th>Inversión</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Opción A — Estándar</strong></td>
+          <td>Landing según diseño acordado, hasta 2 rondas de ajustes menores (textos, imágenes, enlaces).</td>
+          <td class="price">$ 8.500.000</td>
+        </tr>
+        <tr>
+          <td><strong>Opción B — Recomendada</strong></td>
+          <td>Todo lo de la Opción A + 1 ronda adicional de refinamiento visual, capacitación breve de uso del sitio (1 h) y 30 días de corrección de errores de la landing.</td>
+          <td class="price">$ 10.500.000</td>
+        </tr>
+        <tr>
+          <td><strong>Opción C — Premium</strong></td>
+          <td>Todo lo de la Opción B + SEO básico on-page, formulario de contacto integrado, analytics (Google) y 60 días de soporte correctivo de la landing.</td>
+          <td class="price">$ 12.500.000</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p class="note">
+      Referencia de esfuerzo técnico estimado para la landing: 30–45 horas (diseño, maquetación, menú, responsive y pruebas).
+      El valor refleja trabajo a medida y no una plantilla genérica.
+    </p>
+
+    <h2>5. Zona administrativa — Modalidad de arriendo (SaaS)</h2>
+    <p>
+      El panel de gestión (productos, inventario, ventas, compras, contabilidad, usuarios, empresa, etc.)
+      permanece en desarrollo y evolución para múltiples clientes. Por ello se contrata como
+      <strong>suscripción mensual</strong>, no como compra del software.
+    </p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Plan</th>
+          <th>Incluye</th>
+          <th>Arriendo mensual</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Plan Base</strong></td>
+          <td>Acceso al panel, actualizaciones de la plataforma, respaldo de datos en servidor acordado, soporte por correo/WhatsApp (horario laboral, hasta 4 h/mes).</td>
+          <td class="price">$ 450.000 / mes</td>
+        </tr>
+        <tr>
+          <td><strong>Plan Operación</strong></td>
+          <td>Todo lo del Plan Base + prioridad en soporte (8 h/mes), ajustes menores de configuración por empresa (logo, datos, permisos).</td>
+          <td class="price">$ 750.000 / mes</td>
+        </tr>
+        <tr>
+          <td><strong>Plan Empresa</strong></td>
+          <td>Todo lo del Plan Operación + nuevas funcionalidades compartidas del roadmap, capacitación trimestral (2 h) y soporte extendido (15 h/mes).</td>
+          <td class="price">$ 1.200.000 / mes</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p class="note">
+      El arriendo inicia cuando el cliente requiera uso productivo del panel. La landing puede entregarse y facturarse
+      de forma independiente. Mínimo de permanencia sugerido: 6 meses en plan Base u Operación.
+    </p>
+
+    <h2>6. Servicios opcionales (no incluidos)</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Servicio</th>
+          <th>Valor referencia</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Hosting + dominio + SSL (primer año, gestionado)</td>
+          <td class="price">$ 600.000 – $ 1.200.000 / año</td>
+        </tr>
+        <tr>
+          <td>Hora adicional de desarrollo o diseño (fuera de alcance)</td>
+          <td class="price">$ 120.000 / hora</td>
+        </tr>
+        <tr>
+          <td>Nueva sección o landing adicional</td>
+          <td class="price">Desde $ 2.500.000</td>
+        </tr>
+        <tr>
+          <td>Capacitación administrativa (sesión 2 h)</td>
+          <td class="price">$ 350.000</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>7. Forma de pago sugerida (landing)</h2>
+    <ul>
+      <li><strong>50 %</strong> al aceptar la propuesta e iniciar trabajo.</li>
+      <li><strong>50 %</strong> contra entrega aprobada en ambiente de producción o preproducción acordado.</li>
+    </ul>
+    <p>Arriendo del panel: facturación mensual anticipada. Primera mensualidad al activar el servicio.</p>
+
+    <h2>8. Condiciones generales</h2>
+    <ul>
+      <li>Los precios de la landing son por entrega única del sitio público descrito; no otorgan derechos sobre el código del panel administrativo.</li>
+      <li>El cliente provee o aprueba textos, imágenes y enlaces finales en tiempo acordado; retrasos pueden mover la fecha de entrega.</li>
+      <li>Cambios que alteren el alcance (nuevas secciones, idiomas, integraciones) se cotizan por separado.</li>
+      <li>Propiedad: el cliente es dueño del contenido de su marca; el proveedor conserva know-how, librerías y la base del software administrativo multiempresa.</li>
+    </ul>
+
+    <h2>9. Aceptación</h2>
+    <p>El cliente manifiesta interés en la siguiente opción (marcar al firmar):</p>
+    <p>☐ Opción A &nbsp;&nbsp; ☐ Opción B &nbsp;&nbsp; ☐ Opción C &nbsp;&nbsp; ☐ Arriendo panel: Plan _____</p>
+
+    <div class="signature">
+      <div>
+        <div class="signature-line">Por el prestador del servicio</div>
+        <p>Nombre: _________________________<br />Documento / NIT: _________________________</p>
+      </div>
+      <div>
+        <div class="signature-line">Por Jhon Calcas / Cliente</div>
+        <p>Nombre: _________________________<br />Documento / NIT: _________________________</p>
+      </div>
+    </div>
+
+    <p class="print-hint no-print">
+      Para guardar como PDF: abra este archivo en el navegador → Ctrl+P → «Guardar como PDF».
+    </p>
+  </div>
+</body>
+</html>
