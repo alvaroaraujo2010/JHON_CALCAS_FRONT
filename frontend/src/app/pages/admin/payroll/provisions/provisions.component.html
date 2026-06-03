@@ -1,0 +1,90 @@
+<div class="page">
+  <app-module-header
+    title="Provisiones de Prestaciones Sociales"
+    subtitle="Prima, cesantías, intereses y vacaciones acumuladas por empleado"
+  >
+    <label class="year-label">Año:
+      <select [(ngModel)]="year" (change)="reload()">
+        <option *ngFor="let y of [2025, 2026, 2027, 2024]" [ngValue]="y">{{ y }}</option>
+      </select>
+    </label>
+    <button class="btn" [class.primary]="view() === 'summary'" (click)="setView('summary')">Resumen por empleado</button>
+    <button class="btn" [class.primary]="view() === 'detail'" (click)="setView('detail')">Detalle mensual</button>
+  </app-module-header>
+
+  <div *ngIf="!loading(); else loadingTpl">
+    <ng-container *ngIf="view() === 'summary'">
+      <div class="kpi-grid">
+        <div class="kpi"><span>Prima</span><strong>{{ format(totalPrima()) }}</strong></div>
+        <div class="kpi"><span>Cesantías</span><strong>{{ format(totalCesantias()) }}</strong></div>
+        <div class="kpi"><span>Intereses cesantías</span><strong>{{ format(totalIntereses()) }}</strong></div>
+        <div class="kpi"><span>Vacaciones</span><strong>{{ format(totalVacaciones()) }}</strong></div>
+        <div class="kpi total"><span>Total provisiones</span><strong>{{ format(totalGeneral()) }}</strong></div>
+      </div>
+
+      <table *ngIf="summary().length > 0; else emptyTpl">
+        <thead>
+          <tr>
+            <th>Empleado</th>
+            <th>Prima</th>
+            <th>Cesantías</th>
+            <th>Intereses ces.</th>
+            <th>Vacaciones</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let s of summary()">
+            <td><strong>{{ s.employeeName }}</strong></td>
+            <td>{{ format(s.prima) }}</td>
+            <td>{{ format(s.cesantias) }}</td>
+            <td>{{ format(s.cesantiasInterest) }}</td>
+            <td>{{ format(s.vacaciones) }}</td>
+            <td><strong>{{ format(s.total) }}</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </ng-container>
+
+    <ng-container *ngIf="view() === 'detail'">
+      <table *ngIf="details().length > 0; else emptyTpl">
+        <thead>
+          <tr>
+            <th>Empleado</th>
+            <th>Período</th>
+            <th>Salario base</th>
+            <th>Aux. transp.</th>
+            <th>Prima</th>
+            <th>Cesantías</th>
+            <th>Int. cesantías</th>
+            <th>Vacaciones</th>
+            <th>Total mes</th>
+            <th>Acumulado año</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let d of details()">
+            <td><strong>{{ d.employeeName }}</strong></td>
+            <td>{{ d.periodLabel }}</td>
+            <td>{{ format(d.baseSalary) }}</td>
+            <td>{{ format(d.transportAllowance) }}</td>
+            <td>{{ format(d.primaProvision) }}</td>
+            <td>{{ format(d.cesantiasProvision) }}</td>
+            <td>{{ format(d.cesantiasInterestProvision) }}</td>
+            <td>{{ format(d.vacationProvision) }}</td>
+            <td>{{ format(d.totalProvision) }}</td>
+            <td><strong>{{ format(d.accumulatedTotal) }}</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </ng-container>
+
+    <ng-template #emptyTpl>
+      <div class="empty">No hay provisiones registradas para el año {{ year() }}. Procesa una nómina para generarlas.</div>
+    </ng-template>
+  </div>
+
+  <ng-template #loadingTpl>
+    <div class="loading">Cargando provisiones...</div>
+  </ng-template>
+</div>

@@ -33,6 +33,14 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
     { path: '/admin/compras', label: 'Compras', icon: 'compras' },
     { path: '/admin/ventas', label: 'Ventas', icon: 'ventas' },
     { path: '/admin/contabilidad', label: 'Contabilidad', icon: 'contabilidad' },
+    { path: '/admin/nomina', label: 'Nómina', icon: 'nomina' },
+    { path: '/admin/nomina-empleados', label: 'Empleados', icon: 'empleados', indent: true },
+    { path: '/admin/nomina-deducciones', label: 'Deducciones', icon: 'deducciones', indent: true },
+    { path: '/admin/nomina-seguridad-social', label: 'Seguridad Social', icon: 'seguridad', indent: true },
+    { path: '/admin/nomina-pagos', label: 'Pagos Realizados', icon: 'pagos', indent: true },
+    { path: '/admin/nomina-provisiones', label: 'Provisiones', icon: 'provisiones', indent: true },
+    { path: '/admin/nomina-liquidaciones', label: 'Liquidaciones', icon: 'liquidacion', indent: true },
+    { path: '/admin/nomina-parametros', label: 'Parámetros Legales', icon: 'parametros', indent: true },
     { path: '/admin/usuarios', label: 'Usuarios', icon: 'usuarios' },
     { path: '/admin/empresa', label: 'Empresa', icon: 'empresa' }
   ];

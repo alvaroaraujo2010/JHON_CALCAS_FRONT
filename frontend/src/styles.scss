@@ -20,7 +20,13 @@ body.jc-admin-page {
 }
 
 /* —— Página de módulo admin (Jhon Calcas) —— */
-.module-page {
+.module-page,
+.page,
+.payroll-page,
+.employees-page,
+.deductions-container,
+.social-security-container,
+.payment-records-container {
   display: flex;
   flex-direction: column;
   gap: 1.25rem;

@@ -30,6 +30,11 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 builder.Services.AddAuthorization();
 builder.Services.AddSingleton<JwtService>();
 builder.Services.AddScoped<ElectronicInvoiceService>();
+builder.Services.AddScoped<LegalParameterService>();
+builder.Services.AddScoped<WithholdingTaxService>();
+builder.Services.AddScoped<PayrollCalculator>();
+builder.Services.AddScoped<PayrollAccountingService>();
+builder.Services.AddScoped<PayrollSettlementService>();
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
@@ -42,7 +47,11 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    var withholdingSvc = scope.ServiceProvider.GetRequiredService<WithholdingTaxService>();
     await DbSeeder.SeedAsync(db);
+    // Sembrar tablas de retención 2025 y 2026 si no existen
+    await withholdingSvc.SeedTableAsync(2025);
+    await withholdingSvc.SeedTableAsync(2026);
 }
 
 if (app.Environment.IsDevelopment())

@@ -1,0 +1,102 @@
+<div class="page">
+  <app-module-header
+    [title]="'Nómina ' + (payroll()?.periodStart ?? '') + ' — ' + (payroll()?.periodEnd ?? '')"
+    subtitle="Desprendible de nómina con cumplimiento legal colombiano"
+  >
+    <button class="btn" (click)="cancel()">← Volver</button>
+    <button class="btn primary" *ngIf="payroll()?.status === 'draft'" (click)="process()" [disabled]="saving">
+      {{ saving ? 'Procesando...' : 'Procesar nómina' }}
+    </button>
+    <button class="btn primary" *ngIf="payroll()?.status === 'processed'" (click)="pay()" [disabled]="saving">
+      Pagar nómina
+    </button>
+  </app-module-header>
+
+  <div *ngIf="loading()" class="loading">Cargando nómina...</div>
+
+  <div *ngIf="!loading() && payroll()">
+    <!-- Resumen general -->
+    <section class="summary">
+      <div class="kpi"><span>Total devengado</span><strong>{{ fmt(payroll()!.totalGross) }}</strong></div>
+      <div class="kpi"><span>Aux. transporte total</span><strong>{{ fmt(payroll()!.totalTransportAllowance) }}</strong></div>
+      <div class="kpi"><span>Total deducciones</span><strong>{{ fmt(payroll()!.totalDeductions) }}</strong></div>
+      <div class="kpi highlight"><span>Total neto a pagar</span><strong>{{ fmt(payroll()!.totalNet) }}</strong></div>
+      <div class="kpi"><span>Costo total empleador</span><strong>{{ fmt(payroll()!.totalEmployerCost) }}</strong></div>
+      <div class="kpi status" [style.background]="statusColor(payroll()!.status)">
+        <span>Estado</span><strong>{{ statusLabel(payroll()!.status) }}</strong>
+      </div>
+    </section>
+
+    <!-- Provisiones del período -->
+    <section class="provisions">
+      <h3>Provisiones del período (informativo)</h3>
+      <div class="prov-grid">
+        <div class="prov-card"><span>Prima de servicios</span><strong>{{ fmt(payroll()!.totalPrimaProvision) }}</strong><small>1 mes/año (Art. 306 CST)</small></div>
+        <div class="prov-card"><span>Cesantías</span><strong>{{ fmt(payroll()!.totalCesantiasProvision) }}</strong><small>1 mes/año</small></div>
+        <div class="prov-card"><span>Intereses cesantías</span><strong>{{ fmt(payroll()!.totalCesantiasInterestProvision) }}</strong><small>12% anual (Art. 1 Ley 52/1975)</small></div>
+        <div class="prov-card"><span>Vacaciones</span><strong>{{ fmt(payroll()!.totalVacationProvision) }}</strong><small>15 días hábiles/año (Art. 186 CST)</small></div>
+      </div>
+    </section>
+
+    <!-- Aportes patronales del período -->
+    <section class="employer">
+      <h3>Aportes patronales (informativo)</h3>
+      <div class="prov-grid">
+        <div class="prov-card"><span>Salud (8.5%)</span><strong>{{ fmt(payroll()!.totalEmployerHealth) }}</strong></div>
+        <div class="prov-card"><span>Pensión (12%)</span><strong>{{ fmt(payroll()!.totalEmployerPension) }}</strong></div>
+        <div class="prov-card"><span>ARL (0.522%)</span><strong>{{ fmt(payroll()!.totalArl) }}</strong></div>
+        <div class="prov-card"><span>Caja (4%)</span><strong>{{ fmt(payroll()!.totalCompensationFund) }}</strong></div>
+        <div class="prov-card"><span>SENA (2%)</span><strong>{{ fmt(payroll()!.totalSena) }}</strong></div>
+        <div class="prov-card"><span>ICBF (3%)</span><strong>{{ fmt(payroll()!.totalIcbf) }}</strong></div>
+      </div>
+    </section>
+
+    <!-- Lista de empleados y desprendible -->
+    <section class="details">
+      <h3>Empleados ({{ payroll()!.details.length }})</h3>
+      <div class="employees-list">
+        <button *ngFor="let d of payroll()!.details"
+                [class.active]="selectedDetail()?.employeeId === d.employeeId"
+                (click)="selectDetail(d)">
+          {{ d.employeeName }} — {{ fmt(d.netSalary) }}
+        </button>
+      </div>
+
+      <div *ngIf="selectedDetail() as d" class="pay-slip">
+        <h4>Desprendible de {{ d.employeeName }}</h4>
+        <div class="slip-grid">
+          <div class="slip-section">
+            <h5>Devengados</h5>
+            <div class="line"><span>Salario básico</span><strong>{{ fmt(d.baseSalary) }}</strong></div>
+            <div class="line" *ngIf="d.transportAllowance > 0"><span>Auxilio de transporte</span><strong>{{ fmt(d.transportAllowance) }}</strong></div>
+            <div class="line total"><span>Total devengado</span><strong>{{ fmt(d.totalGross) }}</strong></div>
+            <div class="line ibc"><span>IBC (Base cotización)</span><strong>{{ fmt(d.ibc) }}</strong></div>
+          </div>
+          <div class="slip-section">
+            <h5>Deducciones</h5>
+            <div class="line" *ngIf="d.employeeHealthDeduction > 0"><span>Salud empleado (4%)</span><strong>-{{ fmt(d.employeeHealthDeduction) }}</strong></div>
+            <div class="line" *ngIf="d.employeePensionDeduction > 0"><span>Pensión empleado (4%)</span><strong>-{{ fmt(d.employeePensionDeduction) }}</strong></div>
+            <div class="line" *ngIf="d.solidarityFundDeduction > 0"><span>Fondo Solidaridad Pensional</span><strong>-{{ fmt(d.solidarityFundDeduction) }}</strong></div>
+            <div class="line" *ngIf="d.withholdingTax > 0"><span>Retención en la fuente</span><strong>-{{ fmt(d.withholdingTax) }}</strong></div>
+            <div class="line" *ngFor="let cd of d.deductions" [class.additional]="cd.category === 'other'">
+              <span>{{ cd.deductionName }}</span><strong>-{{ fmt(cd.amount) }}</strong>
+            </div>
+            <div class="line total"><span>Total deducciones</span><strong>-{{ fmt(d.totalDeductions) }}</strong></div>
+          </div>
+          <div class="slip-section highlight">
+            <h5>Neto a pagar</h5>
+            <div class="net">{{ fmt(d.netSalary) }}</div>
+          </div>
+          <div class="slip-section provisions">
+            <h5>Provisiones (no se pagan este mes)</h5>
+            <div class="line"><span>Prima de servicios</span><strong>{{ fmt(d.primaProvision) }}</strong></div>
+            <div class="line"><span>Cesantías</span><strong>{{ fmt(d.cesantiasProvision) }}</strong></div>
+            <div class="line"><span>Intereses cesantías</span><strong>{{ fmt(d.cesantiasInterestProvision) }}</strong></div>
+            <div class="line"><span>Vacaciones</span><strong>{{ fmt(d.vacationProvision) }}</strong></div>
+            <div class="line total"><span>Total provisiones</span><strong>{{ fmt(d.totalProvisions) }}</strong></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>

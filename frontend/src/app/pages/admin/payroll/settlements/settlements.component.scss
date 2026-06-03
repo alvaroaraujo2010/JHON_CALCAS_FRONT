@@ -1,0 +1,32 @@
+.page { padding: 1.5rem; }
+.content { background: white; border-radius: 8px; overflow: auto; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+th { background: #f9fafb; text-align: left; padding: 0.75rem; color: #374151; font-weight: 600; border-bottom: 2px solid #e5e7eb; }
+td { padding: 0.75rem; border-bottom: 1px solid #e5e7eb; color: #1f2937; }
+tr:hover td { background: #f9fafb; }
+.badge { display: inline-block; padding: 0.25rem 0.5rem; border-radius: 12px; color: white; font-size: 0.75rem; }
+.empty, .loading { text-align: center; padding: 3rem; color: #6b7280; }
+
+.modal { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 1000; }
+.modal-content { background: white; border-radius: 8px; width: 90%; max-width: 700px; max-height: 90vh; overflow: auto; }
+.modal-header { padding: 1rem 1.25rem; border-bottom: 1px solid #e5e7eb; display: flex; justify-content: space-between; align-items: center; }
+.modal-header h2 { margin: 0; font-size: 1.125rem; }
+.close { background: none; border: none; font-size: 1.5rem; cursor: pointer; }
+.modal-body { padding: 1.25rem; }
+.row { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-bottom: 1rem; }
+label { display: flex; flex-direction: column; gap: 0.25rem; font-size: 0.875rem; color: #374151; }
+input, select, textarea { padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 4px; font-size: 0.875rem; }
+.simulation { background: #f9fafb; padding: 1rem; border-radius: 6px; margin: 1rem 0; }
+.simulation h3 { margin: 0 0 0.75rem 0; font-size: 1rem; }
+.sim-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; margin-bottom: 1rem; }
+.sim-grid > div { font-size: 0.8125rem; }
+.sim-grid span { color: #6b7280; }
+.sim-table { width: 100%; margin-top: 0.5rem; }
+.sim-table td { padding: 0.4rem 0; border: none; }
+.sim-table tr.total td { border-top: 1px solid #d1d5db; padding-top: 0.5rem; }
+.sim-table tr.net td { border-top: 2px solid #1f2937; padding-top: 0.5rem; font-size: 1rem; }
+.sim-table td:last-child { text-align: right; }
+.sim-info { color: #6b7280; font-size: 0.75rem; }
+.actions { display: flex; gap: 0.5rem; justify-content: flex-end; margin-top: 1rem; }
+.actions button { padding: 0.5rem 1rem; border: 1px solid #d1d5db; background: white; border-radius: 4px; cursor: pointer; }
+.actions button.primary { background: #2563eb; color: white; border-color: #2563eb; }

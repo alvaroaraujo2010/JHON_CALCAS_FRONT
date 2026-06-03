@@ -1,0 +1,68 @@
+<div class="payment-records-container">
+  <app-module-header title="Pagos Realizados de Nómina"></app-module-header>
+
+  <!-- Resumen -->
+  <div class="summary">
+    <div class="summary-card">
+      <label>Total de Pagos:</label>
+      <span class="amount">${{ getTotalAmount() | number: '1.2-2' }}</span>
+    </div>
+    <div class="summary-card">
+      <label>Cantidad de Registros:</label>
+      <span class="amount">{{ getFilteredRecords().length }}</span>
+    </div>
+  </div>
+
+  <!-- Filtro de Estado -->
+  <div class="filters">
+    <label>
+      Filtrar por Estado:
+      <select (change)="filterStatus.set($any($event.target).value)">
+        <option value="">Todos</option>
+        <option value="completed">Completado</option>
+        <option value="pending">Pendiente</option>
+      </select>
+    </label>
+  </div>
+
+  <!-- Tabla de Registros -->
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>ID Nómina</th>
+          <th>Período</th>
+          <th>Fecha de Pago</th>
+          <th>Monto Total</th>
+          <th>Método de Pago</th>
+          <th>Referencia</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let record of getFilteredRecords()">
+          <td>#{{ record.payrollId }}</td>
+          <td>{{ record.periodStart }} - {{ record.periodEnd }}</td>
+          <td>{{ record.paymentDate }}</td>
+          <td class="amount">${{ record.totalAmount | number: '1.2-2' }}</td>
+          <td>
+            <span class="method" [ngClass]="record.paymentMethod">
+              {{ record.paymentMethod | uppercase }}
+            </span>
+          </td>
+          <td>{{ record.reference || '-' }}</td>
+          <td>
+            <span class="status" [ngClass]="record.status === 'completed' ? 'completed' : 'pending'">
+              {{ record.status === 'completed' ? 'Completado' : 'Pendiente' }}
+            </span>
+          </td>
+          <td class="actions">
+            <button (click)="downloadReceipt(record)" title="Descargar comprobante">📥</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p *ngIf="getFilteredRecords().length === 0" class="empty-message">No hay registros de pago</p>
+  </div>
+</div>

@@ -1,0 +1,116 @@
+<div class="page">
+  <app-module-header
+    title="Liquidación Definitiva de Prestaciones"
+    subtitle="Cesantías, intereses, prima, vacaciones e indemnización (Art. 64 CST, 249 CST)"
+  >
+    <button class="btn" type="button" (click)="openForm()">+ Nueva liquidación</button>
+  </app-module-header>
+
+  <div class="content" *ngIf="!loading(); else loadingTpl">
+    <table *ngIf="settlements().length > 0; else emptyTpl">
+      <thead>
+        <tr>
+          <th>Empleado</th>
+          <th>Fecha liquidación</th>
+          <th>Motivo</th>
+          <th>Días trabajados</th>
+          <th>Cesantías</th>
+          <th>Intereses ces.</th>
+          <th>Prima</th>
+          <th>Vacaciones</th>
+          <th>Indemnización</th>
+          <th>Retención</th>
+          <th>Neto a pagar</th>
+          <th>Estado</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let s of settlements()">
+          <td><strong>{{ s.employeeName }}</strong><br /><small>{{ s.taxId }}</small></td>
+          <td>{{ s.settlementDate | date:'yyyy-MM-dd' }}</td>
+          <td>{{ s.terminationReason }}</td>
+          <td>{{ s.workedDays }}</td>
+          <td>{{ format(s.cesantiasAmount) }}</td>
+          <td>{{ format(s.cesantiasInterestAmount) }}</td>
+          <td>{{ format(s.primaAmount) }}</td>
+          <td>{{ format(s.vacationAmount) }}</td>
+          <td>{{ format(s.severanceAmount) }}</td>
+          <td>{{ format(s.retencionFuente) }}</td>
+          <td><strong>{{ format(s.netToPay) }}</strong></td>
+          <td><span class="badge" [style.background]="statusColor(s.status)">{{ statusLabel(s.status) }}</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <ng-template #emptyTpl>
+      <div class="empty">No hay liquidaciones registradas aún.</div>
+    </ng-template>
+  </div>
+
+  <ng-template #loadingTpl>
+    <div class="loading">Cargando liquidaciones...</div>
+  </ng-template>
+
+  <!-- Modal nueva liquidación -->
+  <div class="modal" *ngIf="showForm" (click)="close()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>Nueva liquidación definitiva</h2>
+        <button class="close" (click)="close()">×</button>
+      </div>
+
+      <form [formGroup]="form" class="modal-body">
+        <div class="row">
+          <label>Empleado *
+            <select formControlName="employeeId">
+              <option [value]="0">Seleccionar...</option>
+              <option *ngFor="let e of employees()" [value]="e.id">{{ e.name }} - {{ e.taxId }}</option>
+            </select>
+          </label>
+          <label>Fecha de liquidación *
+            <input type="date" formControlName="settlementDate" />
+          </label>
+          <label>Último día trabajado
+            <input type="date" formControlName="lastDayWorked" />
+          </label>
+          <label>Promedio variables últimos 3 meses
+            <input type="number" formControlName="variableAverage3Months" />
+          </label>
+        </div>
+        <label>Notas
+          <textarea formControlName="notes" rows="2"></textarea>
+        </label>
+
+        <div *ngIf="showSimulation() && simulation()" class="simulation">
+          <h3>Resultado de la simulación</h3>
+          <div class="sim-grid">
+            <div><span>Días trabajados (último año):</span> <strong>{{ simulation().workedDaysCurrentYear }}</strong></div>
+            <div><span>Días en semestre actual (prima):</span> <strong>{{ simulation().workedDaysCurrentSemester }}</strong></div>
+            <div><span>Total días laborados:</span> <strong>{{ simulation().totalWorkedDays }}</strong></div>
+          </div>
+          <table class="sim-table">
+            <tr><td>Cesantías</td><td>{{ format(simulation().cesantias) }}</td></tr>
+            <tr><td>Intereses sobre cesantías (12%)</td><td>{{ format(simulation().cesantiasInterest) }}</td></tr>
+            <tr><td>Prima de servicios</td><td>{{ format(simulation().prima) }}</td></tr>
+            <tr><td>Vacaciones ({{ simulation().vacationDays }} días)</td><td>{{ format(simulation().vacations) }}</td></tr>
+            <tr><td>Indemnización (si aplica)</td><td>{{ format(simulation().severance) }}</td></tr>
+            <tr class="total"><td><strong>Total bruto</strong></td><td><strong>{{ format(simulation().totalGross) }}</strong></td></tr>
+            <tr><td>Retención en la fuente</td><td>-{{ format(simulation().retencionFuente) }}</td></tr>
+            <tr class="net"><td><strong>Neto a pagar</strong></td><td><strong>{{ format(simulation().netToPay) }}</strong></td></tr>
+          </table>
+          <small class="sim-info">Año gravable: {{ simulation().year }} | SMLMV: {{ format(simulation().smlmv) }} | UVT: {{ format(simulation().uvt) }}</small>
+        </div>
+
+        <div class="actions">
+          <button type="button" (click)="simulate()" [disabled]="simulating() || form.invalid">
+            {{ simulating() ? 'Calculando...' : 'Simular' }}
+          </button>
+          <button type="button" class="primary" (click)="save()" [disabled]="saving || form.invalid">
+            {{ saving ? 'Guardando...' : 'Crear liquidación' }}
+          </button>
+          <button type="button" (click)="close()">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,151 @@
+<div class="page">
+  <app-module-header
+    title="Parámetros Legales"
+    subtitle="SMLMV, UVT y porcentajes legales colombianos por año gravable"
+  >
+    <div class="years-bar">
+      <button *ngFor="let p of parameters()" (click)="select(p)" [class.active]="selected()?.year === p.year">
+        {{ p.year }}
+      </button>
+      <button class="btn primary" (click)="newParam()">+ Nuevo año</button>
+    </div>
+  </app-module-header>
+
+  <div class="content" *ngIf="!loading(); else loadingTpl">
+
+    <form [formGroup]="form" (ngSubmit)="save()" class="form-grid">
+      <section class="card">
+        <h3>Valores base</h3>
+        <div class="row">
+          <label>Año gravable *
+            <input type="number" formControlName="year" />
+          </label>
+          <label>Vigente desde *
+            <input type="date" formControlName="effectiveFrom" />
+          </label>
+        </div>
+        <div class="row">
+          <label>SMLMV *
+            <input type="number" formControlName="smlmv" />
+            <small>Salario Mínimo Legal Mensual Vigente</small>
+          </label>
+          <label>UVT *
+            <input type="number" formControlName="uvt" />
+            <small>Unidad de Valor Tributario</small>
+          </label>
+          <label>Auxilio de transporte *
+            <input type="number" formControlName="transportAllowance" />
+            <small>Mensual</small>
+          </label>
+        </div>
+        <div class="row">
+          <label>Tope aux. transporte (SMLMV) *
+            <input type="number" step="0.1" formControlName="transportAllowanceTop" />
+            <small>Normalmente 2 (aplica a quienes ganan &lt; 2 SMLMV)</small>
+          </label>
+          <label>Tope IBC (SMLMV) *
+            <input type="number" formControlName="maxHealthIbcSmlmv" />
+            <small>Para salud/pensión, normalmente 25</small>
+          </label>
+        </div>
+      </section>
+
+      <section class="card">
+        <h3>Retención en la fuente (Art. 383 ET)</h3>
+        <div class="row">
+          <label>Mínimo gravado (UVT) *
+            <input type="number" formControlName="minimumWithholdingUvt" />
+            <small>95 UVT = punto de partida retención (Procedimiento 1)</small>
+          </label>
+          <label>Exención 25% (UVT) *
+            <input type="number" formControlName="exemptIncomeUvt" />
+            <small>Art. 387 ET (240 UVT 2025+)</small>
+          </label>
+        </div>
+      </section>
+
+      <section class="card">
+        <h3>Tasas empleado (sobre IBC)</h3>
+        <div class="row">
+          <label>Salud empleado (%)
+            <input type="number" step="0.1" formControlName="employeeHealthRate" />
+          </label>
+          <label>Pensión empleado (%)
+            <input type="number" step="0.1" formControlName="employeePensionRate" />
+          </label>
+          <label>Fondo Solidaridad bajo (%)
+            <input type="number" step="0.1" formControlName="solidarityFundLowRate" />
+            <small>Entre 4 y 19 SMLMV</small>
+          </label>
+          <label>Fondo Solidaridad alto (%)
+            <input type="number" step="0.1" formControlName="solidarityFundHighRate" />
+            <small>Mayor a 19 SMLMV</small>
+          </label>
+        </div>
+      </section>
+
+      <section class="card">
+        <h3>Tasas empleador (sobre IBC)</h3>
+        <div class="row">
+          <label>Salud empleador (%)
+            <input type="number" step="0.1" formControlName="employerHealthRate" />
+          </label>
+          <label>Pensión empleador (%)
+            <input type="number" step="0.1" formControlName="employerPensionRate" />
+          </label>
+          <label>ARL riesgo I (%)
+            <input type="number" step="0.001" formControlName="arlRiskOneRate" />
+          </label>
+        </div>
+        <div class="row">
+          <label>Caja de compensación (%)
+            <input type="number" step="0.1" formControlName="compensationFundRate" />
+          </label>
+          <label>SENA (%)
+            <input type="number" step="0.1" formControlName="senaRate" />
+          </label>
+          <label>ICBF (%)
+            <input type="number" step="0.1" formControlName="icbfRate" />
+          </label>
+        </div>
+      </section>
+
+      <section class="card">
+        <h3>Prestaciones sociales (provisiones)</h3>
+        <div class="row">
+          <label>Prima (meses/año)
+            <input type="number" step="0.1" formControlName="primaYearFraction" />
+            <small>1 mes por año (Art. 306 CST)</small>
+          </label>
+          <label>Cesantías (meses/año)
+            <input type="number" step="0.1" formControlName="cesantiasYearFraction" />
+            <small>1 mes por año</small>
+          </label>
+          <label>Intereses cesantías (% anual)
+            <input type="number" step="0.1" formControlName="cesantiasInterestRate" />
+            <small>12% anual (Art. 1 Ley 52/1975)</small>
+          </label>
+          <label>Vacaciones (días/año)
+            <input type="number" step="0.5" formControlName="vacationDaysPerYear" />
+            <small>15 días hábiles (Art. 186 CST)</small>
+          </label>
+        </div>
+      </section>
+
+      <section class="card full">
+        <h3>Notas</h3>
+        <textarea formControlName="notes" rows="2" placeholder="Decretos y resoluciones aplicables..."></textarea>
+      </section>
+
+      <div class="actions">
+        <button type="submit" [disabled]="saving || form.invalid">
+          {{ saving ? 'Guardando...' : (selected() ? 'Actualizar' : 'Crear') }}
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <ng-template #loadingTpl>
+    <div class="loading">Cargando parámetros...</div>
+  </ng-template>
+</div>

@@ -180,3 +180,286 @@ export interface TrialBalance {
   totalDebit: number;
   totalCredit: number;
 }
+
+// ============ MÓDULO DE NÓMINA ============
+
+export interface Employee {
+  id: number;
+  name: string;
+  email?: string;
+  phone?: string;
+  position?: string;
+  department?: string;
+  hireDate: string;
+  taxId?: string;
+  bankAccount?: string;
+  bankName?: string;
+  bankAccountType?: string;
+  baseSalary: number;
+  isActive: boolean;
+  contractType?: 'indefinido' | 'fijo' | 'obra_labor' | 'prestacion';
+  integralSalary?: boolean;
+  terminationReason?: string;
+  terminationDate?: string;
+  withholdingProcedure2?: boolean;
+  transportAllowanceOverride?: boolean | null;
+  solidarityFundOverride?: number | null;
+}
+
+export interface Deduction {
+  id: number;
+  name: string;
+  type: 'percentage' | 'fixed';
+  value: number;
+  description?: string;
+  isActive: boolean;
+}
+
+export interface PayrollDeductionLineDto {
+  deductionId: number;
+  deductionName: string;
+  category?: 'social_security' | 'tax' | 'loan' | 'other';
+  amount: number;
+}
+
+export interface PayrollDetail {
+  id?: number;
+  employeeId: number;
+  employeeName: string;
+  baseSalary: number;
+  transportAllowance: number;
+  totalGross: number;
+  ibc: number;
+  employeeHealthDeduction: number;
+  employeePensionDeduction: number;
+  solidarityFundDeduction: number;
+  withholdingTax: number;
+  totalDeductions: number;
+  netSalary: number;
+  employerHealthContribution: number;
+  employerPensionContribution: number;
+  arlContribution: number;
+  compensationFundContribution: number;
+  senaContribution: number;
+  icbfContribution: number;
+  totalEmployerContributions: number;
+  primaProvision: number;
+  cesantiasProvision: number;
+  cesantiasInterestProvision: number;
+  vacationProvision: number;
+  totalProvisions: number;
+  deductions: PayrollDeductionLineDto[];
+}
+
+export interface Payroll {
+  id: number;
+  periodStart: string;
+  periodEnd: string;
+  status: 'draft' | 'processed' | 'paid' | 'cancelled';
+  paymentDate?: string;
+  totalGross: number;
+  totalTransportAllowance: number;
+  totalDeductions: number;
+  totalNet: number;
+  totalEmployerCost?: number;
+  totalEmployerContributions?: number;
+  totalPrimaProvision?: number;
+  totalCesantiasProvision?: number;
+  totalCesantiasInterestProvision?: number;
+  totalVacationProvision?: number;
+  totalEmployerHealth?: number;
+  totalEmployerPension?: number;
+  totalArl?: number;
+  totalCompensationFund?: number;
+  totalSena?: number;
+  totalIcbf?: number;
+  details: PayrollDetail[];
+  notes?: string;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface SocialSecurityPayment {
+  id: number;
+  period: string;
+  employeeId: number;
+  employeeName: string;
+  taxId?: string;
+  baseSalary: number;
+  transportAllowance?: number;
+  ibc?: number;
+  capIbc?: number;
+  contributionRate: number;
+  contributionAmount: number;
+  employeeHealthContribution: number;
+  employeePensionContribution: number;
+  solidarityFundContribution?: number;
+  employerHealthContribution: number;
+  employerPensionContribution: number;
+  arlContribution: number;
+  compensationFundContribution: number;
+  senaContribution: number;
+  icbfContribution: number;
+  employeeContributionTotal: number;
+  employerContributionTotal: number;
+  paymentDate?: string;
+  status: 'pending' | 'paid';
+  reference?: string;
+  operator?: string;
+}
+
+export interface LegalParameter {
+  id?: number;
+  year: number;
+  smlmv: number;
+  uvt: number;
+  transportAllowance: number;
+  transportAllowanceTop: number;
+  minimumWithholdingUvt: number;
+  exemptIncomeUvt: number;
+  maxHealthIbcSmlmv: number;
+  arlRiskOneRate: number;
+  employerHealthRate: number;
+  employerPensionRate: number;
+  compensationFundRate: number;
+  senaRate: number;
+  icbfRate: number;
+  employeeHealthRate: number;
+  employeePensionRate: number;
+  solidarityFundLowRate: number;
+  solidarityFundHighRate: number;
+  primaYearFraction: number;
+  cesantiasYearFraction: number;
+  cesantiasInterestRate: number;
+  vacationDaysPerYear: number;
+  effectiveFrom: string;
+  notes?: string;
+}
+
+export interface WithholdingTaxBracket {
+  id?: number;
+  year: number;
+  fromUvt: number;
+  toUvt: number | null;
+  marginalRate: number;
+  baseTaxUvt: number;
+  procedure: '1' | '2';
+}
+
+export interface PayrollProvision {
+  id: number;
+  employeeId: number;
+  employeeName: string;
+  year: number;
+  month: number;
+  periodLabel: string;
+  baseSalary: number;
+  transportAllowance: number;
+  primaProvision: number;
+  cesantiasProvision: number;
+  cesantiasInterestProvision: number;
+  vacationProvision: number;
+  totalProvision: number;
+  accumulatedPrima: number;
+  accumulatedCesantias: number;
+  accumulatedCesantiasInterest: number;
+  accumulatedVacations: number;
+  accumulatedTotal: number;
+  payrollId?: number;
+  createdAt?: string;
+}
+
+export interface ProvisionSummary {
+  employeeId: number;
+  employeeName: string;
+  year: number;
+  prima: number;
+  cesantias: number;
+  cesantiasInterest: number;
+  vacaciones: number;
+  total: number;
+}
+
+export interface PayrollSettlement {
+  id: number;
+  employeeId: number;
+  employeeName: string;
+  taxId: string;
+  settlementDate: string;
+  hireDate: string;
+  lastContractDate?: string;
+  terminationReason: string;
+  baseSalary: number;
+  transportAllowance?: number;
+  averageVariableIncome?: number;
+  workedDays: number;
+  workedDaysCurrentSemester: number;
+  cesantiasAmount: number;
+  cesantiasInterestAmount: number;
+  primaAmount: number;
+  vacationAmount: number;
+  severanceAmount: number;
+  otherAmounts: number;
+  totalGross: number;
+  retencionFuente: number;
+  totalDeductions: number;
+  netToPay: number;
+  status: 'draft' | 'paid' | 'cancelled';
+  paymentDate?: string;
+  paymentMethod?: string;
+  reference?: string;
+  notes?: string;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface PayrollSimulation {
+  year: number;
+  smlmv: number;
+  uvt: number;
+  transportAllowance: number;
+  baseSalary: number;
+  transportAllowanceApplied: number;
+  grossIncome: number;
+  ibc: number;
+  cappedIbc: number;
+  deductions: {
+    employeeHealth: number;
+    employeePension: number;
+    solidarityFund: number;
+    withholdingTax: number;
+    customDeductions: number;
+    total: number;
+  };
+  employerContributions: {
+    health: number;
+    pension: number;
+    arl: number;
+    compensationFund: number;
+    sena: number;
+    icbf: number;
+    total: number;
+  };
+  provisions: {
+    prima: number;
+    cesantias: number;
+    cesantiasInterest: number;
+    vacations: number;
+    total: number;
+  };
+  netPay: number;
+}
+
+export interface PaymentRecord {
+  id: number;
+  payrollId: number;
+  periodStart: string;
+  periodEnd: string;
+  paymentDate: string;
+  totalAmount: number;
+  paymentMethod: 'transfer' | 'cash' | 'check';
+  reference?: string;
+  status: 'completed' | 'pending';
+  notes?: string;
+  createdAt?: string;
+}

@@ -1,0 +1,116 @@
+<div class="payroll-page">
+  <app-module-header title="Gestión de Nómina" subtitle="Períodos liquidados automáticamente con prestaciones, seguridad social, retención y provisiones">
+    <button class="btn" type="button" (click)="openForm()">+ Nueva Nómina</button>
+  </app-module-header>
+
+  <!-- Filtros -->
+  <div class="toolbar">
+    <div class="filter-group">
+      <label>Estado:</label>
+      <select (change)="filterStatus.set($any($event.target).value)">
+        <option value="">Todos</option>
+        <option value="draft">Borrador</option>
+        <option value="processed">Procesada</option>
+        <option value="paid">Pagada</option>
+        <option value="cancelled">Cancelada</option>
+      </select>
+    </div>
+  </div>
+
+  <div *ngIf="loading()" class="loading">Cargando nóminas...</div>
+
+  <!-- Tabla -->
+  <div *ngIf="!loading()" class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Período</th>
+          <th>Estado</th>
+          <th>Empleados</th>
+          <th>Total Devengado</th>
+          <th>Total Deducciones</th>
+          <th>Total Neto</th>
+          <th>Aportes Patronales</th>
+          <th>Costo Total</th>
+          <th>Fecha Pago</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let p of getFilteredPayrolls()">
+          <td><strong>{{ p.periodStart }}</strong><br><small>al {{ p.periodEnd }}</small></td>
+          <td>
+            <span class="status-badge" [style.background]="statusColor(p.status) + '22'" [style.color]="statusColor(p.status)">
+              {{ statusLabel(p.status) }}
+            </span>
+          </td>
+          <td class="center">{{ p.details.length || 0 }}</td>
+          <td class="amount">{{ fmt(p.totalGross) }}</td>
+          <td class="amount deduction">{{ fmt(p.totalDeductions) }}</td>
+          <td class="amount net">{{ fmt(p.totalNet) }}</td>
+          <td class="amount employer">{{ fmt(p.totalEmployerContributions) }}</td>
+          <td class="amount cost">{{ fmt(p.totalEmployerCost) }}</td>
+          <td>{{ p.paymentDate || '—' }}</td>
+          <td class="actions">
+            <button (click)="viewDetails(p)" title="Ver / Editar detalles">📋</button>
+            <button *ngIf="p.status === 'draft'" (click)="processPayroll(p)" title="Procesar nómina">▶️</button>
+            <button *ngIf="p.status === 'processed'" (click)="payPayroll(p)" title="Registrar pago">💳</button>
+            <button *ngIf="p.status === 'draft'" (click)="delete(p)" title="Eliminar">🗑️</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p *ngIf="getFilteredPayrolls().length === 0" class="empty-message">
+      No hay nóminas. Cree la primera con el botón "+ Nueva Nómina".
+    </p>
+  </div>
+
+  <!-- ═══════════════ MODAL CREAR NÓMINA ═══════════════ -->
+  <div *ngIf="showForm" class="modal-overlay" (click)="showForm=false">
+    <div class="modal-content modal-lg" (click)="$event.stopPropagation()">
+
+      <div class="modal-head">
+        <h2>Nueva Nómina</h2>
+        <button class="close-btn" (click)="showForm=false">✕</button>
+      </div>
+
+      <form [formGroup]="form" (ngSubmit)="save()" class="payroll-form">
+        <div class="info-box">
+          <strong>ℹ️ Cálculo automático:</strong> al crear la nómina se procesará automáticamente.
+          Se calcularán para todos los empleados activos: auxilio de transporte, IBC, Fondo de Solidaridad Pensional,
+          retención en la fuente, aportes a seguridad social, prima, cesantías, intereses de cesantías, vacaciones,
+          y se generará el comprobante contable.
+        </div>
+
+        <div class="form-row-3">
+          <div class="form-group">
+            <label>Fecha de Inicio del Período *</label>
+            <input type="date" formControlName="periodStart" />
+            <small *ngIf="form.get('periodStart')?.invalid && form.get('periodStart')?.touched">Requerido</small>
+          </div>
+          <div class="form-group">
+            <label>Fecha de Fin del Período *</label>
+            <input type="date" formControlName="periodEnd" />
+            <small *ngIf="form.get('periodEnd')?.invalid && form.get('periodEnd')?.touched">Requerido</small>
+          </div>
+          <div class="form-group">
+            <label>Fecha de Pago Programada</label>
+            <input type="date" formControlName="paymentDate" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Notas / Observaciones</label>
+          <textarea formControlName="notes" rows="2" placeholder="Ej: Nómina del mes de junio, incluye retroactivo..."></textarea>
+        </div>
+
+        <div class="modal-actions">
+          <button type="submit" class="btn primary" [disabled]="form.invalid || saving">
+            {{ saving ? 'Procesando...' : 'Crear y Procesar Nómina' }}
+          </button>
+          <button type="button" class="btn" (click)="showForm=false">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

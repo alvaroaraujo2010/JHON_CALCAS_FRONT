@@ -1,0 +1,18 @@
+.page { padding: 1.5rem; }
+.year-label { display: flex; gap: 0.5rem; align-items: center; font-size: 0.875rem; color: #fff; }
+.year-label select { padding: 0.4rem 0.6rem; border: 1px solid rgba(255,255,255,0.4); background: rgba(255,255,255,0.12); color: #fff; border-radius: 6px; font-size: 0.875rem; }
+.year-label select option { color: #0f172a; background: #fff; }
+
+.kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
+.kpi { background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); display: flex; flex-direction: column; gap: 0.25rem; }
+.kpi span { color: #6b7280; font-size: 0.8125rem; }
+.kpi strong { color: #1f2937; font-size: 1.125rem; }
+.kpi.total { background: #2563eb; color: white; }
+.kpi.total strong, .kpi.total span { color: white; }
+
+.content { background: white; border-radius: 8px; overflow: auto; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+th { background: #f9fafb; text-align: left; padding: 0.75rem; color: #374151; font-weight: 600; border-bottom: 2px solid #e5e7eb; }
+td { padding: 0.75rem; border-bottom: 1px solid #e5e7eb; color: #1f2937; }
+tr:hover td { background: #f9fafb; }
+.empty, .loading { text-align: center; padding: 3rem; color: #6b7280; }

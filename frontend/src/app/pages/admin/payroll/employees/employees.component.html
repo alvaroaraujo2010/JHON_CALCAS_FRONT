@@ -1,0 +1,203 @@
+<div class="employees-page">
+  <app-module-header title="Empleados" subtitle="Gestión del personal de nómina">
+    <button class="btn" type="button" (click)="openForm()">+ Nuevo Empleado</button>
+  </app-module-header>
+
+  <div *ngIf="loading()" class="loading">Cargando...</div>
+
+  <div *ngIf="!loading()" class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Cargo</th>
+          <th>Departamento</th>
+          <th>Tipo Contrato</th>
+          <th>Fecha Ingreso</th>
+          <th>Cédula / NIT</th>
+          <th>Salario Base</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let emp of employees()">
+          <td>
+            <strong>{{ emp.name }}</strong>
+            <small *ngIf="emp.email" class="sub">{{ emp.email }}</small>
+          </td>
+          <td>{{ emp.position || '-' }}</td>
+          <td>{{ emp.department || '-' }}</td>
+          <td>
+            <span *ngIf="emp.integralSalary" class="badge integral">Integral</span>
+            <span *ngIf="!emp.integralSalary">{{ emp.contractType || 'Indefinido' }}</span>
+          </td>
+          <td>{{ emp.hireDate }}</td>
+          <td>{{ emp.taxId || '-' }}</td>
+          <td class="amount">{{ format(emp.baseSalary) }}</td>
+          <td>
+            <span class="badge" [ngClass]="emp.isActive ? 'active' : 'inactive'">
+              {{ emp.isActive ? 'Activo' : 'Inactivo' }}
+            </span>
+          </td>
+          <td class="actions">
+            <button (click)="edit(emp)" title="Editar">✏️</button>
+            <button *ngIf="emp.isActive" (click)="openTerminate(emp)" title="Terminar contrato">⏹</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p *ngIf="employees().length === 0" class="empty-message">No hay empleados registrados. Agregue el primero.</p>
+  </div>
+
+  <!-- Modal Crear/Editar -->
+  <div *ngIf="showForm" class="modal-overlay" (click)="close()">
+    <div class="modal-content modal-lg" (click)="$event.stopPropagation()">
+      <div class="modal-head">
+        <h2>{{ editingId ? 'Editar' : 'Nuevo' }} Empleado</h2>
+        <button class="close-btn" (click)="close()">✕</button>
+      </div>
+
+      <form [formGroup]="form" (ngSubmit)="save()" class="emp-form">
+        <div class="form-section-title">Datos Personales</div>
+        <div class="form-row">
+          <div class="form-group col-2">
+            <label>Nombre completo *</label>
+            <input type="text" formControlName="name" placeholder="Ej: Juan Carlos Pérez" />
+            <small *ngIf="form.get('name')?.invalid && form.get('name')?.touched">Requerido</small>
+          </div>
+          <div class="form-group col-2">
+            <label>Cédula / NIT</label>
+            <input type="text" formControlName="taxId" placeholder="1234567890" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-2">
+            <label>Email</label>
+            <input type="email" formControlName="email" placeholder="correo@ejemplo.com" />
+          </div>
+          <div class="form-group col-2">
+            <label>Teléfono</label>
+            <input type="text" formControlName="phone" placeholder="+57 300 000 0000" />
+          </div>
+        </div>
+
+        <div class="form-section-title">Datos Laborales</div>
+        <div class="form-row">
+          <div class="form-group col-2">
+            <label>Cargo</label>
+            <input type="text" formControlName="position" placeholder="Ej: Contador, Vendedor" />
+          </div>
+          <div class="form-group col-2">
+            <label>Departamento</label>
+            <input type="text" formControlName="department" placeholder="Ej: Finanzas, Ventas" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Fecha de Ingreso *</label>
+            <input type="date" formControlName="hireDate" />
+          </div>
+          <div class="form-group">
+            <label>Tipo de Contrato</label>
+            <select formControlName="contractType">
+              <option *ngFor="let c of contractTypes" [value]="c.value">{{ c.label }}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Salario Base *</label>
+            <input type="number" formControlName="baseSalary" min="0" step="1000" placeholder="1300000" />
+            <small *ngIf="form.get('baseSalary')?.invalid && form.get('baseSalary')?.touched">Debe ser mayor a 0</small>
+          </div>
+        </div>
+
+        <div class="form-section-title">Configuración Legal</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="checkbox-label">
+              <input type="checkbox" formControlName="integralSalary" />
+              Salario integral (Art. 18 Ley 50/1990, mínimo 10 SMLMV)
+            </label>
+            <small class="hint">Si es integral: IBC = 70% del salario, no aplica auxilio de transporte ni prestaciones separadas.</small>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="checkbox-label">
+              <input type="checkbox" formControlName="withholdingProcedure2" />
+              Retención Procedimiento 2 (Art. 384 ET, simplificado)
+            </label>
+          </div>
+          <div class="form-group">
+            <label>Excluir auxilio de transporte</label>
+            <select formControlName="transportAllowanceOverride">
+              <option [ngValue]="null">Automático (≤ 2 SMLMV)</option>
+              <option [ngValue]="false">Forzar NO pagar</option>
+              <option [ngValue]="true">Forzar SI pagar</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-section-title">Datos Bancarios</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Banco</label>
+            <input type="text" formControlName="bankName" placeholder="Ej: Bancolombia, Davivienda" />
+          </div>
+          <div class="form-group">
+            <label>Tipo de Cuenta</label>
+            <select formControlName="bankAccountType">
+              <option value="savings">Ahorros</option>
+              <option value="checking">Corriente</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Número de Cuenta</label>
+            <input type="text" formControlName="bankAccount" placeholder="1234567890" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="checkbox-label">
+            <input type="checkbox" formControlName="isActive" />
+            Empleado activo
+          </label>
+        </div>
+
+        <div class="modal-actions">
+          <button type="submit" class="btn primary" [disabled]="form.invalid || saving">
+            {{ saving ? 'Guardando...' : (editingId ? 'Actualizar Empleado' : 'Crear Empleado') }}
+          </button>
+          <button type="button" class="btn" (click)="close()">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal Terminar Contrato -->
+  <div *ngIf="showTerminate" class="modal-overlay" (click)="closeTerminate()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-head">
+        <h2>Terminar Contrato</h2>
+        <button class="close-btn" (click)="closeTerminate()">✕</button>
+      </div>
+      <form [formGroup]="terminateForm" (ngSubmit)="confirmTerminate()" class="emp-form">
+        <p class="hint">Al terminar el contrato, se generará el registro para posteriormente crear la <strong>Liquidación Definitiva de Prestaciones</strong> en el módulo de Liquidaciones.</p>
+        <div class="form-group">
+          <label>Fecha de Terminación *</label>
+          <input type="date" formControlName="terminationDate" />
+        </div>
+        <div class="form-group">
+          <label>Motivo *</label>
+          <select formControlName="terminationReason">
+            <option *ngFor="let r of terminationReasons" [value]="r.value">{{ r.label }}</option>
+          </select>
+        </div>
+        <div class="modal-actions">
+          <button type="submit" class="btn primary" [disabled]="terminateForm.invalid">Confirmar Terminación</button>
+          <button type="button" class="btn" (click)="closeTerminate()">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

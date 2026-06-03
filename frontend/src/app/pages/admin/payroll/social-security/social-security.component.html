@@ -1,0 +1,104 @@
+<div class="social-security-container">
+  <app-module-header title="Seguridad Social">
+    <button class="btn" type="button" (click)="openPaymentForm()">+ Registrar Pago</button>
+  </app-module-header>
+
+  <div class="summary">
+    <div class="summary-card">
+      <label>Total Pendiente:</label>
+      <span class="amount pending">${{ getTotalPending() | number: '1.2-2' }}</span>
+    </div>
+    <div class="summary-card">
+      <label>Total Pagado:</label>
+      <span class="amount paid">${{ getTotalPaid() | number: '1.2-2' }}</span>
+    </div>
+  </div>
+
+  <div class="period-filter">
+    <label>Filtrar por período de nómina:</label>
+    <select (change)="loadPaymentsByPeriod($any($event.target).value)">
+      <option value="">Todos los períodos</option>
+      <option *ngFor="let period of getUniquePeriods()" [value]="period">
+        {{ period }}
+      </option>
+    </select>
+  </div>
+
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Período</th>
+          <th>Empleado</th>
+          <th>Salario Base</th>
+          <th>Aporte Empleado</th>
+          <th>Aporte Empleador</th>
+          <th>Total Aporte</th>
+          <th>Fecha de Pago</th>
+          <th>Estado</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let payment of getVisiblePayments()">
+          <td>{{ payment.period }}</td>
+          <td>{{ payment.employeeName }}</td>
+          <td>${{ payment.baseSalary | number: '1.2-2' }}</td>
+          <td class="amount">${{ payment.employeeContributionTotal | number: '1.2-2' }}</td>
+          <td class="amount">${{ payment.employerContributionTotal | number: '1.2-2' }}</td>
+          <td class="amount">${{ payment.contributionAmount | number: '1.2-2' }}</td>
+          <td>{{ payment.paymentDate || 'Pendiente' }}</td>
+          <td>
+            <span class="status" [ngClass]="payment.status === 'paid' ? 'paid' : 'pending'">
+              {{ payment.status === 'paid' ? 'Pagado' : 'Pendiente' }}
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p *ngIf="getVisiblePayments().length === 0" class="empty-message">
+      No hay aportes de seguridad social. Procese una nómina para generarlos.
+    </p>
+  </div>
+
+  <div *ngIf="showPaymentForm" class="modal-overlay" (click)="showPaymentForm = false">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <h2>Registrar Pago de Seguridad Social</h2>
+
+      <form [formGroup]="form" (ngSubmit)="recordPayment()">
+        <div class="form-group">
+          <label for="period">Período de nómina a pagar:</label>
+          <select id="period" formControlName="period" required>
+            <option value="">Seleccionar período pendiente</option>
+            <option *ngFor="let period of getPendingPeriods()" [value]="period">
+              {{ period }}
+            </option>
+          </select>
+          <small *ngIf="form.get('period')?.invalid">Campo requerido</small>
+          <small *ngIf="getPendingPeriods().length === 0" class="hint">
+            No hay períodos pendientes. Primero procese una nómina.
+          </small>
+        </div>
+
+        <div class="form-group">
+          <label for="paymentDate">Fecha de Pago:</label>
+          <input id="paymentDate" type="date" formControlName="paymentDate" required />
+          <small *ngIf="form.get('paymentDate')?.invalid">Campo requerido</small>
+        </div>
+
+        <div class="form-group info">
+          <p>
+            Esto registrará como pagados todos los aportes pendientes del período seleccionado.
+            Total pendiente: ${{ getPendingTotalForSelectedPeriod() | number: '1.2-2' }}.
+          </p>
+        </div>
+
+        <div class="modal-actions">
+          <button type="submit" [disabled]="form.invalid || saving || getPendingPeriods().length === 0">
+            {{ saving ? 'Guardando...' : 'Registrar Pago' }}
+          </button>
+          <button type="button" (click)="showPaymentForm = false">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

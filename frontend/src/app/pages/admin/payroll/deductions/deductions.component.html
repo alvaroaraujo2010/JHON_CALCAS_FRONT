@@ -1,0 +1,90 @@
+<div class="deductions-container">
+  <app-module-header title="Gestión de Deducciones">
+    <button class="btn" type="button" (click)="openForm()">+ Nueva Deducción</button>
+  </app-module-header>
+
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Tipo</th>
+          <th>Valor</th>
+          <th>Descripción</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let deduction of deductions()">
+          <td>{{ deduction.name }}</td>
+          <td>
+            <span class="badge" [ngClass]="deduction.type === 'percentage' ? 'percentage' : 'fixed'">
+              {{ deduction.type === 'percentage' ? '%' : '$' }}
+            </span>
+          </td>
+          <td>{{ deduction.type === 'percentage' ? deduction.value + '%' : '$' + (deduction.value | number: '1.2-2') }}</td>
+          <td>{{ deduction.description || '-' }}</td>
+          <td>
+            <span class="status" [ngClass]="deduction.isActive ? 'active' : 'inactive'">
+              {{ deduction.isActive ? 'Activa' : 'Inactiva' }}
+            </span>
+          </td>
+          <td class="actions">
+            <button (click)="edit(deduction)" title="Editar">✏️</button>
+            <button (click)="delete(deduction)" title="Eliminar">🗑️</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p *ngIf="deductions().length === 0" class="empty-message">No hay deducciones registradas</p>
+  </div>
+
+  <!-- Formulario Modal -->
+  <div *ngIf="showForm" class="modal-overlay" (click)="showForm = false">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <h2>{{ editingId ? 'Editar' : 'Nueva' }} Deducción</h2>
+      
+      <form [formGroup]="form" (ngSubmit)="save()">
+        <div class="form-group">
+          <label for="name">Nombre:</label>
+          <input id="name" type="text" formControlName="name" placeholder="Ej: Seguro Social" required />
+          <small *ngIf="form.get('name')?.invalid">Campo requerido</small>
+        </div>
+
+        <div class="form-group">
+          <label for="type">Tipo:</label>
+          <select id="type" formControlName="type" required>
+            <option value="percentage">Porcentaje (%)</option>
+            <option value="fixed">Monto Fijo ($)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="value">Valor:</label>
+          <input id="value" type="number" formControlName="value" placeholder="0.00" step="0.01" required />
+          <small *ngIf="form.get('value')?.invalid">Debe ser mayor a 0</small>
+        </div>
+
+        <div class="form-group">
+          <label for="description">Descripción:</label>
+          <textarea id="description" formControlName="description" rows="2"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="isActive">
+            <input id="isActive" type="checkbox" formControlName="isActive" />
+            Activa
+          </label>
+        </div>
+
+        <div class="modal-actions">
+          <button type="submit" [disabled]="form.invalid || saving">
+            {{ saving ? 'Guardando...' : 'Guardar' }}
+          </button>
+          <button type="button" (click)="showForm = false">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

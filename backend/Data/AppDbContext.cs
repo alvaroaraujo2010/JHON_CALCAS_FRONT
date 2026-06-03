@@ -22,6 +22,21 @@ public class AppDbContext : DbContext
     public DbSet<JournalEntry> JournalEntries => Set<JournalEntry>();
     public DbSet<JournalEntryLine> JournalEntryLines => Set<JournalEntryLine>();
 
+    // Módulo Nómina
+    public DbSet<Employee> Employees => Set<Employee>();
+    public DbSet<PayrollDeduction> PayrollDeductions => Set<PayrollDeduction>();
+    public DbSet<Payroll> Payrolls => Set<Payroll>();
+    public DbSet<PayrollDetail> PayrollDetails => Set<PayrollDetail>();
+    public DbSet<PayrollDeductionLine> PayrollDeductionLines => Set<PayrollDeductionLine>();
+    public DbSet<SocialSecurityPayment> SocialSecurityPayments => Set<SocialSecurityPayment>();
+    public DbSet<PaymentRecord> PaymentRecords => Set<PaymentRecord>();
+
+    // Módulo Nómina — Cumplimiento legal Colombia
+    public DbSet<LegalParameter> LegalParameters => Set<LegalParameter>();
+    public DbSet<WithholdingTaxBracket> WithholdingTaxBrackets => Set<WithholdingTaxBracket>();
+    public DbSet<PayrollProvision> PayrollProvisions => Set<PayrollProvision>();
+    public DbSet<PayrollSettlement> PayrollSettlements => Set<PayrollSettlement>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<User>().HasIndex(u => u.Email).IsUnique();
@@ -30,6 +45,10 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Purchase>().HasIndex(p => p.DocumentNumber).IsUnique();
         modelBuilder.Entity<Sale>().HasIndex(s => s.DocumentNumber).IsUnique();
         modelBuilder.Entity<JournalEntry>().HasIndex(j => j.EntryNumber).IsUnique();
+
+        // Índices únicos de nómina
+        modelBuilder.Entity<LegalParameter>().HasIndex(l => l.Year).IsUnique();
+        modelBuilder.Entity<PayrollProvision>().HasIndex(p => new { p.EmployeeId, p.Year, p.Month }).IsUnique();
 
         modelBuilder.Entity<PurchaseDetail>()
             .HasOne(d => d.Purchase).WithMany(p => p.Details).HasForeignKey(d => d.PurchaseId)
@@ -45,6 +64,27 @@ public class AppDbContext : DbContext
 
         modelBuilder.Entity<Account>()
             .HasOne(a => a.Parent).WithMany(a => a.Children).HasForeignKey(a => a.ParentId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        // Relaciones Nómina
+        modelBuilder.Entity<PayrollDetail>()
+            .HasOne(d => d.Payroll).WithMany(p => p.Details).HasForeignKey(d => d.PayrollId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<PayrollDeductionLine>()
+            .HasOne(l => l.PayrollDetail).WithMany(d => d.Deductions).HasForeignKey(l => l.PayrollDetailId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<PaymentRecord>()
+            .HasOne(r => r.Payroll).WithMany().HasForeignKey(r => r.PayrollId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<PayrollProvision>()
+            .HasOne(p => p.Payroll).WithMany().HasForeignKey(p => p.PayrollId)
+            .OnDelete(DeleteBehavior.SetNull);
+
+        modelBuilder.Entity<PayrollSettlement>()
+            .HasOne(s => s.Employee).WithMany().HasForeignKey(s => s.EmployeeId)
             .OnDelete(DeleteBehavior.Restrict);
     }
 }

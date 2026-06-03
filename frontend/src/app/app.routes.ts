@@ -14,6 +14,15 @@ import { SalesComponent } from './pages/admin/sales/sales.component';
 import { AccountingComponent } from './pages/admin/accounting/accounting.component';
 import { UsersComponent } from './pages/admin/users/users.component';
 import { CompanyComponent } from './pages/admin/company/company.component';
+import { PayrollComponent } from './pages/admin/payroll/payroll.component';
+import { PayrollDetailsComponent } from './pages/admin/payroll/payroll-details/payroll-details.component';
+import { EmployeesComponent } from './pages/admin/payroll/employees/employees.component';
+import { DeductionsComponent } from './pages/admin/payroll/deductions/deductions.component';
+import { SocialSecurityComponent } from './pages/admin/payroll/social-security/social-security.component';
+import { PaymentRecordsComponent } from './pages/admin/payroll/payment-records/payment-records.component';
+import { LegalParametersComponent } from './pages/admin/payroll/legal-parameters/legal-parameters.component';
+import { SettlementsComponent } from './pages/admin/payroll/settlements/settlements.component';
+import { ProvisionsComponent } from './pages/admin/payroll/provisions/provisions.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -33,7 +42,17 @@ export const routes: Routes = [
       { path: 'ventas', component: SalesComponent },
       { path: 'contabilidad', component: AccountingComponent },
       { path: 'usuarios', component: UsersComponent },
-      { path: 'empresa', component: CompanyComponent }
+      { path: 'empresa', component: CompanyComponent },
+      // Módulo de Nómina
+      { path: 'nomina', component: PayrollComponent },
+      { path: 'nomina/:id', component: PayrollDetailsComponent },
+      { path: 'nomina-empleados', component: EmployeesComponent },
+      { path: 'nomina-deducciones', component: DeductionsComponent },
+      { path: 'nomina-seguridad-social', component: SocialSecurityComponent },
+      { path: 'nomina-pagos', component: PaymentRecordsComponent },
+      { path: 'nomina-parametros', component: LegalParametersComponent },
+      { path: 'nomina-provisiones', component: ProvisionsComponent },
+      { path: 'nomina-liquidaciones', component: SettlementsComponent }
     ]
   },
   { path: '**', redirectTo: '' }
