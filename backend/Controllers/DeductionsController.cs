@@ -19,7 +19,7 @@ public class DeductionsController(AppDbContext db) : ControllerBase
     }
 
     [HttpPost]
-    [Authorize(Roles = "Administrador")]
+    [Authorize(Policy = "payroll.manage")]
     public async Task<ActionResult<object>> Create([FromBody] DeductionRequest req)
     {
         var ded = new PayrollDeduction
@@ -36,7 +36,7 @@ public class DeductionsController(AppDbContext db) : ControllerBase
     }
 
     [HttpPut("{id}")]
-    [Authorize(Roles = "Administrador")]
+    [Authorize(Policy = "payroll.manage")]
     public async Task<ActionResult<object>> Update(int id, [FromBody] DeductionRequest req)
     {
         var ded = await db.PayrollDeductions.FindAsync(id);
@@ -51,7 +51,7 @@ public class DeductionsController(AppDbContext db) : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    [Authorize(Roles = "Administrador")]
+    [Authorize(Policy = "payroll.manage")]
     public async Task<IActionResult> Delete(int id)
     {
         var ded = await db.PayrollDeductions.FindAsync(id);

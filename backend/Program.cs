@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using System.Text;
 using ContaNexo.API.Data;
 using ContaNexo.API.Services;
@@ -27,14 +28,27 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
-builder.Services.AddAuthorization();
-builder.Services.AddSingleton<JwtService>();
+builder.Services.AddAuthorization(options =>
+{
+    // Una policy por permiso del catálogo. Acepta el claim "permission" con el key.
+    foreach (var p in PermissionService.Catalog)
+    {
+        options.AddPolicy(p.Key, policy =>
+            policy.RequireClaim(JwtService.PermissionClaimType, p.Key));
+    }
+});
+builder.Services.AddScoped<JwtService>();
 builder.Services.AddScoped<ElectronicInvoiceService>();
 builder.Services.AddScoped<LegalParameterService>();
 builder.Services.AddScoped<WithholdingTaxService>();
 builder.Services.AddScoped<PayrollCalculator>();
 builder.Services.AddScoped<PayrollAccountingService>();
 builder.Services.AddScoped<PayrollSettlementService>();
+builder.Services.AddScoped<SalesAccountingService>();
+builder.Services.AddScoped<PurchasesAccountingService>();
+builder.Services.AddScoped<InventoryValuationService>();
+builder.Services.AddScoped<DatabaseMigrationService>();
+builder.Services.AddScoped<PermissionService>();
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
@@ -48,6 +62,9 @@ using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     var withholdingSvc = scope.ServiceProvider.GetRequiredService<WithholdingTaxService>();
+    var migrationSvc = scope.ServiceProvider.GetRequiredService<DatabaseMigrationService>();
+    // Aplica migraciones SQL pendientes (idempotente) ANTES del seed.
+    await migrationSvc.ApplyPendingAsync();
     await DbSeeder.SeedAsync(db);
     // Sembrar tablas de retención 2025 y 2026 si no existen
     await withholdingSvc.SeedTableAsync(2025);

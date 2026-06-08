@@ -27,7 +27,7 @@ public class EmployeesController(AppDbContext db) : ControllerBase
     }
 
     [HttpPost]
-    [Authorize(Roles = "Administrador")]
+    [Authorize(Policy = "payroll.manage")]
     public async Task<ActionResult<object>> Create([FromBody] EmployeeRequest req)
     {
         var emp = new Employee
@@ -56,7 +56,7 @@ public class EmployeesController(AppDbContext db) : ControllerBase
     }
 
     [HttpPut("{id}")]
-    [Authorize(Roles = "Administrador")]
+    [Authorize(Policy = "payroll.manage")]
     public async Task<ActionResult<object>> Update(int id, [FromBody] EmployeeRequest req)
     {
         var emp = await db.Employees.FindAsync(id);

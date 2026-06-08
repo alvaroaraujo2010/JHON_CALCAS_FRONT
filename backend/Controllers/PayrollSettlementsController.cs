@@ -48,7 +48,7 @@ public class PayrollSettlementsController : ControllerBase
     }
 
     [HttpPost("simulate")]
-    [Authorize(Roles = "Administrador,Contador")]
+    [Authorize(Policy = "payroll.settlement")]
     public async Task<ActionResult<object>> Simulate([FromBody] SettlementRequest req)
     {
         var emp = await _db.Employees.FindAsync(req.EmployeeId);
@@ -56,18 +56,15 @@ public class PayrollSettlementsController : ControllerBase
         if (string.IsNullOrEmpty(emp.TerminationReason))
             return BadRequest(new { message = "El empleado debe tener un motivo de terminación configurado" });
 
-        var result = _svc.Calculate(
+        var result = await _svc.CalculateAsync(
             emp,
             req.SettlementDate,
             req.LastDayWorked ?? emp.TerminationDate ?? DateTime.UtcNow,
-            req.VariableAverage3Months ?? 0m);
+            req.VariableAverage3Months ?? 0m,
+            req.PrimaAlreadyPaid ?? 0m,
+            req.VacationsAlreadyPaid ?? 0m);
 
-        var param = await _legal.GetByYearAsync(req.SettlementDate.Year);
-        if (result.TotalGross > 0)
-        {
-            result.RetencionFuente = _withholding.CalculateProcedureOne(result.TotalGross, param, 0);
-            result.NetToPay = result.TotalGross - result.RetencionFuente;
-        }
+        var (ret, exempt, nonSeveranceGross, severanceTaxable) = await ApplyWithholdingAsync(result);
 
         return Ok(new
         {
@@ -79,33 +76,43 @@ public class PayrollSettlementsController : ControllerBase
             cesantias = result.CesantiasAmount,
             cesantiasInterest = result.CesantiasInterestAmount,
             prima = result.PrimaAmount,
+            primaGross = result.PrimaAmount + result.PrimaAlreadyPaid,
+            primaAlreadyPaid = result.PrimaAlreadyPaid,
             vacationDays = result.VacationDays,
             vacations = result.VacationAmount,
+            vacationsAlreadyPaid = result.VacationsAlreadyPaid,
             severance = result.SeveranceAmount,
             totalGross = result.TotalGross,
-            retencionFuente = result.RetencionFuente,
-            netToPay = result.NetToPay,
-            smlmv = param.Smlmv,
-            uvt = param.Uvt,
+            nonSeveranceGross,
+            severanceTaxable,
+            exemptUvt = 200m,
+            exemptAmount = exempt,
+            retencionFuente = ret,
+            netToPay = result.TotalGross - ret,
+            smlmv = result.BaseForProvisions > 0 ? (await _legal.GetByYearAsync(req.SettlementDate.Year)).Smlmv : 0m,
+            uvt = (await _legal.GetByYearAsync(req.SettlementDate.Year)).Uvt,
             year = req.SettlementDate.Year
         });
     }
 
     [HttpPost]
-    [Authorize(Roles = "Administrador")]
+    [Authorize(Policy = "payroll.settlement")]
     public async Task<ActionResult<object>> Create([FromBody] SettlementRequest req)
     {
         var emp = await _db.Employees.FindAsync(req.EmployeeId);
         if (emp == null) return NotFound(new { message = "Empleado no encontrado" });
         if (emp.TerminationDate == null) return BadRequest(new { message = "El empleado debe tener fecha de terminación" });
 
-        var result = _svc.Calculate(emp, req.SettlementDate, emp.TerminationDate.Value, req.VariableAverage3Months ?? 0m);
-        var param = await _legal.GetByYearAsync(req.SettlementDate.Year);
-        if (result.TotalGross > 0)
-        {
-            result.RetencionFuente = _withholding.CalculateProcedureOne(result.TotalGross, param, 0);
-            result.NetToPay = result.TotalGross - result.RetencionFuente;
-        }
+        var result = await _svc.CalculateAsync(
+            emp,
+            req.SettlementDate,
+            emp.TerminationDate.Value,
+            req.VariableAverage3Months ?? 0m,
+            req.PrimaAlreadyPaid ?? 0m,
+            req.VacationsAlreadyPaid ?? 0m);
+
+        var (ret, exempt, nonSeveranceGross, severanceTaxable) = await ApplyWithholdingAsync(result);
+        var net = result.TotalGross - ret;
 
         var settlement = new PayrollSettlement
         {
@@ -125,9 +132,9 @@ public class PayrollSettlementsController : ControllerBase
             VacationAmount = result.VacationAmount,
             SeveranceAmount = result.SeveranceAmount,
             TotalGross = result.TotalGross,
-            RetencionFuente = result.RetencionFuente,
-            TotalDeductions = result.RetencionFuente,
-            NetToPay = result.NetToPay,
+            RetencionFuente = ret,
+            TotalDeductions = ret,
+            NetToPay = net,
             Status = "draft",
             Notes = req.Notes
         };
@@ -143,7 +150,7 @@ public class PayrollSettlementsController : ControllerBase
     }
 
     [HttpPost("{id}/pay")]
-    [Authorize(Roles = "Administrador")]
+    [Authorize(Policy = "payroll.settlement")]
     public async Task<ActionResult<object>> Pay(int id, [FromBody] PaySettlementRequest req)
     {
         var s = await _db.PayrollSettlements.FindAsync(id);
@@ -156,6 +163,34 @@ public class PayrollSettlementsController : ControllerBase
         s.UpdatedAt = DateTime.UtcNow;
         await _db.SaveChangesAsync();
         return Ok(new { s.Id, s.Status, s.PaymentDate, s.PaymentMethod, s.Reference });
+    }
+
+    /// <summary>
+    /// Aplica retención en la fuente al total de la liquidación:
+    ///   * Sobre (cesantías + intereses + prima + vacaciones) → Procedimiento 1 Art. 383 ET
+    ///   * Sobre indemnización → Procedimiento 1 sobre el excedente de 200 UVT
+    ///     (Art. 401 ET par. 1, modificado por Art. 32 Ley 2277/2022)
+    ///   Aplica también las deducciones del Art. 387 ET si el empleado las tiene activas.
+    /// </summary>
+    private async Task<(decimal Retencion, decimal Exempt, decimal NonSeveranceGross, decimal SeveranceTaxable)>
+        ApplyWithholdingAsync(PayrollSettlementResult result)
+    {
+        var param = await _legal.GetByYearAsync(result.SettlementDate.Year);
+        var nonSeverance = result.CesantiasAmount + result.CesantiasInterestAmount
+                         + result.PrimaAmount + result.VacationAmount;
+
+        var exempt = param.Uvt * 200m;
+        var severanceTaxable = Math.Max(0, result.SeveranceAmount - exempt);
+
+        var deductions = Art387Deductions.From(result.Employee);
+
+        decimal ret = 0m;
+        if (nonSeverance > 0)
+            ret += _withholding.CalculateProcedureOne(nonSeverance, param, 0m, deductions);
+        if (severanceTaxable > 0)
+            ret += _withholding.CalculateProcedureOne(severanceTaxable, param, 0m, deductions);
+
+        return (ret, exempt, nonSeverance, severanceTaxable);
     }
 
     private static object ToDto(PayrollSettlement s) => new
@@ -171,5 +206,13 @@ public class PayrollSettlementsController : ControllerBase
     };
 }
 
-public record SettlementRequest(int EmployeeId, DateTime SettlementDate, DateTime? LastDayWorked, decimal? VariableAverage3Months, string? Notes);
+public record SettlementRequest(
+    int EmployeeId,
+    DateTime SettlementDate,
+    DateTime? LastDayWorked,
+    decimal? VariableAverage3Months,
+    string? Notes,
+    decimal? PrimaAlreadyPaid = null,
+    decimal? VacationsAlreadyPaid = null);
+
 public record PaySettlementRequest(string PaymentDate, string PaymentMethod, string? Reference);

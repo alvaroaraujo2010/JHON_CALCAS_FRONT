@@ -18,6 +18,11 @@ public class AppDbContext : DbContext
     public DbSet<Sale> Sales => Set<Sale>();
     public DbSet<SaleDetail> SaleDetails => Set<SaleDetail>();
     public DbSet<InventoryMovement> InventoryMovements => Set<InventoryMovement>();
+    public DbSet<InventoryLot> InventoryLots => Set<InventoryLot>();
+
+    // RBAC
+    public DbSet<Permission> Permissions => Set<Permission>();
+    public DbSet<RolePermission> RolePermissions => Set<RolePermission>();
     public DbSet<Account> Accounts => Set<Account>();
     public DbSet<JournalEntry> JournalEntries => Set<JournalEntry>();
     public DbSet<JournalEntryLine> JournalEntryLines => Set<JournalEntryLine>();
@@ -65,6 +70,11 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Account>()
             .HasOne(a => a.Parent).WithMany(a => a.Children).HasForeignKey(a => a.ParentId)
             .OnDelete(DeleteBehavior.Restrict);
+
+        // RBAC: PKs y unique constraints
+        modelBuilder.Entity<Permission>().HasKey(p => p.Key);
+        modelBuilder.Entity<RolePermission>()
+            .HasIndex(r => new { r.Role, r.PermissionKey }).IsUnique();
 
         // Relaciones Nómina
         modelBuilder.Entity<PayrollDetail>()

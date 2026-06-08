@@ -31,7 +31,7 @@ public class CategoriesController(AppDbContext db) : ControllerBase
     }
 
     [HttpPost]
-    [Authorize(Roles = "Administrador,Almacen")]
+    [Authorize(Policy = "categories.manage")]
     public async Task<ActionResult<CategoryDto>> Create([FromBody] CategoryRequest req)
     {
         var c = new Category { Name = req.Name, Description = req.Description, IsActive = req.IsActive };
@@ -41,7 +41,7 @@ public class CategoriesController(AppDbContext db) : ControllerBase
     }
 
     [HttpPut("{id}")]
-    [Authorize(Roles = "Administrador,Almacen")]
+    [Authorize(Policy = "categories.manage")]
     public async Task<ActionResult<CategoryDto>> Update(int id, [FromBody] CategoryRequest req)
     {
         var c = await db.Categories.FindAsync(id);
@@ -55,7 +55,7 @@ public class CategoriesController(AppDbContext db) : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    [Authorize(Roles = "Administrador")]
+    [Authorize(Policy = "categories.delete")]
     public async Task<IActionResult> Delete(int id)
     {
         var c = await db.Categories.FindAsync(id);

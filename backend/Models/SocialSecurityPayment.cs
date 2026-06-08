@@ -39,4 +39,20 @@ public class SocialSecurityPayment
     public string? Reference { get; set; } // N° de planilla PILA
     public string? Operator { get; set; } // EPS, AFP, ARL, Caja
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+    // ─── PILA — Novedades (Resolución 1736/2022) ─────────────────────
+    /// <summary>Tipo de novedad: N=Normal, I=Ingreso, R=Retiro, T=Traslado, S=Suspensión, V=Variación salario, F=Vacaciones, L=Licencia, M=Mayor a 1 mes.</summary>
+    public string NovedadTipo { get; set; } = "N";
+    /// <summary>Fecha de inicio de la novedad (si aplica).</summary>
+    public DateTime? NovedadFechaInicio { get; set; }
+    /// <summary>Fecha de fin de la novedad (si aplica).</summary>
+    public DateTime? NovedadFechaFin { get; set; }
+
+    // ─── Operadores (códigos PILA) ───────────────────────────────────
+    public string? OperatorEps { get; set; }
+    public string? OperatorPension { get; set; }
+    public string? OperatorArl { get; set; }
+    public string? OperatorCcf { get; set; }
+    public string? CotizanteTipo { get; set; }
+    public string? CotizanteSubtipo { get; set; }
 }

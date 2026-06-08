@@ -1,6 +1,7 @@
 using ContaNexo.API.Data;
 using ContaNexo.API.DTOs;
 using ContaNexo.API.Models;
+using ContaNexo.API.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -29,7 +30,7 @@ public class SuppliersController(AppDbContext db) : ControllerBase
     }
 
     [HttpPost]
-    [Authorize(Roles = "Administrador,Almacen")]
+    [Authorize(Policy = "suppliers.manage")]
     public async Task<ActionResult<SupplierDto>> Create([FromBody] SupplierRequest req)
     {
         var s = Map(req);
@@ -39,7 +40,7 @@ public class SuppliersController(AppDbContext db) : ControllerBase
     }
 
     [HttpPut("{id}")]
-    [Authorize(Roles = "Administrador,Almacen")]
+    [Authorize(Policy = "suppliers.manage")]
     public async Task<ActionResult<SupplierDto>> Update(int id, [FromBody] SupplierRequest req)
     {
         var s = await db.Suppliers.FindAsync(id);
@@ -50,7 +51,7 @@ public class SuppliersController(AppDbContext db) : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    [Authorize(Roles = "Administrador")]
+    [Authorize(Policy = "suppliers.delete")]
     public async Task<IActionResult> Delete(int id)
     {
         var s = await db.Suppliers.FindAsync(id);
@@ -60,18 +61,38 @@ public class SuppliersController(AppDbContext db) : ControllerBase
         return NoContent();
     }
 
-    private static Supplier Map(SupplierRequest r) => new()
+    private static Supplier Map(SupplierRequest r)
     {
-        Name = r.Name, TaxId = r.TaxId, ContactName = r.ContactName,
-        Phone = r.Phone, Email = r.Email, Address = r.Address, IsActive = r.IsActive
-    };
+        var s = new Supplier
+        {
+            Name = r.Name, TaxId = r.TaxId, ContactName = r.ContactName,
+            Phone = r.Phone, Email = r.Email, Address = r.Address, IsActive = r.IsActive
+        };
+        ApplyNit(s, r.Nit, r.NitVerificationDigit);
+        return s;
+    }
 
     private static void Apply(Supplier s, SupplierRequest r)
     {
         s.Name = r.Name; s.TaxId = r.TaxId; s.ContactName = r.ContactName;
         s.Phone = r.Phone; s.Email = r.Email; s.Address = r.Address; s.IsActive = r.IsActive;
+        ApplyNit(s, r.Nit, r.NitVerificationDigit);
+    }
+
+    private static void ApplyNit(Supplier s, string? nit, string? dv)
+    {
+        if (string.IsNullOrWhiteSpace(nit))
+        {
+            s.Nit = null;
+            s.NitVerificationDigit = null;
+            return;
+        }
+        s.Nit = NitValidator.NormalizeNit(nit);
+        s.NitVerificationDigit = NitValidator.CalculateDv(s.Nit);
     }
 
     private static SupplierDto ToDto(Supplier s) =>
-        new(s.Id, s.Name, s.TaxId, s.ContactName, s.Phone, s.Email, s.Address, s.IsActive);
+        new(s.Id, s.Name, s.TaxId, s.Nit, s.NitVerificationDigit,
+            NitValidator.Format(s.Nit, s.NitVerificationDigit),
+            s.ContactName, s.Phone, s.Email, s.Address, s.IsActive);
 }

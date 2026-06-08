@@ -1,0 +1,46 @@
+<section class="roles-page">
+  <header class="roles-page__header">
+    <div>
+      <h1>Matriz de permisos por rol</h1>
+      <p>Define qué acciones puede realizar cada rol. Los cambios se aplican inmediatamente en el siguiente login de los usuarios.</p>
+    </div>
+    <div class="roles-page__roles">
+      @for (r of roles(); track r) {
+        <button type="button" class="role-pill"
+                [class.role-pill--active]="selectedRole() === r"
+                (click)="selectedRole.set(r)">
+          <span>{{ r }}</span>
+          <small>{{ countForRole(r) }} / {{ countTotal() }}</small>
+        </button>
+      }
+    </div>
+  </header>
+
+  <div class="roles-page__legend">
+    <span>Rol activo: <strong>{{ selectedRole() }}</strong></span>
+    <button type="button" class="btn btn--primary" (click)="save()" [disabled]="saving()">
+      {{ saving() ? 'Guardando…' : 'Guardar cambios' }}
+    </button>
+  </div>
+
+  @for (group of grouped(); track group.module) {
+    <article class="module">
+      <header class="module__head">
+        <h2>{{ group.label }}</h2>
+      </header>
+      <ul class="module__list">
+        @for (p of group.permissions; track p.key) {
+          <li>
+            <label class="perm">
+              <input type="checkbox"
+                     [checked]="isChecked(p.key)"
+                     (change)="toggle(p.key, $any($event.target).checked)" />
+              <span class="perm__key">{{ p.key }}</span>
+              <span class="perm__desc">{{ p.description }}</span>
+            </label>
+          </li>
+        }
+      </ul>
+    </article>
+  }
+</section>

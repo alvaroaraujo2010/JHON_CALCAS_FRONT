@@ -3,6 +3,7 @@ export interface LoginResponse {
   fullName: string;
   email: string;
   role: string;
+  permissions: string[];
   expiresAt: string;
 }
 
@@ -17,6 +18,9 @@ export interface Company {
   website?: string;
   logoUrl?: string;
   taxId?: string;
+  nit?: string;
+  nitVerificationDigit?: string;
+  nitFormatted?: string;
   currency: string;
 }
 
@@ -59,6 +63,9 @@ export interface Supplier {
   id: number;
   name: string;
   taxId?: string;
+  nit?: string;
+  nitVerificationDigit?: string;
+  nitFormatted?: string;
   contactName?: string;
   phone?: string;
   email?: string;
@@ -70,11 +77,15 @@ export interface Customer {
   id: number;
   name: string;
   taxId?: string;
+  nit?: string;
+  nitVerificationDigit?: string;
+  nitFormatted?: string;
   contactName?: string;
   phone?: string;
   email?: string;
   address?: string;
   isActive: boolean;
+  isRetentionAgent?: boolean;
 }
 
 export interface Purchase {
@@ -173,6 +184,21 @@ export interface User {
   email: string;
   role: string;
   isActive: boolean;
+  permissions?: string[];
+}
+
+// ============ RBAC ============
+
+export interface Permission {
+  key: string;
+  module: string;
+  action: string;
+  description: string;
+}
+
+export interface RoleMatrixEntry {
+  role: string;
+  keys: string[];
 }
 
 export interface TrialBalance {
@@ -204,6 +230,19 @@ export interface Employee {
   withholdingProcedure2?: boolean;
   transportAllowanceOverride?: boolean | null;
   solidarityFundOverride?: number | null;
+  // Deducciones Art. 387 ET (Ley 2277/2022)
+  hasDependents?: boolean;
+  housingInterestEnabled?: boolean;
+  prepaidHealthEnabled?: boolean;
+  afcMonthlyAmount?: number;
+  // PILA (Resolución 1736/2022)
+  cotizanteTipo?: string;
+  cotizanteSubtipo?: string;
+  operatorEps?: string;
+  operatorPension?: string;
+  operatorArl?: string;
+  operatorCcf?: string;
+  arlRiskClass?: number;
 }
 
 export interface Deduction {
@@ -462,4 +501,48 @@ export interface PaymentRecord {
   status: 'completed' | 'pending';
   notes?: string;
   createdAt?: string;
+}
+
+export interface SettlementRequest {
+  employeeId: number;
+  settlementDate: string;
+  lastDayWorked?: string;
+  variableAverage3Months?: number;
+  notes?: string;
+  primaAlreadyPaid?: number;
+  vacationsAlreadyPaid?: number;
+}
+
+export interface SettlementSimulation {
+  employee: {
+    id: number;
+    name: string;
+    taxId: string;
+    hireDate: string;
+    baseSalary: number;
+    contractType: string;
+  };
+  workedDaysCurrentYear: number;
+  workedDaysCurrentSemester: number;
+  totalWorkedDays: number;
+  semesterStart: string;
+  cesantias: number;
+  cesantiasInterest: number;
+  prima: number;
+  primaGross: number;
+  primaAlreadyPaid: number;
+  vacationDays: number;
+  vacations: number;
+  vacationsAlreadyPaid: number;
+  severance: number;
+  totalGross: number;
+  nonSeveranceGross: number;
+  severanceTaxable: number;
+  exemptUvt: number;
+  exemptAmount: number;
+  retencionFuente: number;
+  netToPay: number;
+  smlmv: number;
+  uvt: number;
+  year: number;
 }

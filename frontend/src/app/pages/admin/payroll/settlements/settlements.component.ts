@@ -2,7 +2,7 @@ import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { PayrollService } from '../../../../core/services/payroll.service';
-import { Employee, PayrollSettlement } from '../../../../core/models';
+import { Employee, PayrollSettlement, SettlementRequest, SettlementSimulation } from '../../../../core/models';
 import { ModuleHeaderComponent } from '../../../../shared/module-header/module-header.component';
 
 @Component({
@@ -21,7 +21,7 @@ export class SettlementsComponent implements OnInit {
   loading = signal(true);
   simulating = signal(false);
   saving = false;
-  simulation = signal<any | null>(null);
+  simulation = signal<SettlementSimulation | null>(null);
   showForm = false;
   showSimulation = signal(false);
 
@@ -30,6 +30,8 @@ export class SettlementsComponent implements OnInit {
     settlementDate: [new Date().toISOString().split('T')[0], Validators.required],
     lastDayWorked: [''],
     variableAverage3Months: [0],
+    primaAlreadyPaid: [0],
+    vacationsAlreadyPaid: [0],
     notes: ['']
   });
 
@@ -52,18 +54,31 @@ export class SettlementsComponent implements OnInit {
     this.simulation.set(null);
     this.form.reset({
       settlementDate: new Date().toISOString().split('T')[0],
-      variableAverage3Months: 0
+      variableAverage3Months: 0,
+      primaAlreadyPaid: 0,
+      vacationsAlreadyPaid: 0
     });
   }
 
-  simulate() {
-    if (this.form.invalid) return;
-    this.simulating.set(true);
+  private buildRequest(): SettlementRequest | null {
+    if (this.form.invalid) return null;
     const v = this.form.getRawValue();
-    this.svc.simulateSettlement(v.employeeId!, v.settlementDate!, {
+    return {
+      employeeId: v.employeeId!,
+      settlementDate: v.settlementDate!,
       lastDayWorked: v.lastDayWorked || undefined,
-      variableAverage3Months: Number(v.variableAverage3Months) || 0
-    }).subscribe({
+      variableAverage3Months: Number(v.variableAverage3Months) || 0,
+      primaAlreadyPaid: Number(v.primaAlreadyPaid) || 0,
+      vacationsAlreadyPaid: Number(v.vacationsAlreadyPaid) || 0,
+      notes: v.notes ?? ''
+    };
+  }
+
+  simulate() {
+    const req = this.buildRequest();
+    if (!req) return;
+    this.simulating.set(true);
+    this.svc.simulateSettlement(req).subscribe({
       next: (res) => {
         this.simulation.set(res);
         this.showSimulation.set(true);
@@ -74,14 +89,10 @@ export class SettlementsComponent implements OnInit {
   }
 
   save() {
-    if (this.form.invalid || this.saving) return;
+    const req = this.buildRequest();
+    if (!req || this.saving) return;
     this.saving = true;
-    const v = this.form.getRawValue();
-    this.svc.createSettlement(v.employeeId!, v.settlementDate!, {
-      lastDayWorked: v.lastDayWorked || undefined,
-      variableAverage3Months: Number(v.variableAverage3Months) || 0,
-      notes: v.notes ?? ''
-    }).subscribe({
+    this.svc.createSettlement(req).subscribe({
       next: () => { this.saving = false; this.showForm = false; this.reload(); },
       error: () => this.saving = false
     });

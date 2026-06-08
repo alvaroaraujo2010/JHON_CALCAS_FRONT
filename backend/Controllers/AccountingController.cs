@@ -10,7 +10,7 @@ namespace ContaNexo.API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-[Authorize(Roles = "Administrador,Contador")]
+[Authorize(Policy = "accounting.view")]
 public class AccountingController(AppDbContext db) : ControllerBase
 {
     [HttpGet("accounts")]
@@ -21,7 +21,7 @@ public class AccountingController(AppDbContext db) : ControllerBase
     }
 
     [HttpPost("accounts")]
-    [Authorize(Roles = "Administrador")]
+    [Authorize(Policy = "accounting.manage")]
     public async Task<ActionResult<AccountDto>> CreateAccount([FromBody] AccountRequest req)
     {
         if (!Enum.TryParse<AccountType>(req.Type, true, out var type))
@@ -52,6 +52,7 @@ public class AccountingController(AppDbContext db) : ControllerBase
     }
 
     [HttpPost("journal")]
+    [Authorize(Policy = "accounting.manage")]
     public async Task<ActionResult<JournalEntryDto>> CreateJournalEntry([FromBody] CreateJournalEntryRequest req)
     {
         if (!req.Lines.Any()) return BadRequest(new { message = "Debe incluir líneas" });

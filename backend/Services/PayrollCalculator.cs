@@ -80,7 +80,8 @@ public class PayrollCalculator
         }
         else
         {
-            calc.WithholdingTax = _withholding.CalculateProcedureOne(grossForTax, param, nonTaxable);
+            calc.WithholdingTax = _withholding.CalculateProcedureOne(
+                grossForTax, param, nonTaxable, ctx.Art387Deductions);
         }
 
         calc.TotalEmployeeDeductions = calc.EmployeeHealth + calc.EmployeePension + calc.SolidarityFund
@@ -131,6 +132,7 @@ public class EmployeeContext
     public bool? TransportAllowanceOverride { get; set; }
     public decimal? SolidarityFundOverride { get; set; }
     public bool WithholdingProcedure2 { get; set; }
+    public Art387Deductions? Art387Deductions { get; set; }
     public List<DeductionInput> CustomDeductions { get; set; } = new();
     public DateTime PayrollPeriodEnd { get; set; }
 }

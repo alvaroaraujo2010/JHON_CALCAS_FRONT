@@ -77,28 +77,53 @@
             <input type="number" formControlName="variableAverage3Months" />
           </label>
         </div>
+        <div class="row">
+          <label>Prima ya pagada este semestre (opcional)
+            <input type="number" formControlName="primaAlreadyPaid" />
+          </label>
+          <label>Vacaciones ya pagadas (opcional)
+            <input type="number" formControlName="vacationsAlreadyPaid" />
+          </label>
+        </div>
         <label>Notas
           <textarea formControlName="notes" rows="2"></textarea>
         </label>
 
-        <div *ngIf="showSimulation() && simulation()" class="simulation">
+        <div *ngIf="showSimulation() && simulation() as sim" class="simulation">
           <h3>Resultado de la simulación</h3>
           <div class="sim-grid">
-            <div><span>Días trabajados (último año):</span> <strong>{{ simulation().workedDaysCurrentYear }}</strong></div>
-            <div><span>Días en semestre actual (prima):</span> <strong>{{ simulation().workedDaysCurrentSemester }}</strong></div>
-            <div><span>Total días laborados:</span> <strong>{{ simulation().totalWorkedDays }}</strong></div>
+            <div><span>Días trabajados (último año):</span> <strong>{{ sim.workedDaysCurrentYear }}</strong></div>
+            <div><span>Días en semestre actual (prima):</span> <strong>{{ sim.workedDaysCurrentSemester }}</strong></div>
+            <div><span>Total días laborados:</span> <strong>{{ sim.totalWorkedDays }}</strong></div>
           </div>
           <table class="sim-table">
-            <tr><td>Cesantías</td><td>{{ format(simulation().cesantias) }}</td></tr>
-            <tr><td>Intereses sobre cesantías (12%)</td><td>{{ format(simulation().cesantiasInterest) }}</td></tr>
-            <tr><td>Prima de servicios</td><td>{{ format(simulation().prima) }}</td></tr>
-            <tr><td>Vacaciones ({{ simulation().vacationDays }} días)</td><td>{{ format(simulation().vacations) }}</td></tr>
-            <tr><td>Indemnización (si aplica)</td><td>{{ format(simulation().severance) }}</td></tr>
-            <tr class="total"><td><strong>Total bruto</strong></td><td><strong>{{ format(simulation().totalGross) }}</strong></td></tr>
-            <tr><td>Retención en la fuente</td><td>-{{ format(simulation().retencionFuente) }}</td></tr>
-            <tr class="net"><td><strong>Neto a pagar</strong></td><td><strong>{{ format(simulation().netToPay) }}</strong></td></tr>
+            <tr><td>Cesantías</td><td>{{ format(sim.cesantias) }}</td></tr>
+            <tr><td>Intereses sobre cesantías (12%)</td><td>{{ format(sim.cesantiasInterest) }}</td></tr>
+            <tr *ngIf="sim.primaAlreadyPaid > 0"><td>Prima ya pagada (descontada)</td><td>-{{ format(sim.primaAlreadyPaid) }}</td></tr>
+            <tr><td>Prima de servicios</td><td>{{ format(sim.prima) }}</td></tr>
+            <tr *ngIf="sim.vacationsAlreadyPaid > 0"><td>Vacaciones ya pagadas (descontadas)</td><td>-{{ format(sim.vacationsAlreadyPaid) }}</td></tr>
+            <tr><td>Vacaciones ({{ sim.vacationDays }} días)</td><td>{{ format(sim.vacations) }}</td></tr>
+            <tr><td>Indemnización (si aplica)</td><td>{{ format(sim.severance) }}</td></tr>
+            <tr class="total"><td><strong>Total bruto</strong></td><td><strong>{{ format(sim.totalGross) }}</strong></td></tr>
+            <tr class="exempt" *ngIf="sim.exemptAmount > 0">
+              <td>
+                <span title="Art. 401 ET par. 1 (Ley 2277/2022)">
+                  Exoneración indemnización ({{ sim.exemptUvt }} UVT)
+                </span>
+              </td>
+              <td>-{{ format(sim.exemptAmount) }}</td>
+            </tr>
+            <tr><td>Retención en la fuente</td><td>-{{ format(sim.retencionFuente) }}</td></tr>
+            <tr class="net"><td><strong>Neto a pagar</strong></td><td><strong>{{ format(sim.netToPay) }}</strong></td></tr>
           </table>
-          <small class="sim-info">Año gravable: {{ simulation().year }} | SMLMV: {{ format(simulation().smlmv) }} | UVT: {{ format(simulation().uvt) }}</small>
+          <small class="sim-info">
+            Año gravable: {{ sim.year }} | SMLMV: {{ format(sim.smlmv) }} | UVT: {{ format(sim.uvt) }}
+            <br *ngIf="sim.severanceTaxable > 0" />
+            <span *ngIf="sim.severanceTaxable > 0">
+              Indemnización gravada: {{ format(sim.severanceTaxable) }}
+              (después de {{ sim.exemptUvt }} UVT exentas)
+            </span>
+          </small>
         </div>
 
         <div class="actions">

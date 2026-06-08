@@ -2,6 +2,7 @@ using System.Security.Claims;
 using ContaNexo.API.Data;
 using ContaNexo.API.DTOs;
 using ContaNexo.API.Models;
+using ContaNexo.API.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -11,7 +12,10 @@ namespace ContaNexo.API.Controllers;
 [ApiController]
 [Route("api/[controller]")]
 [Authorize]
-public class PurchasesController(AppDbContext db) : ControllerBase
+public class PurchasesController(
+    AppDbContext db,
+    InventoryValuationService valuation,
+    PurchasesAccountingService purchasesAccounting) : ControllerBase
 {
     [HttpGet]
     public async Task<ActionResult<List<PurchaseDto>>> GetAll()
@@ -31,7 +35,7 @@ public class PurchasesController(AppDbContext db) : ControllerBase
     }
 
     [HttpPost]
-    [Authorize(Roles = "Administrador,Almacen")]
+    [Authorize(Policy = "purchases.create")]
     public async Task<ActionResult<PurchaseDto>> Create([FromBody] CreatePurchaseRequest req)
     {
         if (!req.Details.Any()) return BadRequest(new { message = "Debe incluir al menos un detalle" });
@@ -60,15 +64,15 @@ public class PurchasesController(AppDbContext db) : ControllerBase
                 ProductId = d.ProductId, Quantity = d.Quantity, UnitCost = d.UnitCost, LineTotal = line
             });
 
-            var before = product.Stock;
-            product.Stock += d.Quantity;
-            product.UnitCost = d.UnitCost;
-            product.UpdatedAt = DateTime.UtcNow;
+            // El servicio de valoración crea el lote y (si el producto es promedio ponderado)
+            // recalcula el UnitCost; si es PEPS mantiene el costo en el lote.
+            await valuation.OnPurchaseAsync(product, d.Quantity, d.UnitCost, null, purchase.DocumentNumber);
+
             db.InventoryMovements.Add(new InventoryMovement
             {
                 ProductId = product.Id, Type = MovementType.Entrada, Quantity = d.Quantity,
-                StockBefore = before, StockAfter = product.Stock, Reference = purchase.DocumentNumber,
-                Notes = "Compra registrada"
+                StockBefore = product.Stock - d.Quantity, StockAfter = product.Stock,
+                Reference = purchase.DocumentNumber, Notes = "Compra registrada"
             });
         }
 
@@ -77,6 +81,8 @@ public class PurchasesController(AppDbContext db) : ControllerBase
         purchase.Total = purchase.Subtotal + purchase.Tax;
         db.Purchases.Add(purchase);
         await db.SaveChangesAsync();
+        var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+        await purchasesAccounting.CreateJournalEntryForPurchaseAsync(purchase, supplier, userId.ToString());
         await db.Entry(purchase).Reference(p => p.Supplier).LoadAsync();
         await db.Entry(purchase).Collection(p => p.Details).Query().Include(d => d.Product).LoadAsync();
         return CreatedAtAction(nameof(Get), new { id = purchase.Id }, ToDto(purchase));

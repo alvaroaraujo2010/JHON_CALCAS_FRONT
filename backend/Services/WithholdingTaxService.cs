@@ -37,7 +37,19 @@ public class WithholdingTaxService
 
     public WithholdingTaxService(AppDbContext db) => _db = db;
 
-    public decimal CalculateProcedureOne(decimal grossIncome, LegalParameter param, decimal nonTaxableIncome = 0m)
+    /// <summary>
+    /// Procedimiento 1 Art. 383 ET.
+    /// Opcionalmente aplica las deducciones de Art. 387 ET (reformado por Ley 2277/2022):
+    ///   - 1 dependiente económico: 10% ingresos, tope 32 UVT/mes
+    ///   - Intereses de vivienda: tope 100 UVT/mes
+    ///   - Medicina prepagada: tope 16 UVT/mes
+    ///   - Aportes AFC/FVP: 30% ingresos, tope 3.800 UVT/año (≈316,67 UVT/mes)
+    /// </summary>
+    public decimal CalculateProcedureOne(
+        decimal grossIncome,
+        LegalParameter param,
+        decimal nonTaxableIncome = 0m,
+        Art387Deductions? deductions = null)
     {
         var totalIngresos = Math.Max(0, grossIncome);
         var ingresosNoGravados = Math.Max(0, nonTaxableIncome);
@@ -46,6 +58,12 @@ public class WithholdingTaxService
         var maxExemptValue = maxExemptUvt * param.Uvt;
         var exempt25 = Math.Min(subtotal1 * 0.25m, maxExemptValue);
         var subtotal2 = Math.Max(0, subtotal1 - exempt25);
+
+        // Aplica deducciones opcionales del Art. 387 ET sobre el subtotal
+        // que ya pasó la exención del 25% (estas deducciones son adicionales).
+        if (deductions != null)
+            subtotal2 = Math.Max(0, subtotal2 - CalculateArt387Deductions(subtotal2, param, deductions));
+
         var subtotalUvt = subtotal2 / param.Uvt;
         if (subtotalUvt < param.MinimumWithholdingUvt) return 0m;
 
@@ -66,6 +84,31 @@ public class WithholdingTaxService
         var taxUvt = bracket.BaseTaxUvt + (taxableUvt * bracket.MarginalRate / 100m);
         var tax = taxUvt * param.Uvt;
         return RoundCurrency(tax);
+    }
+
+    /// <summary>
+    /// Suma de las deducciones opcionales del Art. 387 ET. Cada una con su tope.
+    /// </summary>
+    public decimal CalculateArt387Deductions(decimal subtotal, LegalParameter param, Art387Deductions d)
+    {
+        decimal total = 0m;
+        if (d.HasDependents)
+        {
+            var dep = Math.Min(subtotal * 0.10m, 32m * param.Uvt);
+            total += dep;
+        }
+        if (d.HousingInterestEnabled)
+            total += 100m * param.Uvt;
+        if (d.PrepaidHealthEnabled)
+            total += 16m * param.Uvt;
+        if (d.AfcMonthlyAmount > 0)
+        {
+            // Tope anual 3.800 UVT → ~316,67 UVT/mes (sin exceder 30% del ingreso).
+            var monthlyCap = (3800m / 12m) * param.Uvt;
+            var pctCap = subtotal * 0.30m;
+            total += Math.Min(d.AfcMonthlyAmount, Math.Min(monthlyCap, pctCap));
+        }
+        return total;
     }
 
     public decimal CalculateProcedureTwo(decimal grossIncome, LegalParameter param, decimal mandatoryContributions)
@@ -122,4 +165,24 @@ public class WithholdingTaxService
     }
 
     private static decimal RoundCurrency(decimal value) => Math.Round(value, 0, MidpointRounding.AwayFromZero);
+}
+
+/// <summary>
+/// Deducciones opcionales del Art. 387 ET (reformado por Art. 28 Ley 2277/2022).
+/// Se calculan sobre el subtotal después de la exención del 25% (Art. 383 ET num. 3).
+/// </summary>
+public class Art387Deductions
+{
+    public bool HasDependents { get; set; }
+    public bool HousingInterestEnabled { get; set; }
+    public bool PrepaidHealthEnabled { get; set; }
+    public decimal AfcMonthlyAmount { get; set; }
+
+    public static Art387Deductions From(Employee e) => new()
+    {
+        HasDependents = e.HasDependents,
+        HousingInterestEnabled = e.HousingInterestEnabled,
+        PrepaidHealthEnabled = e.PrepaidHealthEnabled,
+        AfcMonthlyAmount = e.AfcMonthlyAmount
+    };
 }

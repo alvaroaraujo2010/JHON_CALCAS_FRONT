@@ -141,4 +141,23 @@ export class SocialSecurityComponent implements OnInit, OnDestroy {
       .filter(p => p.period === period && p.status === 'pending')
       .reduce((sum, p) => sum + p.contributionAmount, 0);
   }
+
+  /**
+   * Descarga el archivo plano PILA (Resolución 1736/2022) para un período.
+   */
+  downloadPila(period: string) {
+    this.payrollService.downloadPilaFile(period).subscribe({
+      next: (blob) => {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `PILA_${period.replace('-', '')}.txt`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+      },
+      error: () => alert('Error al generar el archivo PILA. Verifique que existan liquidaciones para el período.')
+    });
+  }
 }

@@ -11,7 +11,9 @@ import {
   PayrollProvision,
   ProvisionSummary,
   PayrollSettlement,
-  PayrollSimulation
+  PayrollSimulation,
+  SettlementRequest,
+  SettlementSimulation
 } from '../models';
 
 @Injectable({ providedIn: 'root' })
@@ -106,6 +108,14 @@ export class PayrollService {
     return this.api.post<SocialSecurityPayment[]>('social-security/pay', { payments });
   }
 
+  /**
+   * Descarga el archivo plano PILA (Res. 1736/2022) para el período dado.
+   * Devuelve un Blob para descarga directa.
+   */
+  downloadPilaFile(period: string): Observable<Blob> {
+    return this.api.getBlob(`social-security/pila-file?period=${period}`);
+  }
+
   // ─── Registros de Pago ───────────────────────────────────────
   getPaymentRecords(): Observable<PaymentRecord[]> {
     return this.api.get<PaymentRecord[]>('payment-records');
@@ -138,16 +148,12 @@ export class PayrollService {
     return this.api.get<PayrollSettlement>(`payroll-settlements/${id}`);
   }
 
-  simulateSettlement(employeeId: number, settlementDate: string, opts?: { lastDayWorked?: string; variableAverage3Months?: number }): Observable<any> {
-    return this.api.post('payroll-settlements/simulate', {
-      employeeId, settlementDate, ...opts
-    });
+  simulateSettlement(req: SettlementRequest): Observable<SettlementSimulation> {
+    return this.api.post<SettlementSimulation>('payroll-settlements/simulate', req);
   }
 
-  createSettlement(employeeId: number, settlementDate: string, opts?: { lastDayWorked?: string; variableAverage3Months?: number; notes?: string }): Observable<PayrollSettlement> {
-    return this.api.post<PayrollSettlement>('payroll-settlements', {
-      employeeId, settlementDate, ...opts
-    });
+  createSettlement(req: SettlementRequest): Observable<PayrollSettlement> {
+    return this.api.post<PayrollSettlement>('payroll-settlements', req);
   }
 
   paySettlement(id: number, data: { paymentDate: string; paymentMethod: string; reference?: string }): Observable<any> {

@@ -9,7 +9,7 @@ namespace ContaNexo.API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-[Authorize(Roles = "Administrador")]
+[Authorize(Policy = "users.view")]
 public class UsersController(AppDbContext db) : ControllerBase
 {
     [HttpGet]

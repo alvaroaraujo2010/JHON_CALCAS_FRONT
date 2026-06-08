@@ -1,5 +1,6 @@
 using ContaNexo.API.Data;
 using ContaNexo.API.Models;
+using ContaNexo.API.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -20,8 +21,42 @@ public class SocialSecurityController(AppDbContext db) : ControllerBase
         return Ok(list.Select(ToDto));
     }
 
+    /// <summary>
+    /// Genera el archivo plano PILA (Resolución 1736/2022) para un período dado.
+    /// Devuelve un .txt con líneas de 195 caracteres (CRLF).
+    /// </summary>
+    [HttpGet("pila-file")]
+    [Authorize(Policy = "social_security.pila")]
+    public async Task<IActionResult> DownloadPilaFile([FromQuery] string period)
+    {
+        if (string.IsNullOrWhiteSpace(period))
+            return BadRequest(new { message = "Período requerido (YYYY-MM)" });
+
+        var payments = await db.SocialSecurityPayments
+            .Where(p => p.Period == period)
+            .OrderBy(p => p.EmployeeName)
+            .ToListAsync();
+        if (payments.Count == 0)
+            return NotFound(new { message = $"No hay liquidaciones para el período {period}" });
+
+        var company = await db.CompanySettings.FirstOrDefaultAsync();
+        var context = new PilaFileService.PilaContext
+        {
+            CompanyNit = company?.Nit ?? "",
+            CompanyDv = company?.NitVerificationDigit ?? "0",
+            Period = period,
+            SequenceNumber = 1,
+            PaymentDate = DateTime.UtcNow,
+            Payments = payments
+        };
+        var content = new PilaFileService().Generate(context);
+        var bytes = System.Text.Encoding.UTF8.GetBytes(content);
+        var fileName = $"PILA_{period.Replace("-", "")}_{DateTime.UtcNow:yyyyMMddHHmmss}.txt";
+        return File(bytes, "text/plain; charset=utf-8", fileName);
+    }
+
     [HttpPost("pay")]
-    [Authorize(Roles = "Administrador")]
+    [Authorize(Policy = "social_security.pay")]
     public async Task<ActionResult<List<object>>> Pay([FromBody] PayRequest req)
     {
         foreach (var p in req.Payments)

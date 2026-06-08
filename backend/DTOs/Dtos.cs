@@ -1,16 +1,16 @@
 namespace ContaNexo.API.DTOs;
 
 public record LoginRequest(string Username, string Password);
-public record LoginResponse(string Token, string FullName, string Email, string Role, DateTime ExpiresAt);
+public record LoginResponse(string Token, string FullName, string Email, string Role, List<string> Permissions, DateTime ExpiresAt);
 
 public record UserDto(int Id, string FullName, string Email, string Role, bool IsActive);
 public record CreateUserRequest(string FullName, string Email, string Password, string Role);
 public record UpdateUserRequest(string FullName, string Email, string Role, bool IsActive, string? Password);
 
 public record CompanyDto(int Id, string BusinessName, string Tagline, string? Description, string? Address,
-    string? Phone, string? Email, string? Website, string? LogoUrl, string? TaxId, string Currency);
+    string? Phone, string? Email, string? Website, string? LogoUrl, string? TaxId, string? Nit, string? NitVerificationDigit, string? NitFormatted, string Currency);
 public record UpdateCompanyRequest(string BusinessName, string Tagline, string? Description, string? Address,
-    string? Phone, string? Email, string? Website, string? LogoUrl, string? TaxId, string Currency);
+    string? Phone, string? Email, string? Website, string? LogoUrl, string? TaxId, string? Nit, string? NitVerificationDigit, string Currency);
 
 public record CategoryDto(int Id, string Name, string? Description, bool IsActive, int ProductCount);
 public record CategoryRequest(string Name, string? Description, bool IsActive);
@@ -20,11 +20,11 @@ public record ProductDto(int Id, string Sku, string Name, string? Description, i
 public record ProductRequest(string Sku, string Name, string? Description, int CategoryId,
     decimal UnitCost, decimal UnitPrice, int MinStock, string Unit, bool IsActive);
 
-public record SupplierDto(int Id, string Name, string? TaxId, string? ContactName, string? Phone, string? Email, string? Address, bool IsActive);
-public record SupplierRequest(string Name, string? TaxId, string? ContactName, string? Phone, string? Email, string? Address, bool IsActive);
+public record SupplierDto(int Id, string Name, string? TaxId, string? Nit, string? NitVerificationDigit, string? NitFormatted, string? ContactName, string? Phone, string? Email, string? Address, bool IsActive);
+public record SupplierRequest(string Name, string? TaxId, string? Nit, string? NitVerificationDigit, string? ContactName, string? Phone, string? Email, string? Address, bool IsActive);
 
-public record CustomerDto(int Id, string Name, string? TaxId, string? ContactName, string? Phone, string? Email, string? Address, bool IsActive);
-public record CustomerRequest(string Name, string? TaxId, string? ContactName, string? Phone, string? Email, string? Address, bool IsActive);
+public record CustomerDto(int Id, string Name, string? TaxId, string? Nit, string? NitVerificationDigit, string? NitFormatted, string? ContactName, string? Phone, string? Email, string? Address, bool IsActive, bool IsRetentionAgent);
+public record CustomerRequest(string Name, string? TaxId, string? Nit, string? NitVerificationDigit, string? ContactName, string? Phone, string? Email, string? Address, bool IsActive, bool IsRetentionAgent = false);
 
 public record PurchaseDetailDto(int ProductId, string ProductName, int Quantity, decimal UnitCost, decimal LineTotal);
 public record PurchaseDto(int Id, string DocumentNumber, int SupplierId, string SupplierName, DateTime PurchaseDate,

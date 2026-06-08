@@ -12,6 +12,10 @@ public class CompanySettings
     public string? Website { get; set; }
     public string? LogoUrl { get; set; }
     public string? TaxId { get; set; }
+    /// <summary>NIT sin dígito de verificación (solo dígitos).</summary>
+    public string? Nit { get; set; }
+    /// <summary>Dígito de verificación calculado por módulo 11 (DIAN).</summary>
+    public string? NitVerificationDigit { get; set; }
     public string Currency { get; set; } = "COP";
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 }

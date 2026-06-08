@@ -39,7 +39,14 @@ public class WithholdingTaxController : ControllerBase
         }
         else
         {
-            ret = _svc.CalculateProcedureOne(req.GrossIncome, param, req.NonTaxableIncome ?? 0m);
+            var deductions = new Art387Deductions
+            {
+                HasDependents = req.HasDependents ?? false,
+                HousingInterestEnabled = req.HousingInterestEnabled ?? false,
+                PrepaidHealthEnabled = req.PrepaidHealthEnabled ?? false,
+                AfcMonthlyAmount = req.AfcMonthlyAmount ?? 0m
+            };
+            ret = _svc.CalculateProcedureOne(req.GrossIncome, param, req.NonTaxableIncome ?? 0m, deductions);
         }
         var baseGravableUvt = (req.GrossIncome - (req.NonTaxableIncome ?? 0m)) / param.Uvt;
         return Ok(new
@@ -49,6 +56,8 @@ public class WithholdingTaxController : ControllerBase
             grossIncome = req.GrossIncome,
             nonTaxableIncome = req.NonTaxableIncome ?? 0m,
             mandatoryContributions = req.MandatoryContributions ?? 0m,
+            art387Applied = req.HasDependents == true || req.HousingInterestEnabled == true
+                         || req.PrepaidHealthEnabled == true || (req.AfcMonthlyAmount ?? 0) > 0,
             smlmv = param.Smlmv,
             uvt = param.Uvt,
             transportAllowance = param.TransportAllowance,
@@ -61,4 +70,14 @@ public class WithholdingTaxController : ControllerBase
     }
 }
 
-public record WithholdingTaxRequest(int Year, decimal GrossIncome, decimal? NonTaxableIncome, decimal? MandatoryContributions, string? Procedure, bool Procedure2 = false);
+public record WithholdingTaxRequest(
+    int Year,
+    decimal GrossIncome,
+    decimal? NonTaxableIncome,
+    decimal? MandatoryContributions,
+    string? Procedure,
+    bool Procedure2 = false,
+    bool? HasDependents = null,
+    bool? HousingInterestEnabled = null,
+    bool? PrepaidHealthEnabled = null,
+    decimal? AfcMonthlyAmount = null);

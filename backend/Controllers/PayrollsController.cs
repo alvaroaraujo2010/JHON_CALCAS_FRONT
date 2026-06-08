@@ -32,7 +32,7 @@ public class PayrollsController(AppDbContext db, PayrollCalculator calc, LegalPa
     }
 
     [HttpPost]
-    [Authorize(Roles = "Administrador")]
+    [Authorize(Policy = "payroll.manage")]
     public async Task<ActionResult<object>> Create([FromBody] PayrollRequest req)
     {
         var payroll = new Payroll
@@ -49,7 +49,7 @@ public class PayrollsController(AppDbContext db, PayrollCalculator calc, LegalPa
     }
 
     [HttpPut("{id}")]
-    [Authorize(Roles = "Administrador")]
+    [Authorize(Policy = "payroll.manage")]
     public async Task<ActionResult<object>> Update(int id, [FromBody] PayrollUpdateRequest req)
     {
         var payroll = await db.Payrolls
@@ -79,7 +79,7 @@ public class PayrollsController(AppDbContext db, PayrollCalculator calc, LegalPa
     }
 
     [HttpDelete("{id}")]
-    [Authorize(Roles = "Administrador")]
+    [Authorize(Policy = "payroll.manage")]
     public async Task<IActionResult> Delete(int id)
     {
         var payroll = await db.Payrolls.FindAsync(id);
@@ -91,7 +91,7 @@ public class PayrollsController(AppDbContext db, PayrollCalculator calc, LegalPa
     }
 
     [HttpPost("{id}/process")]
-    [Authorize(Roles = "Administrador")]
+    [Authorize(Policy = "payroll.approve")]
     public async Task<ActionResult<object>> Process(int id)
     {
         var payroll = await db.Payrolls
@@ -117,7 +117,7 @@ public class PayrollsController(AppDbContext db, PayrollCalculator calc, LegalPa
     }
 
     [HttpPost("{id}/pay")]
-    [Authorize(Roles = "Administrador")]
+    [Authorize(Policy = "payroll.approve")]
     public async Task<ActionResult<object>> Pay(int id, [FromBody] PayPayrollRequest req)
     {
         var payroll = await db.Payrolls

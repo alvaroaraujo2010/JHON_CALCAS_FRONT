@@ -1,70 +1,107 @@
 <div class="jc-header-host">
   <header
     #headerEl
-    class="jc-header"
+    class="jc-header jc-header--top-center page-width"
     [class.jc-header--pinned]="headerPinned"
     [class.jc-header--visible]="headerVisible"
   >
-  <div class="jc-header__top page-width">
-    <a routerLink="/login" class="jc-header__admin">Zona administrativa</a>
+    <div class="jc-header__top">
+      <a routerLink="/login" class="jc-header__admin">Zona administrativa</a>
+    </div>
 
-    <button
-      type="button"
-      class="jc-header__burger"
-      [attr.aria-expanded]="mobileOpen"
-      aria-controls="jc-mobile-menu"
-      (click)="mobileOpen = !mobileOpen"
-    >
-      <span class="visually-hidden">Menu</span>
-      <span></span><span></span><span></span>
-    </button>
-  </div>
+    <div class="jc-header__search">
+      <button type="button" class="jc-header__icon jc-header__icon--search" aria-label="Buscar">
+        <svg viewBox="0 0 18 19" aria-hidden="true" class="jc-header__icon-svg">
+          <path
+            fill="currentColor"
+            fill-rule="evenodd"
+            clip-rule="evenodd"
+            d="M11.03 11.68A5.784 5.784 0 112.85 3.5a5.784 5.784 0 018.18 8.18zm.26 1.12a6.78 6.78 0 11.72-.7l5.4 5.4a.5.5 0 11-.71.7l-5.41-5.4z"
+          />
+        </svg>
+      </button>
+    </div>
 
-  <div class="jc-header__brand-wrap">
-    <a routerLink="/" class="jc-header__brand" (click)="closeMenus()">
-      <img [src]="images.logo" alt="Jhon Calcas" width="220" height="152" />
-    </a>
-  </div>
+    <div class="jc-header__brand-wrap">
+      <a routerLink="/" class="jc-header__brand" (click)="closeMenus()">
+        <img [src]="images.logo" alt="Jhon Calcas" width="110" height="76" />
+      </a>
+    </div>
 
-  <nav class="jc-header__nav page-width" aria-label="Principal" (mouseleave)="onNavLeave()">
-    <ul class="jc-nav">
-      @for (item of menu; track item.label) {
-        <li
-          class="jc-nav__item"
-          [class.jc-nav__item--open]="openMenu === item.label"
-          (mouseenter)="onNavEnter(item)"
-        >
-          @if (!item.children.length) {
-            <a
-              routerLink="/"
-              routerLinkActive="jc-nav__link--active"
-              [routerLinkActiveOptions]="{ exact: true }"
-              class="jc-nav__link"
-              (click)="closeMenus()"
-            >
-              {{ item.label }}
-            </a>
-          } @else {
-            <button
-              type="button"
-              class="jc-nav__link jc-nav__link--has-menu"
-              [attr.aria-expanded]="openMenu === item.label"
-              (click)="toggleMenu(item.label)"
-            >
-              {{ item.label }}
-              <svg class="jc-nav__caret" viewBox="0 0 10 6" aria-hidden="true">
-                <path
-                  fill="currentColor"
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
-                  d="M9.354.646a.5.5 0 0 0-.708 0L5 4.293 1.354.646a.5.5 0 0 0-.708.708l4 4a.5.5 0 0 0 .708 0l4-4a.5.5 0 0 0 0-.708z"
-                />
-              </svg>
-            </button>
+    <div class="jc-header__icons">
+      <a routerLink="/login" class="jc-header__icon" aria-label="Zona administrativa" title="Zona administrativa">
+        <svg viewBox="0 0 18 19" aria-hidden="true" class="jc-header__icon-svg">
+          <path
+            fill="currentColor"
+            d="M9 9a3 3 0 100-6 3 3 0 000 6zm0 1.5c-2.485 0-4.5 1.343-4.5 3v.75h9v-.75c0-1.657-2.015-3-4.5-3z"
+          />
+        </svg>
+      </a>
+      <a
+        href="https://jhoncalcas.com/cart"
+        class="jc-header__icon jc-header__icon--cart"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Carrito"
+      >
+        <svg viewBox="0 0 18 19" aria-hidden="true" class="jc-header__icon-svg">
+          <path
+            fill="currentColor"
+            d="M0 1.5A.5.5 0 01.5 1H2a.5.5 0 01.485.379L2.89 3H14.5a.5.5 0 01.485.632l-1.5 6A.5.5 0 0113 10H4.5a.5.5 0 01-.485-.379L2.11 2H.5A.5.5 0 010 1.5zm3 8a1.5 1.5 0 100 3 1.5 1.5 0 000-3zm8 0a1.5 1.5 0 100 3 1.5 1.5 0 000-3z"
+          />
+        </svg>
+      </a>
+      <button
+        type="button"
+        class="jc-header__burger"
+        [attr.aria-expanded]="mobileOpen"
+        aria-controls="jc-mobile-menu"
+        (click)="mobileOpen = !mobileOpen"
+      >
+        <span class="visually-hidden">Menu</span>
+        <span></span><span></span><span></span>
+      </button>
+    </div>
 
-            @if (openMenu === item.label) {
-              <div class="jc-dropdown">
-                <ul class="jc-dropdown__brands">
+    <nav class="jc-header__nav" aria-label="Principal" (mouseleave)="onNavLeave()">
+      <ul class="jc-nav">
+        @for (item of menu; track item.label) {
+          <li
+            class="jc-nav__item"
+            [class.jc-nav__item--open]="openMenu === item.label"
+            (mouseenter)="onNavEnter(item)"
+          >
+            @if (!item.children.length) {
+              <a
+                routerLink="/"
+                routerLinkActive="jc-nav__link--active"
+                [routerLinkActiveOptions]="{ exact: true }"
+                class="jc-nav__link"
+                (click)="closeMenus()"
+              >
+                <span>{{ item.label }}</span>
+              </a>
+            } @else {
+              <button
+                type="button"
+                class="jc-nav__link jc-nav__link--has-menu"
+                [class.jc-nav__link--open]="openMenu === item.label"
+                [attr.aria-expanded]="openMenu === item.label"
+                (click)="toggleMenu(item.label)"
+              >
+                <span>{{ item.label }}</span>
+                <svg class="jc-nav__caret" viewBox="0 0 10 6" aria-hidden="true">
+                  <path
+                    fill="currentColor"
+                    fill-rule="evenodd"
+                    clip-rule="evenodd"
+                    d="M9.354.646a.5.5 0 0 0-.708 0L5 4.293 1.354.646a.5.5 0 0 0-.708.708l4 4a.5.5 0 0 0 .708 0l4-4a.5.5 0 0 0 0-.708z"
+                  />
+                </svg>
+              </button>
+
+              @if (openMenu === item.label) {
+                <ul class="jc-dropdown">
                   @for (brand of item.children; track brand.label) {
                     <li
                       class="jc-dropdown__brand"
@@ -79,7 +116,7 @@
                           rel="noopener noreferrer"
                           (click)="closeMenus()"
                         >
-                          {{ brand.label }}
+                          <span>{{ brand.label }}</span>
                         </a>
                       } @else {
                         <button
@@ -87,7 +124,7 @@
                           class="jc-dropdown__brand-label"
                           (click)="toggleBrand(brand.label)"
                         >
-                          {{ brand.label }}
+                          <span>{{ brand.label }}</span>
                           @if (brand.children?.length) {
                             <svg class="jc-nav__caret jc-nav__caret--sub" viewBox="0 0 10 6" aria-hidden="true">
                               <path
@@ -111,7 +148,7 @@
                                 rel="noopener noreferrer"
                                 (click)="closeMenus()"
                               >
-                                {{ model.label }}
+                                <span>{{ model.label }}</span>
                               </a>
                             </li>
                           }
@@ -120,50 +157,49 @@
                     </li>
                   }
                 </ul>
-              </div>
-            }
-          }
-        </li>
-      }
-    </ul>
-  </nav>
-
-  @if (mobileOpen) {
-    <nav id="jc-mobile-menu" class="jc-mobile">
-      <a routerLink="/login" class="jc-mobile__admin" (click)="closeMenus()">Zona administrativa</a>
-      @for (item of menu; track item.label) {
-        @if (!item.children.length) {
-          <a routerLink="/" class="jc-mobile__link" (click)="closeMenus()">{{ item.label }}</a>
-        } @else {
-          <details class="jc-mobile__group">
-            <summary>{{ item.label }}</summary>
-            @for (brand of item.children; track brand.label) {
-              @if (brandHref(brand); as href) {
-                <a [href]="href" class="jc-mobile__link" target="_blank" rel="noopener noreferrer" (click)="closeMenus()">
-                  {{ brand.label }}
-                </a>
-              } @else if (brand.children?.length) {
-                <details class="jc-mobile__sub">
-                  <summary>{{ brand.label }}</summary>
-                  @for (model of brand.children; track model.label) {
-                    <a
-                      [href]="model.href!"
-                      class="jc-mobile__link jc-mobile__link--sub"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      (click)="closeMenus()"
-                    >
-                      {{ model.label }}
-                    </a>
-                  }
-                </details>
               }
             }
-          </details>
+          </li>
         }
-      }
+      </ul>
     </nav>
-  }
+
+    @if (mobileOpen) {
+      <nav id="jc-mobile-menu" class="jc-mobile jc-header__mobile">
+        <a routerLink="/login" class="jc-mobile__admin" (click)="closeMenus()">Zona administrativa</a>
+        @for (item of menu; track item.label) {
+          @if (!item.children.length) {
+            <a routerLink="/" class="jc-mobile__link" (click)="closeMenus()">{{ item.label }}</a>
+          } @else {
+            <details class="jc-mobile__group">
+              <summary>{{ item.label }}</summary>
+              @for (brand of item.children; track brand.label) {
+                @if (brandHref(brand); as href) {
+                  <a [href]="href" class="jc-mobile__link" target="_blank" rel="noopener noreferrer" (click)="closeMenus()">
+                    {{ brand.label }}
+                  </a>
+                } @else if (brand.children?.length) {
+                  <details class="jc-mobile__sub">
+                    <summary>{{ brand.label }}</summary>
+                    @for (model of brand.children; track model.label) {
+                      <a
+                        [href]="model.href!"
+                        class="jc-mobile__link jc-mobile__link--sub"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        (click)="closeMenus()"
+                      >
+                        {{ model.label }}
+                      </a>
+                    }
+                  </details>
+                }
+              }
+            </details>
+          }
+        }
+      </nav>
+    }
   </header>
 
   @if (headerPinned) {

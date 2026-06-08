@@ -25,7 +25,7 @@ public class InventoryController(AppDbContext db) : ControllerBase
     }
 
     [HttpPost("adjust")]
-    [Authorize(Roles = "Administrador,Almacen")]
+    [Authorize(Policy = "inventory.adjust")]
     public async Task<ActionResult<InventoryMovementDto>> Adjust([FromBody] AdjustInventoryRequest req)
     {
         var product = await db.Products.FindAsync(req.ProductId);

@@ -38,7 +38,7 @@ public class LegalParametersController : ControllerBase
     }
 
     [HttpPut("{year}")]
-    [Authorize(Roles = "Administrador")]
+    [Authorize(Policy = "legal_params.manage")]
     public async Task<ActionResult<LegalParameter>> Upsert(int year, [FromBody] LegalParameter param)
     {
         if (year != param.Year) return BadRequest(new { message = "El año de la URL no coincide con el del cuerpo" });

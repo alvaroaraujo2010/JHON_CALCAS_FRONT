@@ -8,9 +8,23 @@ body {
   background: #f1f5f9;
 }
 
+/* Dawn / jhoncalcas.com: html 62.5% para que rem en la landing coincida con el original */
+html:has(body.jc-public-page) {
+  font-size: 62.5%;
+}
+
 body.jc-public-page {
   background: #121212;
   color: #f3f3f3;
+  font-size: 1.5rem;
+  letter-spacing: 0.06rem;
+  line-height: 1.8;
+}
+
+@media (min-width: 750px) {
+  body.jc-public-page {
+    font-size: 1.6rem;
+  }
 }
 
 body.jc-admin-page {

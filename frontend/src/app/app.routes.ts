@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { authGuard, publicGuard } from './core/guards/auth.guard';
+import { permissionGuard } from './core/guards/permission.guard';
 import { HomeComponent } from './pages/public/home/home.component';
 import { LoginComponent } from './pages/public/login/login.component';
 import { AdminLayoutComponent } from './layout/admin-layout/admin-layout.component';
@@ -23,6 +24,7 @@ import { PaymentRecordsComponent } from './pages/admin/payroll/payment-records/p
 import { LegalParametersComponent } from './pages/admin/payroll/legal-parameters/legal-parameters.component';
 import { SettlementsComponent } from './pages/admin/payroll/settlements/settlements.component';
 import { ProvisionsComponent } from './pages/admin/payroll/provisions/provisions.component';
+import { RolesComponent } from './pages/admin/roles/roles.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -33,26 +35,27 @@ export const routes: Routes = [
     canActivate: [authGuard],
     children: [
       { path: '', component: DashboardComponent },
-      { path: 'productos', component: ProductsComponent },
-      { path: 'categorias', component: CategoriesComponent },
-      { path: 'inventario', component: InventoryComponent },
-      { path: 'proveedores', component: SuppliersComponent },
-      { path: 'clientes', component: CustomersComponent },
-      { path: 'compras', component: PurchasesComponent },
-      { path: 'ventas', component: SalesComponent },
-      { path: 'contabilidad', component: AccountingComponent },
-      { path: 'usuarios', component: UsersComponent },
-      { path: 'empresa', component: CompanyComponent },
+      { path: 'productos',         component: ProductsComponent,        canActivate: [permissionGuard], data: { permission: 'products.view' } },
+      { path: 'categorias',        component: CategoriesComponent,      canActivate: [permissionGuard], data: { permission: 'categories.view' } },
+      { path: 'inventario',        component: InventoryComponent,       canActivate: [permissionGuard], data: { permission: 'inventory.view' } },
+      { path: 'proveedores',       component: SuppliersComponent,       canActivate: [permissionGuard], data: { permission: 'suppliers.view' } },
+      { path: 'clientes',          component: CustomersComponent,       canActivate: [permissionGuard], data: { permission: 'customers.view' } },
+      { path: 'compras',           component: PurchasesComponent,       canActivate: [permissionGuard], data: { permission: 'purchases.view' } },
+      { path: 'ventas',            component: SalesComponent,           canActivate: [permissionGuard], data: { permission: 'sales.view' } },
+      { path: 'contabilidad',      component: AccountingComponent,      canActivate: [permissionGuard], data: { permission: 'accounting.view' } },
+      { path: 'usuarios',          component: UsersComponent,           canActivate: [permissionGuard], data: { permission: 'users.view' } },
+      { path: 'roles',             component: RolesComponent,           canActivate: [permissionGuard], data: { permission: 'users.permissions' } },
+      { path: 'empresa',           component: CompanyComponent,         canActivate: [permissionGuard], data: { permission: 'company.view' } },
       // Módulo de Nómina
-      { path: 'nomina', component: PayrollComponent },
-      { path: 'nomina/:id', component: PayrollDetailsComponent },
-      { path: 'nomina-empleados', component: EmployeesComponent },
-      { path: 'nomina-deducciones', component: DeductionsComponent },
-      { path: 'nomina-seguridad-social', component: SocialSecurityComponent },
-      { path: 'nomina-pagos', component: PaymentRecordsComponent },
-      { path: 'nomina-parametros', component: LegalParametersComponent },
-      { path: 'nomina-provisiones', component: ProvisionsComponent },
-      { path: 'nomina-liquidaciones', component: SettlementsComponent }
+      { path: 'nomina',                       component: PayrollComponent,          canActivate: [permissionGuard], data: { permission: 'payroll.view' } },
+      { path: 'nomina/:id',                   component: PayrollDetailsComponent },
+      { path: 'nomina-empleados',             component: EmployeesComponent,         canActivate: [permissionGuard], data: { permission: 'payroll.manage' } },
+      { path: 'nomina-deducciones',           component: DeductionsComponent,       canActivate: [permissionGuard], data: { permission: 'payroll.manage' } },
+      { path: 'nomina-seguridad-social',      component: SocialSecurityComponent,   canActivate: [permissionGuard], data: { permission: 'social_security.view' } },
+      { path: 'nomina-pagos',                 component: PaymentRecordsComponent,   canActivate: [permissionGuard], data: { permission: 'payroll.view' } },
+      { path: 'nomina-parametros',            component: LegalParametersComponent,  canActivate: [permissionGuard], data: { permission: 'legal_params.manage' } },
+      { path: 'nomina-provisiones',           component: ProvisionsComponent,       canActivate: [permissionGuard], data: { permission: 'payroll.view' } },
+      { path: 'nomina-liquidaciones',         component: SettlementsComponent,      canActivate: [permissionGuard], data: { permission: 'payroll.settlement' } }
     ]
   },
   { path: '**', redirectTo: '' }

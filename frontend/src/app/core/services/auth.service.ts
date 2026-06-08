@@ -3,11 +3,13 @@ import { Router } from '@angular/router';
 import { tap } from 'rxjs';
 import { ApiService } from './api.service';
 import { LoginResponse } from '../models';
+import { PermissionService } from './permission.service';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private api = inject(ApiService);
   private router = inject(Router);
+  private perms = inject(PermissionService);
 
   user = signal<{ fullName: string; email: string; role: string } | null>(this.loadUser());
 
@@ -19,6 +21,7 @@ export class AuthService {
           fullName: res.fullName, email: res.email, role: res.role
         }));
         this.user.set({ fullName: res.fullName, email: res.email, role: res.role });
+        this.perms.set(res.permissions ?? []);
       })
     );
   }
@@ -27,6 +30,7 @@ export class AuthService {
     localStorage.removeItem('contanexo_token');
     localStorage.removeItem('contanexo_user');
     this.user.set(null);
+    this.perms.clear();
     this.router.navigate(['/login']);
   }
 

@@ -11,7 +11,7 @@ namespace ContaNexo.API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class AuthController(AppDbContext db, JwtService jwt) : ControllerBase
+public class AuthController(AppDbContext db, JwtService jwt, PermissionService permissions) : ControllerBase
 {
     [HttpPost("login")]
     [AllowAnonymous]
@@ -24,7 +24,9 @@ public class AuthController(AppDbContext db, JwtService jwt) : ControllerBase
             return Unauthorized(new { message = "Credenciales inválidas" });
 
         var expires = DateTime.UtcNow.AddHours(8);
-        return Ok(new LoginResponse(jwt.GenerateToken(user), user.FullName, user.Email, user.Role.ToString(), expires));
+        var token = await jwt.GenerateTokenAsync(user);
+        var perms = await permissions.GetPermissionsForRoleAsync(user.Role.ToString());
+        return Ok(new LoginResponse(token, user.FullName, user.Email, user.Role.ToString(), perms, expires));
     }
 
     [HttpGet("me")]

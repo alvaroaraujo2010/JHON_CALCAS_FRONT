@@ -33,7 +33,7 @@ public class ProductsController(AppDbContext db) : ControllerBase
     }
 
     [HttpPost]
-    [Authorize(Roles = "Administrador,Almacen")]
+    [Authorize(Policy = "products.create")]
     public async Task<ActionResult<ProductDto>> Create([FromBody] ProductRequest req)
     {
         if (await db.Products.AnyAsync(p => p.Sku == req.Sku))
@@ -50,7 +50,7 @@ public class ProductsController(AppDbContext db) : ControllerBase
     }
 
     [HttpPut("{id}")]
-    [Authorize(Roles = "Administrador,Almacen")]
+    [Authorize(Policy = "products.edit")]
     public async Task<ActionResult<ProductDto>> Update(int id, [FromBody] ProductRequest req)
     {
         var p = await db.Products.Include(x => x.Category).FirstOrDefaultAsync(x => x.Id == id);
@@ -65,7 +65,7 @@ public class ProductsController(AppDbContext db) : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    [Authorize(Roles = "Administrador")]
+    [Authorize(Policy = "products.delete")]
     public async Task<IActionResult> Delete(int id)
     {
         var p = await db.Products.FindAsync(id);
