@@ -1,10 +1,5 @@
 <div class="jc-header-host">
-  <header
-    #headerEl
-    class="jc-header jc-header--top-center page-width"
-    [class.jc-header--pinned]="headerPinned"
-    [class.jc-header--visible]="headerVisible"
-  >
+  <header class="jc-header jc-header--top-center page-width">
     <div class="jc-header__top">
       <a routerLink="/login" class="jc-header__admin">Zona administrativa</a>
     </div>
@@ -37,20 +32,7 @@
           />
         </svg>
       </a>
-      <a
-        href="https://jhoncalcas.com/cart"
-        class="jc-header__icon jc-header__icon--cart"
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="Carrito"
-      >
-        <svg viewBox="0 0 18 19" aria-hidden="true" class="jc-header__icon-svg">
-          <path
-            fill="currentColor"
-            d="M0 1.5A.5.5 0 01.5 1H2a.5.5 0 01.485.379L2.89 3H14.5a.5.5 0 01.485.632l-1.5 6A.5.5 0 0113 10H4.5a.5.5 0 01-.485-.379L2.11 2H.5A.5.5 0 010 1.5zm3 8a1.5 1.5 0 100 3 1.5 1.5 0 000-3zm8 0a1.5 1.5 0 100 3 1.5 1.5 0 000-3z"
-          />
-        </svg>
-      </a>
+      <app-cart-slideout />
       <button
         type="button"
         class="jc-header__burger"
@@ -109,15 +91,20 @@
                       (mouseenter)="onBrandEnter(brand)"
                     >
                       @if (brandHref(brand); as href) {
-                        <a
-                          [href]="href"
-                          class="jc-dropdown__brand-label"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          (click)="closeMenus()"
-                        >
-                          <span>{{ brand.label }}</span>
-                        </a>
+                        @if (isExternal(href)) {
+                          <a [href]="href" class="jc-dropdown__brand-label" (click)="closeMenus()">
+                            <span>{{ brand.label }}</span>
+                          </a>
+                        } @else if (menuRoute(href); as route) {
+                          <a
+                            [routerLink]="route.link"
+                            [queryParams]="route.queryParams"
+                            class="jc-dropdown__brand-label"
+                            (click)="closeMenus()"
+                          >
+                            <span>{{ brand.label }}</span>
+                          </a>
+                        }
                       } @else {
                         <button
                           type="button"
@@ -142,14 +129,15 @@
                         <ul class="jc-dropdown__models">
                           @for (model of brand.children; track model.label) {
                             <li>
-                              <a
-                                [href]="model.href!"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                (click)="closeMenus()"
-                              >
-                                <span>{{ model.label }}</span>
-                              </a>
+                              @if (isExternal(model.href!)) {
+                                <a [href]="model.href!" (click)="closeMenus()">
+                                  <span>{{ model.label }}</span>
+                                </a>
+                              } @else if (menuRoute(model.href!); as route) {
+                                <a [routerLink]="route.link" [queryParams]="route.queryParams" (click)="closeMenus()">
+                                  <span>{{ model.label }}</span>
+                                </a>
+                              }
                             </li>
                           }
                         </ul>
@@ -175,22 +163,38 @@
               <summary>{{ item.label }}</summary>
               @for (brand of item.children; track brand.label) {
                 @if (brandHref(brand); as href) {
-                  <a [href]="href" class="jc-mobile__link" target="_blank" rel="noopener noreferrer" (click)="closeMenus()">
-                    {{ brand.label }}
-                  </a>
+                  @if (isExternal(href)) {
+                    <a [href]="href" class="jc-mobile__link" (click)="closeMenus()">
+                      {{ brand.label }}
+                    </a>
+                  } @else if (menuRoute(href); as route) {
+                    <a
+                      [routerLink]="route.link"
+                      [queryParams]="route.queryParams"
+                      class="jc-mobile__link"
+                      (click)="closeMenus()"
+                    >
+                      {{ brand.label }}
+                    </a>
+                  }
                 } @else if (brand.children?.length) {
                   <details class="jc-mobile__sub">
                     <summary>{{ brand.label }}</summary>
                     @for (model of brand.children; track model.label) {
-                      <a
-                        [href]="model.href!"
-                        class="jc-mobile__link jc-mobile__link--sub"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        (click)="closeMenus()"
-                      >
-                        {{ model.label }}
-                      </a>
+                      @if (isExternal(model.href!)) {
+                        <a [href]="model.href!" class="jc-mobile__link jc-mobile__link--sub" (click)="closeMenus()">
+                          {{ model.label }}
+                        </a>
+                      } @else if (menuRoute(model.href!); as route) {
+                        <a
+                          [routerLink]="route.link"
+                          [queryParams]="route.queryParams"
+                          class="jc-mobile__link jc-mobile__link--sub"
+                          (click)="closeMenus()"
+                        >
+                          {{ model.label }}
+                        </a>
+                      }
                     }
                   </details>
                 }
@@ -201,8 +205,4 @@
       </nav>
     }
   </header>
-
-  @if (headerPinned) {
-    <div class="jc-header-placeholder" [style.height.px]="placeholderHeight" aria-hidden="true"></div>
-  }
 </div>

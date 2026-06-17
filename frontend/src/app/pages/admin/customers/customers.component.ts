@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter, Subscription } from 'rxjs';
@@ -19,6 +19,12 @@ export class CustomersComponent implements OnInit, OnDestroy {
   private navSub?: Subscription;
 
   items = signal<Customer[]>([]);
+  readonly searchTerm = signal('');
+  readonly filteredItems = computed(() => {
+    const t = this.searchTerm().toLowerCase();
+    if (!t) return this.items();
+    return this.items().filter(c => c.name?.toLowerCase().includes(t) || c.taxId?.toLowerCase().includes(t) || c.contactName?.toLowerCase().includes(t) || c.email?.toLowerCase().includes(t));
+  });
   showForm = false;
   editingId: number | null = null;
 

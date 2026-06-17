@@ -12,27 +12,27 @@
         "children": [
           {
             "label": "CR",
-            "href": "https://jhoncalcas.com/collections/protectores-cr"
+            "href": "/categoria/protectores-tanque?brand=AKT&model=CR"
           },
           {
             "label": "RTX",
-            "href": "https://jhoncalcas.com/collections/protectores-rtx"
+            "href": "/categoria/protectores-tanque?brand=AKT&model=RTX"
           },
           {
             "label": "TTDS",
-            "href": "https://jhoncalcas.com/collections/protectores-ttds"
+            "href": "/categoria/protectores-tanque?brand=AKT&model=TTDS"
           },
           {
             "label": "TTX",
-            "href": "https://jhoncalcas.com/collections/protectores-ttx"
+            "href": "/categoria/protectores-tanque?brand=AKT&model=TTX"
           },
           {
             "label": "ADVENTOUR",
-            "href": "https://jhoncalcas.com/collections/protectores-adventour"
+            "href": "/categoria/protectores-tanque?brand=AKT&model=ADVENTOUR"
           },
           {
             "label": "NKD",
-            "href": "https://jhoncalcas.com/collections/protectores-nkd"
+            "href": "/categoria/protectores-tanque?brand=AKT&model=NKD"
           }
         ]
       },
@@ -41,43 +41,43 @@
         "children": [
           {
             "label": "DISCOVER",
-            "href": "https://jhoncalcas.com/collections/protectores-discover"
+            "href": "/categoria/protectores-tanque?brand=BAJAJ&model=DISCOVER"
           },
           {
             "label": "DOMINAR",
-            "href": "https://jhoncalcas.com/collections/protectores-dominar"
+            "href": "/categoria/protectores-tanque?brand=BAJAJ&model=DOMINAR"
           },
           {
             "label": "BOXER",
-            "href": "https://jhoncalcas.com/collections/protectores-boxer"
+            "href": "/categoria/protectores-tanque?brand=BAJAJ&model=BOXER"
           },
           {
             "label": "PULSAR N160-250",
-            "href": "https://jhoncalcas.com/collections/protector-pulsar-n160-250"
+            "href": "/categoria/protectores-tanque?brand=BAJAJ&model=PULSAR N160-250"
           },
           {
             "label": "PULSAR 135",
-            "href": "https://jhoncalcas.com/collections/protectores-pulsar-135"
+            "href": "/categoria/protectores-tanque?brand=BAJAJ&model=PULSAR 135"
           },
           {
             "label": "PULSAR 180",
-            "href": "https://jhoncalcas.com/collections/protector-pulsar-180"
+            "href": "/categoria/protectores-tanque?brand=BAJAJ&model=PULSAR 180"
           },
           {
             "label": "PULSAR NS",
-            "href": "https://jhoncalcas.com/collections/protectores-ns"
+            "href": "/categoria/protectores-tanque?brand=BAJAJ&model=PULSAR NS"
           },
           {
             "label": "PULSAR P150",
-            "href": "https://jhoncalcas.com/collections/protectores-pulsar-p150"
+            "href": "/categoria/protectores-tanque?brand=BAJAJ&model=PULSAR P150"
           },
           {
             "label": "PULSAR N125",
-            "href": "https://jhoncalcas.com/collections/pulsar-n125"
+            "href": "/categoria/protectores-tanque?brand=BAJAJ&model=PULSAR N125"
           },
           {
             "label": "BMW",
-            "href": "https://jhoncalcas.com/collections/protectores-bmw"
+            "href": "/categoria/protectores-tanque?brand=BAJAJ&model=BMW"
           }
         ]
       },
@@ -86,7 +86,7 @@
         "children": [
           {
             "label": "BENELLI 180",
-            "href": "https://jhoncalcas.com/collections/benelli-180s"
+            "href": "/categoria/protectores-tanque?brand=BENELLI&model=BENELLI 180"
           }
         ]
       },
@@ -95,31 +95,31 @@
         "children": [
           {
             "label": "CB",
-            "href": "https://jhoncalcas.com/collections/protectores-cb"
+            "href": "/categoria/protectores-tanque?brand=HONDA&model=CB"
           },
           {
             "label": "CBF",
-            "href": "https://jhoncalcas.com/collections/protectores-cbf"
+            "href": "/categoria/protectores-tanque?brand=HONDA&model=CBF"
           },
           {
             "label": "XBLADE",
-            "href": "https://jhoncalcas.com/collections/protectores-xblade"
+            "href": "/categoria/protectores-tanque?brand=HONDA&model=XBLADE"
           },
           {
             "label": "XR",
-            "href": "https://jhoncalcas.com/collections/protectores-xr"
+            "href": "/categoria/protectores-tanque?brand=HONDA&model=XR"
           },
           {
             "label": "XRE",
-            "href": "https://jhoncalcas.com/collections/ppotectores-xre"
+            "href": "/categoria/protectores-tanque?brand=HONDA&model=XRE"
           },
           {
             "label": "NX190",
-            "href": "https://jhoncalcas.com/collections/nx190"
+            "href": "/categoria/protectores-tanque?brand=HONDA&model=NX190"
           },
           {
             "label": "PCX",
-            "href": "https://jhoncalcas.com/collections/pcx"
+            "href": "/categoria/protectores-tanque?brand=HONDA&model=PCX"
           }
         ]
       },
@@ -128,11 +128,11 @@
         "children": [
           {
             "label": "HUNK",
-            "href": "https://jhoncalcas.com/collections/protectores-hunk"
+            "href": "/categoria/protectores-tanque?brand=HERO&model=HUNK"
           },
           {
             "label": "THRILLER",
-            "href": "https://jhoncalcas.com/collections/protectores-thriller"
+            "href": "/categoria/protectores-tanque?brand=HERO&model=THRILLER"
           }
         ]
       },
@@ -141,7 +141,7 @@
         "children": [
           {
             "label": "ER-6N",
-            "href": "https://jhoncalcas.com/products/protector-er-6n"
+            "href": "/categoria/protectores-tanque?brand=KAWASAKI&model=ER-6N"
           }
         ]
       },
@@ -150,7 +150,7 @@
         "children": [
           {
             "label": "DUKE",
-            "href": "https://jhoncalcas.com/collections/protectores-duke"
+            "href": "/categoria/protectores-tanque?brand=KTM&model=DUKE"
           }
         ]
       },
@@ -159,31 +159,31 @@
         "children": [
           {
             "label": "AX",
-            "href": "https://jhoncalcas.com/collections/protectores-ax4"
+            "href": "/categoria/protectores-tanque?brand=SUZUKI&model=AX"
           },
           {
             "label": "DR",
-            "href": "https://jhoncalcas.com/collections/protectores-dr"
+            "href": "/categoria/protectores-tanque?brand=SUZUKI&model=DR"
           },
           {
             "label": "GIXXER",
-            "href": "https://jhoncalcas.com/collections/protectores-gixxer"
+            "href": "/categoria/protectores-tanque?brand=SUZUKI&model=GIXXER"
           },
           {
             "label": "GN",
-            "href": "https://jhoncalcas.com/collections/protectores-gn"
+            "href": "/categoria/protectores-tanque?brand=SUZUKI&model=GN"
           },
           {
             "label": "GS",
-            "href": "https://jhoncalcas.com/collections/protectores-gs"
+            "href": "/categoria/protectores-tanque?brand=SUZUKI&model=GS"
           },
           {
             "label": "GSX- S",
-            "href": "https://jhoncalcas.com/collections/protectores-gsx-s"
+            "href": "/categoria/protectores-tanque?brand=SUZUKI&model=GSX- S"
           },
           {
             "label": "V-STROM",
-            "href": "https://jhoncalcas.com/collections/protectores-v-strom"
+            "href": "/categoria/protectores-tanque?brand=SUZUKI&model=V-STROM"
           }
         ]
       },
@@ -192,11 +192,11 @@
         "children": [
           {
             "label": "APACHE",
-            "href": "https://jhoncalcas.com/collections/protectores-apache"
+            "href": "/categoria/protectores-tanque?brand=TVS&model=APACHE"
           },
           {
             "label": "RAIDER",
-            "href": "https://jhoncalcas.com/collections/protectores-raider"
+            "href": "/categoria/protectores-tanque?brand=TVS&model=RAIDER"
           }
         ]
       },
@@ -205,19 +205,19 @@
         "children": [
           {
             "label": "ARIZONA",
-            "href": "https://jhoncalcas.com/collections/protectores-arizona"
+            "href": "/categoria/protectores-tanque?brand=VICTORY&model=ARIZONA"
           },
           {
             "label": "MRX",
-            "href": "https://jhoncalcas.com/collections/protectores-mrx"
+            "href": "/categoria/protectores-tanque?brand=VICTORY&model=MRX"
           },
           {
             "label": "NITRO",
-            "href": "https://jhoncalcas.com/collections/protectores-nitro"
+            "href": "/categoria/protectores-tanque?brand=VICTORY&model=NITRO"
           },
           {
             "label": "SWITCH",
-            "href": "https://jhoncalcas.com/collections/protector-victory-switch"
+            "href": "/categoria/protectores-tanque?brand=VICTORY&model=SWITCH"
           }
         ]
       },
@@ -226,47 +226,47 @@
         "children": [
           {
             "label": "AEROX",
-            "href": "https://jhoncalcas.com/collections/protector-aerox"
+            "href": "/categoria/protectores-tanque?brand=YAMAHA&model=AEROX"
           },
           {
             "label": "FZ 16",
-            "href": "https://jhoncalcas.com/products/protector-fz-160"
+            "href": "/categoria/protectores-tanque?brand=YAMAHA&model=FZ 16"
           },
           {
             "label": "FZS",
-            "href": "https://jhoncalcas.com/collections/protectores-fzs"
+            "href": "/categoria/protectores-tanque?brand=YAMAHA&model=FZS"
           },
           {
             "label": "FZ 25",
-            "href": "https://jhoncalcas.com/collections/protectores-fz"
+            "href": "/categoria/protectores-tanque?brand=YAMAHA&model=FZ 25"
           },
           {
             "label": "FZ 3.0",
-            "href": "https://jhoncalcas.com/collections/protectores-fz-3-0"
+            "href": "/categoria/protectores-tanque?brand=YAMAHA&model=FZ 3.0"
           },
           {
             "label": "MT",
-            "href": "https://jhoncalcas.com/collections/protectores-mt"
+            "href": "/categoria/protectores-tanque?brand=YAMAHA&model=MT"
           },
           {
             "label": "NMAX",
-            "href": "https://jhoncalcas.com/collections/protectores-nmax"
+            "href": "/categoria/protectores-tanque?brand=YAMAHA&model=NMAX"
           },
           {
             "label": "SZR",
-            "href": "https://jhoncalcas.com/collections/protectores-szr-1"
+            "href": "/categoria/protectores-tanque?brand=YAMAHA&model=SZR"
           },
           {
             "label": "XTZ",
-            "href": "https://jhoncalcas.com/collections/protectores-xtz"
+            "href": "/categoria/protectores-tanque?brand=YAMAHA&model=XTZ"
           },
           {
             "label": "YCZ",
-            "href": "https://jhoncalcas.com/collections/protectores-ycz"
+            "href": "/categoria/protectores-tanque?brand=YAMAHA&model=YCZ"
           },
           {
             "label": "VOGE",
-            "href": "https://jhoncalcas.com/collections/protectores-voge"
+            "href": "/categoria/protectores-tanque?brand=YAMAHA&model=VOGE"
           }
         ]
       },
@@ -275,51 +275,51 @@
         "children": [
           {
             "label": "CR",
-            "href": "https://jhoncalcas.com/collections/calcas-cr"
+            "href": "/categoria/protectores-tanque?brand=AKT&model=CR"
           },
           {
             "label": "DYNAMIC",
-            "href": "https://jhoncalcas.com/collections/calcas-dynamic"
+            "href": "/categoria/protectores-tanque?brand=AKT&model=DYNAMIC"
           },
           {
             "label": "EVO",
-            "href": "https://jhoncalcas.com/collections/evo"
+            "href": "/categoria/protectores-tanque?brand=AKT&model=EVO"
           },
           {
             "label": "FLEX",
-            "href": "https://jhoncalcas.com/collections/flex"
+            "href": "/categoria/protectores-tanque?brand=AKT&model=FLEX"
           },
           {
             "label": "NKD",
-            "href": "https://jhoncalcas.com/collections/calcas-nkd"
+            "href": "/categoria/protectores-tanque?brand=AKT&model=NKD"
           },
           {
             "label": "RTX",
-            "href": "https://jhoncalcas.com/collections/calcas-rtx"
+            "href": "/categoria/protectores-tanque?brand=AKT&model=RTX"
           },
           {
             "label": "TT ADVENTOUR",
-            "href": "https://jhoncalcas.com/collections/calcas-tt-adventour"
+            "href": "/categoria/protectores-tanque?brand=AKT&model=TT ADVENTOUR"
           },
           {
             "label": "TTDS",
-            "href": "https://jhoncalcas.com/collections/calcas-ttds"
+            "href": "/categoria/protectores-tanque?brand=AKT&model=TTDS"
           },
           {
             "label": "TTR",
-            "href": "https://jhoncalcas.com/collections/calcas-ttr"
+            "href": "/categoria/protectores-tanque?brand=AKT&model=TTR"
           },
           {
             "label": "TTX",
-            "href": "https://jhoncalcas.com/collections/calcas-ttx"
+            "href": "/categoria/protectores-tanque?brand=AKT&model=TTX"
           },
           {
             "label": "SPECIAL",
-            "href": "https://jhoncalcas.com/collections/calcas-special"
+            "href": "/categoria/protectores-tanque?brand=AKT&model=SPECIAL"
           },
           {
             "label": "BMW",
-            "href": "https://jhoncalcas.com/collections/bmw"
+            "href": "/categoria/protectores-tanque?brand=AKT&model=BMW"
           }
         ]
       },
@@ -328,35 +328,35 @@
         "children": [
           {
             "label": "BOXER",
-            "href": "https://jhoncalcas.com/collections/calcas-boxer"
+            "href": "/categoria/protectores-tanque?brand=BAJAJ&model=BOXER"
           },
           {
             "label": "DISCOVER",
-            "href": "https://jhoncalcas.com/collections/calcas-discover"
+            "href": "/categoria/protectores-tanque?brand=BAJAJ&model=DISCOVER"
           },
           {
             "label": "DOMINAR",
-            "href": "https://jhoncalcas.com/collections/calcas-dominar"
+            "href": "/categoria/protectores-tanque?brand=BAJAJ&model=DOMINAR"
           },
           {
             "label": "PULSAR 135",
-            "href": "https://jhoncalcas.com/collections/calcas-pulsar-135"
+            "href": "/categoria/protectores-tanque?brand=BAJAJ&model=PULSAR 135"
           },
           {
             "label": "PULSAR 180",
-            "href": "https://jhoncalcas.com/collections/calcas-pulsar-180"
+            "href": "/categoria/protectores-tanque?brand=BAJAJ&model=PULSAR 180"
           },
           {
             "label": "PULSAR NS",
-            "href": "https://jhoncalcas.com/collections/calcas-ns-1"
+            "href": "/categoria/protectores-tanque?brand=BAJAJ&model=PULSAR NS"
           },
           {
             "label": "PULSAR 220",
-            "href": "https://jhoncalcas.com/collections/calcas-pulsar-220"
+            "href": "/categoria/protectores-tanque?brand=BAJAJ&model=PULSAR 220"
           },
           {
             "label": "PLATINO",
-            "href": "https://jhoncalcas.com/collections/calcas-platino"
+            "href": "/categoria/protectores-tanque?brand=BAJAJ&model=PLATINO"
           }
         ]
       },
@@ -365,15 +365,15 @@
         "children": [
           {
             "label": "BENELLI 135",
-            "href": "https://jhoncalcas.com/collections/calcas-benelli-135"
+            "href": "/categoria/protectores-tanque?brand=BENELLI&model=BENELLI 135"
           },
           {
             "label": "BENELLI 180S",
-            "href": "https://jhoncalcas.com/collections/benelli-180s"
+            "href": "/categoria/protectores-tanque?brand=BENELLI&model=BENELLI 180S"
           },
           {
             "label": "TRK 251",
-            "href": "https://jhoncalcas.com/collections/calcas-trk"
+            "href": "/categoria/protectores-tanque?brand=BENELLI&model=TRK 251"
           }
         ]
       },
@@ -382,11 +382,11 @@
         "children": [
           {
             "label": "ECO",
-            "href": "https://jhoncalcas.com/collections/hero"
+            "href": "/categoria/protectores-tanque?brand=HERO&model=ECO"
           },
           {
             "label": "XPULSE",
-            "href": "https://jhoncalcas.com/collections/calcas-xpulse"
+            "href": "/categoria/protectores-tanque?brand=HERO&model=XPULSE"
           }
         ]
       },
@@ -395,39 +395,39 @@
         "children": [
           {
             "label": "CB",
-            "href": "https://jhoncalcas.com/collections/calcas-cb"
+            "href": "/categoria/protectores-tanque?brand=HONDA&model=CB"
           },
           {
             "label": "DIO",
-            "href": "https://jhoncalcas.com/collections/calcas-dio"
+            "href": "/categoria/protectores-tanque?brand=HONDA&model=DIO"
           },
           {
             "label": "NAVI",
-            "href": "https://jhoncalcas.com/collections/calcas-navi"
+            "href": "/categoria/protectores-tanque?brand=HONDA&model=NAVI"
           },
           {
             "label": "XR",
-            "href": "https://jhoncalcas.com/collections/calcas-xr"
+            "href": "/categoria/protectores-tanque?brand=HONDA&model=XR"
           },
           {
             "label": "XLR",
-            "href": "https://jhoncalcas.com/collections/calcas-xrl"
+            "href": "/categoria/protectores-tanque?brand=HONDA&model=XLR"
           },
           {
             "label": "XRE",
-            "href": "https://jhoncalcas.com/collections/calcas-xre"
+            "href": "/categoria/protectores-tanque?brand=HONDA&model=XRE"
           },
           {
             "label": "WAVE",
-            "href": "https://jhoncalcas.com/collections/calcas-wave"
+            "href": "/categoria/protectores-tanque?brand=HONDA&model=WAVE"
           },
           {
             "label": "XBLADE",
-            "href": "https://jhoncalcas.com/collections/calcas-xblade"
+            "href": "/categoria/protectores-tanque?brand=HONDA&model=XBLADE"
           },
           {
             "label": "PCX",
-            "href": "https://jhoncalcas.com/collections/calcas-pcx"
+            "href": "/categoria/protectores-tanque?brand=HONDA&model=PCX"
           }
         ]
       },
@@ -436,7 +436,7 @@
         "children": [
           {
             "label": "DUKE",
-            "href": "https://jhoncalcas.com/collections/calcas-duke"
+            "href": "/categoria/protectores-tanque?brand=KTM&model=DUKE"
           }
         ]
       },
@@ -445,11 +445,11 @@
         "children": [
           {
             "label": "KLX",
-            "href": "https://jhoncalcas.com/collections/calcas-klx"
+            "href": "/categoria/protectores-tanque?brand=KAWASAKI&model=KLX"
           },
           {
             "label": "Z",
-            "href": "https://jhoncalcas.com/collections/calcas-klx-1"
+            "href": "/categoria/protectores-tanque?brand=KAWASAKI&model=Z"
           }
         ]
       },
@@ -458,19 +458,19 @@
         "children": [
           {
             "label": "AGILITY",
-            "href": "https://jhoncalcas.com/collections/calcas-agylity"
+            "href": "/categoria/protectores-tanque?brand=KYMCO&model=AGILITY"
           },
           {
             "label": "ACTIV",
-            "href": "https://jhoncalcas.com/collections/activ-110"
+            "href": "/categoria/protectores-tanque?brand=KYMCO&model=ACTIV"
           },
           {
             "label": "ROCKET",
-            "href": "https://jhoncalcas.com/collections/calcas-rocket"
+            "href": "/categoria/protectores-tanque?brand=KYMCO&model=ROCKET"
           },
           {
             "label": "TWIST",
-            "href": "https://jhoncalcas.com/collections/calcas-twist"
+            "href": "/categoria/protectores-tanque?brand=KYMCO&model=TWIST"
           }
         ]
       },
@@ -479,43 +479,43 @@
         "children": [
           {
             "label": "AX",
-            "href": "https://jhoncalcas.com/collections/calcas-ax4"
+            "href": "/categoria/protectores-tanque?brand=SUZUKI&model=AX"
           },
           {
             "label": "BEST",
-            "href": "https://jhoncalcas.com/collections/calcas-best"
+            "href": "/categoria/protectores-tanque?brand=SUZUKI&model=BEST"
           },
           {
             "label": "DR",
-            "href": "https://jhoncalcas.com/collections/calcas-dr"
+            "href": "/categoria/protectores-tanque?brand=SUZUKI&model=DR"
           },
           {
             "label": "GN",
-            "href": "https://jhoncalcas.com/collections/calcas-gn"
+            "href": "/categoria/protectores-tanque?brand=SUZUKI&model=GN"
           },
           {
             "label": "GIXXER 150",
-            "href": "https://jhoncalcas.com/collections/calcas-gixxer-150"
+            "href": "/categoria/protectores-tanque?brand=SUZUKI&model=GIXXER 150"
           },
           {
             "label": "GIXXER 250",
-            "href": "https://jhoncalcas.com/collections/calcas-gixxer-250"
+            "href": "/categoria/protectores-tanque?brand=SUZUKI&model=GIXXER 250"
           },
           {
             "label": "GIXXER SF",
-            "href": "https://jhoncalcas.com/collections/calcas-gixxer-sf"
+            "href": "/categoria/protectores-tanque?brand=SUZUKI&model=GIXXER SF"
           },
           {
             "label": "V-STROM",
-            "href": "https://jhoncalcas.com/collections/calcas-v-strom"
+            "href": "/categoria/protectores-tanque?brand=SUZUKI&model=V-STROM"
           },
           {
             "label": "VIVA X",
-            "href": "https://jhoncalcas.com/collections/viva-x-1"
+            "href": "/categoria/protectores-tanque?brand=SUZUKI&model=VIVA X"
           },
           {
             "label": "VIVA R",
-            "href": "https://jhoncalcas.com/collections/viva-x"
+            "href": "/categoria/protectores-tanque?brand=SUZUKI&model=VIVA R"
           }
         ]
       },
@@ -524,11 +524,11 @@
         "children": [
           {
             "label": "CROXX",
-            "href": "https://jhoncalcas.com/collections/calcas-croxx"
+            "href": "/categoria/protectores-tanque?brand=SYM&model=CROXX"
           },
           {
             "label": "NHX 190",
-            "href": "https://jhoncalcas.com/collections/nhx-190"
+            "href": "/categoria/protectores-tanque?brand=SYM&model=NHX 190"
           }
         ]
       },
@@ -537,19 +537,19 @@
         "children": [
           {
             "label": "TVS SPORT",
-            "href": "https://jhoncalcas.com/collections/calcas-tvs-sport"
+            "href": "/categoria/protectores-tanque?brand=TVS&model=TVS SPORT"
           },
           {
             "label": "APACHE",
-            "href": "https://jhoncalcas.com/collections/calcas-apache"
+            "href": "/categoria/protectores-tanque?brand=TVS&model=APACHE"
           },
           {
             "label": "RAIDER",
-            "href": "https://jhoncalcas.com/collections/calcas-raider"
+            "href": "/categoria/protectores-tanque?brand=TVS&model=RAIDER"
           },
           {
             "label": "NTORQ",
-            "href": "https://jhoncalcas.com/collections/calcas-ntorq"
+            "href": "/categoria/protectores-tanque?brand=TVS&model=NTORQ"
           }
         ]
       },
@@ -558,51 +558,51 @@
         "children": [
           {
             "label": "ADVANCE",
-            "href": "https://jhoncalcas.com/collections/calcas-advance"
+            "href": "/categoria/protectores-tanque?brand=VICTORY&model=ADVANCE"
           },
           {
             "label": "ARIZONA",
-            "href": "https://jhoncalcas.com/collections/calcas-arizona"
+            "href": "/categoria/protectores-tanque?brand=VICTORY&model=ARIZONA"
           },
           {
             "label": "BOMBER",
-            "href": "https://jhoncalcas.com/collections/bomber"
+            "href": "/categoria/protectores-tanque?brand=VICTORY&model=BOMBER"
           },
           {
             "label": "BLACK",
-            "href": "https://jhoncalcas.com/collections/calcas-black"
+            "href": "/categoria/protectores-tanque?brand=VICTORY&model=BLACK"
           },
           {
             "label": "LIFE",
-            "href": "https://jhoncalcas.com/collections/calcas-life"
+            "href": "/categoria/protectores-tanque?brand=VICTORY&model=LIFE"
           },
           {
             "label": "MACH",
-            "href": "https://jhoncalcas.com/collections/calcas-mach"
+            "href": "/categoria/protectores-tanque?brand=VICTORY&model=MACH"
           },
           {
             "label": "MRX",
-            "href": "https://jhoncalcas.com/collections/calcas-mrx-1"
+            "href": "/categoria/protectores-tanque?brand=VICTORY&model=MRX"
           },
           {
             "label": "NITRO",
-            "href": "https://jhoncalcas.com/collections/nitro"
+            "href": "/categoria/protectores-tanque?brand=VICTORY&model=NITRO"
           },
           {
             "label": "SWITCH",
-            "href": "https://jhoncalcas.com/collections/calcas-switch"
+            "href": "/categoria/protectores-tanque?brand=VICTORY&model=SWITCH"
           },
           {
             "label": "ZS",
-            "href": "https://jhoncalcas.com/collections/calcas-zs-125"
+            "href": "/categoria/protectores-tanque?brand=VICTORY&model=ZS"
           },
           {
             "label": "ONE ST",
-            "href": "https://jhoncalcas.com/collections/calcas-victory-one-st"
+            "href": "/categoria/protectores-tanque?brand=VICTORY&model=ONE ST"
           },
           {
             "label": "VENOM",
-            "href": "https://jhoncalcas.com/collections/calcomanias-venom"
+            "href": "/categoria/protectores-tanque?brand=VICTORY&model=VENOM"
           }
         ]
       },
@@ -611,111 +611,111 @@
         "children": [
           {
             "label": "AEROX",
-            "href": "https://jhoncalcas.com/collections/calcas-aerox"
+            "href": "/categoria/protectores-tanque?brand=YAMAHA&model=AEROX"
           },
           {
             "label": "BWS",
-            "href": "https://jhoncalcas.com/collections/calcas-bws"
+            "href": "/categoria/protectores-tanque?brand=YAMAHA&model=BWS"
           },
           {
             "label": "CRYPTON",
-            "href": "https://jhoncalcas.com/collections/calcas-crypton"
+            "href": "/categoria/protectores-tanque?brand=YAMAHA&model=CRYPTON"
           },
           {
             "label": "DT",
-            "href": "https://jhoncalcas.com/collections/calas-dt"
+            "href": "/categoria/protectores-tanque?brand=YAMAHA&model=DT"
           },
           {
             "label": "FAZER",
-            "href": "https://jhoncalcas.com/collections/fazer"
+            "href": "/categoria/protectores-tanque?brand=YAMAHA&model=FAZER"
           },
           {
             "label": "FZS 150",
-            "href": "https://jhoncalcas.com/collections/fzs-150"
+            "href": "/categoria/protectores-tanque?brand=YAMAHA&model=FZS 150"
           },
           {
             "label": "FZ 3.0",
-            "href": "https://jhoncalcas.com/collections/calcas-fz-3-o"
+            "href": "/categoria/protectores-tanque?brand=YAMAHA&model=FZ 3.0"
           },
           {
             "label": "FZ 160",
-            "href": "https://jhoncalcas.com/collections/calcas-fz-160"
+            "href": "/categoria/protectores-tanque?brand=YAMAHA&model=FZ 160"
           },
           {
             "label": "FZ 250",
-            "href": "https://jhoncalcas.com/collections/calcas-fz-250"
+            "href": "/categoria/protectores-tanque?brand=YAMAHA&model=FZ 250"
           },
           {
             "label": "LIBERO",
-            "href": "https://jhoncalcas.com/collections/calcas-libero"
+            "href": "/categoria/protectores-tanque?brand=YAMAHA&model=LIBERO"
           },
           {
             "label": "MT",
-            "href": "https://jhoncalcas.com/collections/calcas-mt"
+            "href": "/categoria/protectores-tanque?brand=YAMAHA&model=MT"
           },
           {
             "label": "NMAX",
-            "href": "https://jhoncalcas.com/collections/calcas-nmax"
+            "href": "/categoria/protectores-tanque?brand=YAMAHA&model=NMAX"
           },
           {
             "label": "RX",
-            "href": "https://jhoncalcas.com/collections/rx"
+            "href": "/categoria/protectores-tanque?brand=YAMAHA&model=RX"
           },
           {
             "label": "SZR",
-            "href": "https://jhoncalcas.com/collections/calcas-szr"
+            "href": "/categoria/protectores-tanque?brand=YAMAHA&model=SZR"
           },
           {
             "label": "XT",
-            "href": "https://jhoncalcas.com/collections/calcas-xt"
+            "href": "/categoria/protectores-tanque?brand=YAMAHA&model=XT"
           },
           {
             "label": "XTZ 125",
-            "href": "https://jhoncalcas.com/collections/calcas-xtz-125"
+            "href": "/categoria/protectores-tanque?brand=YAMAHA&model=XTZ 125"
           },
           {
             "label": "XTZ 150",
-            "href": "https://jhoncalcas.com/collections/calcas-xtz-150"
+            "href": "/categoria/protectores-tanque?brand=YAMAHA&model=XTZ 150"
           },
           {
             "label": "XTZ 250",
-            "href": "https://jhoncalcas.com/collections/calcas-xtz-250"
+            "href": "/categoria/protectores-tanque?brand=YAMAHA&model=XTZ 250"
           },
           {
             "label": "XMAX",
-            "href": "https://jhoncalcas.com/collections/xmax"
+            "href": "/categoria/protectores-tanque?brand=YAMAHA&model=XMAX"
           },
           {
             "label": "YBR",
-            "href": "https://jhoncalcas.com/collections/calcas-ybr"
+            "href": "/categoria/protectores-tanque?brand=YAMAHA&model=YBR"
           },
           {
             "label": "YCZ",
-            "href": "https://jhoncalcas.com/collections/calcas-ycz"
+            "href": "/categoria/protectores-tanque?brand=YAMAHA&model=YCZ"
           },
           {
             "label": "UNIVERSALES JC",
-            "href": "https://jhoncalcas.com/collections/universales-jc-rines"
+            "href": "/categoria/protectores-tanque?brand=YAMAHA&model=UNIVERSALES JC"
           },
           {
             "label": "BARRAS",
-            "href": "https://jhoncalcas.com/collections/forrado-de-barras"
+            "href": "/categoria/protectores-tanque?brand=YAMAHA&model=BARRAS"
           },
           {
             "label": "CASCOS",
-            "href": "https://jhoncalcas.com/collections/universales-jc-cascos"
+            "href": "/categoria/protectores-tanque?brand=YAMAHA&model=CASCOS"
           },
           {
             "label": "CUPULAS O VISORES",
-            "href": "https://jhoncalcas.com/collections/cupulas-o-visores"
+            "href": "/categoria/protectores-tanque?brand=YAMAHA&model=CUPULAS O VISORES"
           },
           {
             "label": "MALETEROS",
-            "href": "https://jhoncalcas.com/collections/maletero"
+            "href": "/categoria/protectores-tanque?brand=YAMAHA&model=MALETEROS"
           },
           {
             "label": "PPF",
-            "href": "https://jhoncalcas.com/collections/ppf"
+            "href": "/categoria/protectores-tanque?brand=YAMAHA&model=PPF"
           },
           {
             "label": "Ver Colecciones",
@@ -797,51 +797,51 @@
         "children": [
           {
             "label": "CR",
-            "href": "https://jhoncalcas.com/collections/calcas-cr"
+            "href": "/categoria/calcas-motos?brand=AKT&model=CR"
           },
           {
             "label": "DYNAMIC",
-            "href": "https://jhoncalcas.com/collections/calcas-dynamic"
+            "href": "/categoria/calcas-motos?brand=AKT&model=DYNAMIC"
           },
           {
             "label": "EVO",
-            "href": "https://jhoncalcas.com/collections/evo"
+            "href": "/categoria/calcas-motos?brand=AKT&model=EVO"
           },
           {
             "label": "FLEX",
-            "href": "https://jhoncalcas.com/collections/flex"
+            "href": "/categoria/calcas-motos?brand=AKT&model=FLEX"
           },
           {
             "label": "NKD",
-            "href": "https://jhoncalcas.com/collections/calcas-nkd"
+            "href": "/categoria/calcas-motos?brand=AKT&model=NKD"
           },
           {
             "label": "RTX",
-            "href": "https://jhoncalcas.com/collections/calcas-rtx"
+            "href": "/categoria/calcas-motos?brand=AKT&model=RTX"
           },
           {
             "label": "TT ADVENTOUR",
-            "href": "https://jhoncalcas.com/collections/calcas-tt-adventour"
+            "href": "/categoria/calcas-motos?brand=AKT&model=TT ADVENTOUR"
           },
           {
             "label": "TTDS",
-            "href": "https://jhoncalcas.com/collections/calcas-ttds"
+            "href": "/categoria/calcas-motos?brand=AKT&model=TTDS"
           },
           {
             "label": "TTR",
-            "href": "https://jhoncalcas.com/collections/calcas-ttr"
+            "href": "/categoria/calcas-motos?brand=AKT&model=TTR"
           },
           {
             "label": "TTX",
-            "href": "https://jhoncalcas.com/collections/calcas-ttx"
+            "href": "/categoria/calcas-motos?brand=AKT&model=TTX"
           },
           {
             "label": "SPECIAL",
-            "href": "https://jhoncalcas.com/collections/calcas-special"
+            "href": "/categoria/calcas-motos?brand=AKT&model=SPECIAL"
           },
           {
             "label": "BMW",
-            "href": "https://jhoncalcas.com/collections/bmw"
+            "href": "/categoria/calcas-motos?brand=AKT&model=BMW"
           }
         ]
       },
@@ -850,35 +850,35 @@
         "children": [
           {
             "label": "BOXER",
-            "href": "https://jhoncalcas.com/collections/calcas-boxer"
+            "href": "/categoria/calcas-motos?brand=BAJAJ&model=BOXER"
           },
           {
             "label": "DISCOVER",
-            "href": "https://jhoncalcas.com/collections/calcas-discover"
+            "href": "/categoria/calcas-motos?brand=BAJAJ&model=DISCOVER"
           },
           {
             "label": "DOMINAR",
-            "href": "https://jhoncalcas.com/collections/calcas-dominar"
+            "href": "/categoria/calcas-motos?brand=BAJAJ&model=DOMINAR"
           },
           {
             "label": "PULSAR 135",
-            "href": "https://jhoncalcas.com/collections/calcas-pulsar-135"
+            "href": "/categoria/calcas-motos?brand=BAJAJ&model=PULSAR 135"
           },
           {
             "label": "PULSAR 180",
-            "href": "https://jhoncalcas.com/collections/calcas-pulsar-180"
+            "href": "/categoria/calcas-motos?brand=BAJAJ&model=PULSAR 180"
           },
           {
             "label": "PULSAR NS",
-            "href": "https://jhoncalcas.com/collections/calcas-ns-1"
+            "href": "/categoria/calcas-motos?brand=BAJAJ&model=PULSAR NS"
           },
           {
             "label": "PULSAR 220",
-            "href": "https://jhoncalcas.com/collections/calcas-pulsar-220"
+            "href": "/categoria/calcas-motos?brand=BAJAJ&model=PULSAR 220"
           },
           {
             "label": "PLATINO",
-            "href": "https://jhoncalcas.com/collections/calcas-platino"
+            "href": "/categoria/calcas-motos?brand=BAJAJ&model=PLATINO"
           }
         ]
       },
@@ -887,15 +887,15 @@
         "children": [
           {
             "label": "BENELLI 135",
-            "href": "https://jhoncalcas.com/collections/calcas-benelli-135"
+            "href": "/categoria/calcas-motos?brand=BENELLI&model=BENELLI 135"
           },
           {
             "label": "BENELLI 180S",
-            "href": "https://jhoncalcas.com/collections/benelli-180s"
+            "href": "/categoria/calcas-motos?brand=BENELLI&model=BENELLI 180S"
           },
           {
             "label": "TRK 251",
-            "href": "https://jhoncalcas.com/collections/calcas-trk"
+            "href": "/categoria/calcas-motos?brand=BENELLI&model=TRK 251"
           }
         ]
       },
@@ -904,11 +904,11 @@
         "children": [
           {
             "label": "ECO",
-            "href": "https://jhoncalcas.com/collections/hero"
+            "href": "/categoria/calcas-motos?brand=HERO&model=ECO"
           },
           {
             "label": "XPULSE",
-            "href": "https://jhoncalcas.com/collections/calcas-xpulse"
+            "href": "/categoria/calcas-motos?brand=HERO&model=XPULSE"
           }
         ]
       },
@@ -917,39 +917,39 @@
         "children": [
           {
             "label": "CB",
-            "href": "https://jhoncalcas.com/collections/calcas-cb"
+            "href": "/categoria/calcas-motos?brand=HONDA&model=CB"
           },
           {
             "label": "DIO",
-            "href": "https://jhoncalcas.com/collections/calcas-dio"
+            "href": "/categoria/calcas-motos?brand=HONDA&model=DIO"
           },
           {
             "label": "NAVI",
-            "href": "https://jhoncalcas.com/collections/calcas-navi"
+            "href": "/categoria/calcas-motos?brand=HONDA&model=NAVI"
           },
           {
             "label": "XR",
-            "href": "https://jhoncalcas.com/collections/calcas-xr"
+            "href": "/categoria/calcas-motos?brand=HONDA&model=XR"
           },
           {
             "label": "XLR",
-            "href": "https://jhoncalcas.com/collections/calcas-xrl"
+            "href": "/categoria/calcas-motos?brand=HONDA&model=XLR"
           },
           {
             "label": "XRE",
-            "href": "https://jhoncalcas.com/collections/calcas-xre"
+            "href": "/categoria/calcas-motos?brand=HONDA&model=XRE"
           },
           {
             "label": "WAVE",
-            "href": "https://jhoncalcas.com/collections/calcas-wave"
+            "href": "/categoria/calcas-motos?brand=HONDA&model=WAVE"
           },
           {
             "label": "XBLADE",
-            "href": "https://jhoncalcas.com/collections/calcas-xblade"
+            "href": "/categoria/calcas-motos?brand=HONDA&model=XBLADE"
           },
           {
             "label": "PCX",
-            "href": "https://jhoncalcas.com/collections/calcas-pcx"
+            "href": "/categoria/calcas-motos?brand=HONDA&model=PCX"
           }
         ]
       },
@@ -958,7 +958,7 @@
         "children": [
           {
             "label": "DUKE",
-            "href": "https://jhoncalcas.com/collections/calcas-duke"
+            "href": "/categoria/calcas-motos?brand=KTM&model=DUKE"
           }
         ]
       },
@@ -967,11 +967,11 @@
         "children": [
           {
             "label": "KLX",
-            "href": "https://jhoncalcas.com/collections/calcas-klx"
+            "href": "/categoria/calcas-motos?brand=KAWASAKI&model=KLX"
           },
           {
             "label": "Z",
-            "href": "https://jhoncalcas.com/collections/calcas-klx-1"
+            "href": "/categoria/calcas-motos?brand=KAWASAKI&model=Z"
           }
         ]
       },
@@ -980,19 +980,19 @@
         "children": [
           {
             "label": "AGILITY",
-            "href": "https://jhoncalcas.com/collections/calcas-agylity"
+            "href": "/categoria/calcas-motos?brand=KYMCO&model=AGILITY"
           },
           {
             "label": "ACTIV",
-            "href": "https://jhoncalcas.com/collections/activ-110"
+            "href": "/categoria/calcas-motos?brand=KYMCO&model=ACTIV"
           },
           {
             "label": "ROCKET",
-            "href": "https://jhoncalcas.com/collections/calcas-rocket"
+            "href": "/categoria/calcas-motos?brand=KYMCO&model=ROCKET"
           },
           {
             "label": "TWIST",
-            "href": "https://jhoncalcas.com/collections/calcas-twist"
+            "href": "/categoria/calcas-motos?brand=KYMCO&model=TWIST"
           }
         ]
       },
@@ -1001,43 +1001,43 @@
         "children": [
           {
             "label": "AX",
-            "href": "https://jhoncalcas.com/collections/calcas-ax4"
+            "href": "/categoria/calcas-motos?brand=SUZUKI&model=AX"
           },
           {
             "label": "BEST",
-            "href": "https://jhoncalcas.com/collections/calcas-best"
+            "href": "/categoria/calcas-motos?brand=SUZUKI&model=BEST"
           },
           {
             "label": "DR",
-            "href": "https://jhoncalcas.com/collections/calcas-dr"
+            "href": "/categoria/calcas-motos?brand=SUZUKI&model=DR"
           },
           {
             "label": "GN",
-            "href": "https://jhoncalcas.com/collections/calcas-gn"
+            "href": "/categoria/calcas-motos?brand=SUZUKI&model=GN"
           },
           {
             "label": "GIXXER 150",
-            "href": "https://jhoncalcas.com/collections/calcas-gixxer-150"
+            "href": "/categoria/calcas-motos?brand=SUZUKI&model=GIXXER 150"
           },
           {
             "label": "GIXXER 250",
-            "href": "https://jhoncalcas.com/collections/calcas-gixxer-250"
+            "href": "/categoria/calcas-motos?brand=SUZUKI&model=GIXXER 250"
           },
           {
             "label": "GIXXER SF",
-            "href": "https://jhoncalcas.com/collections/calcas-gixxer-sf"
+            "href": "/categoria/calcas-motos?brand=SUZUKI&model=GIXXER SF"
           },
           {
             "label": "V-STROM",
-            "href": "https://jhoncalcas.com/collections/calcas-v-strom"
+            "href": "/categoria/calcas-motos?brand=SUZUKI&model=V-STROM"
           },
           {
             "label": "VIVA X",
-            "href": "https://jhoncalcas.com/collections/viva-x-1"
+            "href": "/categoria/calcas-motos?brand=SUZUKI&model=VIVA X"
           },
           {
             "label": "VIVA R",
-            "href": "https://jhoncalcas.com/collections/viva-x"
+            "href": "/categoria/calcas-motos?brand=SUZUKI&model=VIVA R"
           }
         ]
       },
@@ -1046,11 +1046,11 @@
         "children": [
           {
             "label": "CROXX",
-            "href": "https://jhoncalcas.com/collections/calcas-croxx"
+            "href": "/categoria/calcas-motos?brand=SYM&model=CROXX"
           },
           {
             "label": "NHX 190",
-            "href": "https://jhoncalcas.com/collections/nhx-190"
+            "href": "/categoria/calcas-motos?brand=SYM&model=NHX 190"
           }
         ]
       },
@@ -1059,19 +1059,19 @@
         "children": [
           {
             "label": "TVS SPORT",
-            "href": "https://jhoncalcas.com/collections/calcas-tvs-sport"
+            "href": "/categoria/calcas-motos?brand=TVS&model=TVS SPORT"
           },
           {
             "label": "APACHE",
-            "href": "https://jhoncalcas.com/collections/calcas-apache"
+            "href": "/categoria/calcas-motos?brand=TVS&model=APACHE"
           },
           {
             "label": "RAIDER",
-            "href": "https://jhoncalcas.com/collections/calcas-raider"
+            "href": "/categoria/calcas-motos?brand=TVS&model=RAIDER"
           },
           {
             "label": "NTORQ",
-            "href": "https://jhoncalcas.com/collections/calcas-ntorq"
+            "href": "/categoria/calcas-motos?brand=TVS&model=NTORQ"
           }
         ]
       },
@@ -1080,51 +1080,51 @@
         "children": [
           {
             "label": "ADVANCE",
-            "href": "https://jhoncalcas.com/collections/calcas-advance"
+            "href": "/categoria/calcas-motos?brand=VICTORY&model=ADVANCE"
           },
           {
             "label": "ARIZONA",
-            "href": "https://jhoncalcas.com/collections/calcas-arizona"
+            "href": "/categoria/calcas-motos?brand=VICTORY&model=ARIZONA"
           },
           {
             "label": "BOMBER",
-            "href": "https://jhoncalcas.com/collections/bomber"
+            "href": "/categoria/calcas-motos?brand=VICTORY&model=BOMBER"
           },
           {
             "label": "BLACK",
-            "href": "https://jhoncalcas.com/collections/calcas-black"
+            "href": "/categoria/calcas-motos?brand=VICTORY&model=BLACK"
           },
           {
             "label": "LIFE",
-            "href": "https://jhoncalcas.com/collections/calcas-life"
+            "href": "/categoria/calcas-motos?brand=VICTORY&model=LIFE"
           },
           {
             "label": "MACH",
-            "href": "https://jhoncalcas.com/collections/calcas-mach"
+            "href": "/categoria/calcas-motos?brand=VICTORY&model=MACH"
           },
           {
             "label": "MRX",
-            "href": "https://jhoncalcas.com/collections/calcas-mrx-1"
+            "href": "/categoria/calcas-motos?brand=VICTORY&model=MRX"
           },
           {
             "label": "NITRO",
-            "href": "https://jhoncalcas.com/collections/nitro"
+            "href": "/categoria/calcas-motos?brand=VICTORY&model=NITRO"
           },
           {
             "label": "SWITCH",
-            "href": "https://jhoncalcas.com/collections/calcas-switch"
+            "href": "/categoria/calcas-motos?brand=VICTORY&model=SWITCH"
           },
           {
             "label": "ZS",
-            "href": "https://jhoncalcas.com/collections/calcas-zs-125"
+            "href": "/categoria/calcas-motos?brand=VICTORY&model=ZS"
           },
           {
             "label": "ONE ST",
-            "href": "https://jhoncalcas.com/collections/calcas-victory-one-st"
+            "href": "/categoria/calcas-motos?brand=VICTORY&model=ONE ST"
           },
           {
             "label": "VENOM",
-            "href": "https://jhoncalcas.com/collections/calcomanias-venom"
+            "href": "/categoria/calcas-motos?brand=VICTORY&model=VENOM"
           }
         ]
       },
@@ -1133,111 +1133,111 @@
         "children": [
           {
             "label": "AEROX",
-            "href": "https://jhoncalcas.com/collections/calcas-aerox"
+            "href": "/categoria/calcas-motos?brand=YAMAHA&model=AEROX"
           },
           {
             "label": "BWS",
-            "href": "https://jhoncalcas.com/collections/calcas-bws"
+            "href": "/categoria/calcas-motos?brand=YAMAHA&model=BWS"
           },
           {
             "label": "CRYPTON",
-            "href": "https://jhoncalcas.com/collections/calcas-crypton"
+            "href": "/categoria/calcas-motos?brand=YAMAHA&model=CRYPTON"
           },
           {
             "label": "DT",
-            "href": "https://jhoncalcas.com/collections/calas-dt"
+            "href": "/categoria/calcas-motos?brand=YAMAHA&model=DT"
           },
           {
             "label": "FAZER",
-            "href": "https://jhoncalcas.com/collections/fazer"
+            "href": "/categoria/calcas-motos?brand=YAMAHA&model=FAZER"
           },
           {
             "label": "FZS 150",
-            "href": "https://jhoncalcas.com/collections/fzs-150"
+            "href": "/categoria/calcas-motos?brand=YAMAHA&model=FZS 150"
           },
           {
             "label": "FZ 3.0",
-            "href": "https://jhoncalcas.com/collections/calcas-fz-3-o"
+            "href": "/categoria/calcas-motos?brand=YAMAHA&model=FZ 3.0"
           },
           {
             "label": "FZ 160",
-            "href": "https://jhoncalcas.com/collections/calcas-fz-160"
+            "href": "/categoria/calcas-motos?brand=YAMAHA&model=FZ 160"
           },
           {
             "label": "FZ 250",
-            "href": "https://jhoncalcas.com/collections/calcas-fz-250"
+            "href": "/categoria/calcas-motos?brand=YAMAHA&model=FZ 250"
           },
           {
             "label": "LIBERO",
-            "href": "https://jhoncalcas.com/collections/calcas-libero"
+            "href": "/categoria/calcas-motos?brand=YAMAHA&model=LIBERO"
           },
           {
             "label": "MT",
-            "href": "https://jhoncalcas.com/collections/calcas-mt"
+            "href": "/categoria/calcas-motos?brand=YAMAHA&model=MT"
           },
           {
             "label": "NMAX",
-            "href": "https://jhoncalcas.com/collections/calcas-nmax"
+            "href": "/categoria/calcas-motos?brand=YAMAHA&model=NMAX"
           },
           {
             "label": "RX",
-            "href": "https://jhoncalcas.com/collections/rx"
+            "href": "/categoria/calcas-motos?brand=YAMAHA&model=RX"
           },
           {
             "label": "SZR",
-            "href": "https://jhoncalcas.com/collections/calcas-szr"
+            "href": "/categoria/calcas-motos?brand=YAMAHA&model=SZR"
           },
           {
             "label": "XT",
-            "href": "https://jhoncalcas.com/collections/calcas-xt"
+            "href": "/categoria/calcas-motos?brand=YAMAHA&model=XT"
           },
           {
             "label": "XTZ 125",
-            "href": "https://jhoncalcas.com/collections/calcas-xtz-125"
+            "href": "/categoria/calcas-motos?brand=YAMAHA&model=XTZ 125"
           },
           {
             "label": "XTZ 150",
-            "href": "https://jhoncalcas.com/collections/calcas-xtz-150"
+            "href": "/categoria/calcas-motos?brand=YAMAHA&model=XTZ 150"
           },
           {
             "label": "XTZ 250",
-            "href": "https://jhoncalcas.com/collections/calcas-xtz-250"
+            "href": "/categoria/calcas-motos?brand=YAMAHA&model=XTZ 250"
           },
           {
             "label": "XMAX",
-            "href": "https://jhoncalcas.com/collections/xmax"
+            "href": "/categoria/calcas-motos?brand=YAMAHA&model=XMAX"
           },
           {
             "label": "YBR",
-            "href": "https://jhoncalcas.com/collections/calcas-ybr"
+            "href": "/categoria/calcas-motos?brand=YAMAHA&model=YBR"
           },
           {
             "label": "YCZ",
-            "href": "https://jhoncalcas.com/collections/calcas-ycz"
+            "href": "/categoria/calcas-motos?brand=YAMAHA&model=YCZ"
           },
           {
             "label": "UNIVERSALES JC",
-            "href": "https://jhoncalcas.com/collections/universales-jc-rines"
+            "href": "/categoria/calcas-motos?brand=YAMAHA&model=UNIVERSALES JC"
           },
           {
             "label": "BARRAS",
-            "href": "https://jhoncalcas.com/collections/forrado-de-barras"
+            "href": "/categoria/calcas-motos?brand=YAMAHA&model=BARRAS"
           },
           {
             "label": "CASCOS",
-            "href": "https://jhoncalcas.com/collections/universales-jc-cascos"
+            "href": "/categoria/calcas-motos?brand=YAMAHA&model=CASCOS"
           },
           {
             "label": "CUPULAS O VISORES",
-            "href": "https://jhoncalcas.com/collections/cupulas-o-visores"
+            "href": "/categoria/calcas-motos?brand=YAMAHA&model=CUPULAS O VISORES"
           },
           {
             "label": "MALETEROS",
-            "href": "https://jhoncalcas.com/collections/maletero"
+            "href": "/categoria/calcas-motos?brand=YAMAHA&model=MALETEROS"
           },
           {
             "label": "PPF",
-            "href": "https://jhoncalcas.com/collections/ppf"
+            "href": "/categoria/calcas-motos?brand=YAMAHA&model=PPF"
           },
           {
             "label": "Ver Colecciones",
@@ -1316,32 +1316,32 @@
     "children": [
       {
         "label": "UNIVERSALES JC",
-        "href": "https://jhoncalcas.com/collections/universales-jc-rines",
+        "href": "/categoria/calcas-rines?tipo=UNIVERSALES JC",
         "children": []
       },
       {
         "label": "BARRAS",
-        "href": "https://jhoncalcas.com/collections/forrado-de-barras",
+        "href": "/categoria/calcas-rines?tipo=BARRAS",
         "children": []
       },
       {
         "label": "CASCOS",
-        "href": "https://jhoncalcas.com/collections/universales-jc-cascos",
+        "href": "/categoria/calcas-rines?tipo=CASCOS",
         "children": []
       },
       {
         "label": "CUPULAS O VISORES",
-        "href": "https://jhoncalcas.com/collections/cupulas-o-visores",
+        "href": "/categoria/calcas-rines?tipo=CUPULAS O VISORES",
         "children": []
       },
       {
         "label": "MALETEROS",
-        "href": "https://jhoncalcas.com/collections/maletero",
+        "href": "/categoria/calcas-rines?tipo=MALETEROS",
         "children": []
       },
       {
         "label": "PPF",
-        "href": "https://jhoncalcas.com/collections/ppf",
+        "href": "/categoria/calcas-rines?tipo=PPF",
         "children": []
       },
       {
@@ -1431,27 +1431,27 @@
     "children": [
       {
         "label": "BARRAS",
-        "href": "https://jhoncalcas.com/collections/forrado-de-barras",
+        "href": "/categoria/calcas-rines?tipo=BARRAS",
         "children": []
       },
       {
         "label": "CASCOS",
-        "href": "https://jhoncalcas.com/collections/universales-jc-cascos",
+        "href": "/categoria/calcas-rines?tipo=CASCOS",
         "children": []
       },
       {
         "label": "CUPULAS O VISORES",
-        "href": "https://jhoncalcas.com/collections/cupulas-o-visores",
+        "href": "/categoria/calcas-rines?tipo=CUPULAS O VISORES",
         "children": []
       },
       {
         "label": "MALETEROS",
-        "href": "https://jhoncalcas.com/collections/maletero",
+        "href": "/categoria/calcas-rines?tipo=MALETEROS",
         "children": []
       },
       {
         "label": "PPF",
-        "href": "https://jhoncalcas.com/collections/ppf",
+        "href": "/categoria/calcas-rines?tipo=PPF",
         "children": []
       },
       {

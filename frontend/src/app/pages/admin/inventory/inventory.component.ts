@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { NavigationEnd, Router } from '@angular/router';
@@ -21,6 +21,12 @@ export class InventoryComponent implements OnInit, OnDestroy {
 
   products = signal<Product[]>([]);
   movements = signal<InventoryMovement[]>([]);
+  readonly searchTerm = signal('');
+  readonly filteredMovements = computed(() => {
+    const t = this.searchTerm().toLowerCase();
+    if (!t) return this.movements();
+    return this.movements().filter(m => m.productName?.toLowerCase().includes(t) || m.type?.toLowerCase().includes(t) || (m.reference?.toLowerCase().includes(t)) || (m.notes?.toLowerCase().includes(t)));
+  });
 
   form = this.fb.group({
     productId: [0, Validators.min(1)],

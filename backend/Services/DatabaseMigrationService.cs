@@ -49,6 +49,24 @@ public class DatabaseMigrationService
         new("006_rbac_permissions",
             "RBAC: tablas permissions + role_permissions, catálogo y matriz por defecto sembrada",
             Apply006),
+        new("007_ecommerce",
+            "E-commerce: tablas catalogproducts, orders, orderitems + campos para Mercado Pago",
+            Apply007),
+        new("008_catalogproduct_model",
+            "Agrega columna Model a catalogproducts si no existe (para BD existentes que aplicaron 007 sin el ALTER)",
+            Apply008),
+        new("009_subscription",
+            "Crea tabla subscription con IsActive, MonthlyFee, DueDate y siembra registro activo por defecto",
+            Apply009),
+        new("010_catalogproduct_metadata",
+            "Catálogo: MenuModel, DesignRef, Color, InternalProductId para filtros del menú e inventario",
+            Apply010),
+        new("011_rbac_sync_ecommerce",
+            "Sincroniza permisos de e-commerce (catalog.manage, orders.*) en catálogo y roles por defecto",
+            Apply011),
+        new("012_order_stock_deducted",
+            "Pedidos web: columna StockDeductedAt para descuento idempotente de inventario",
+            Apply012),
     };
 
     public async Task ApplyPendingAsync()
@@ -431,6 +449,280 @@ CREATE TABLE rolepermissions (
                 var pk2 = ins.CreateParameter(); pk2.ParameterName = "@k"; pk2.Value = key; ins.Parameters.Add(pk2);
                 await ins.ExecuteNonQueryAsync();
             }
+        }
+    }
+
+    /// <summary>
+    /// 008 — Agrega columna Model a catalogproducts si no existe.
+    /// </summary>
+    private static async Task Apply008(AppDbContext db)
+    {
+        var conn = db.Database.GetDbConnection();
+        if (conn.State != System.Data.ConnectionState.Open) await conn.OpenAsync();
+
+        await using var tblCheck = conn.CreateCommand();
+        tblCheck.CommandText = @"SELECT COUNT(*) FROM information_schema.tables
+                                 WHERE table_schema = DATABASE() AND table_name = 'catalogproducts'";
+        if (Convert.ToInt32(await tblCheck.ExecuteScalarAsync()) == 0) return;
+
+        await using var colCheck = conn.CreateCommand();
+        colCheck.CommandText = @"SELECT COUNT(*) FROM information_schema.columns
+            WHERE table_schema = DATABASE() AND table_name = 'catalogproducts' AND column_name = 'Model'";
+        if (Convert.ToInt32(await colCheck.ExecuteScalarAsync()) == 0)
+        {
+            await using var alter = conn.CreateCommand();
+            alter.CommandText = "ALTER TABLE catalogproducts ADD COLUMN Model VARCHAR(100) NULL AFTER Brand";
+            await alter.ExecuteNonQueryAsync();
+        }
+    }
+
+    /// <summary>
+    /// 009 — Crea tabla subscription y siembra registro activo por defecto.
+    /// </summary>
+    private static async Task Apply009(AppDbContext db)
+    {
+        var conn = db.Database.GetDbConnection();
+        if (conn.State != System.Data.ConnectionState.Open) await conn.OpenAsync();
+
+        await using (var tblCheck = conn.CreateCommand())
+        {
+            tblCheck.CommandText = @"SELECT COUNT(*) FROM information_schema.tables
+                                     WHERE table_schema = DATABASE() AND table_name = 'subscription'";
+            if (Convert.ToInt32(await tblCheck.ExecuteScalarAsync()) == 0)
+            {
+                await using var create = conn.CreateCommand();
+                create.CommandText = @"
+CREATE TABLE subscription (
+    Id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    IsActive TINYINT(1) NOT NULL DEFAULT 1,
+    MonthlyFee DECIMAL(18,2) NOT NULL DEFAULT 0,
+    DueDate DATETIME(6) NULL,
+    UpdatedAt DATETIME(6) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
+                await create.ExecuteNonQueryAsync();
+
+                // Seed: registro activo por defecto
+                await using var seed = conn.CreateCommand();
+                seed.CommandText = "INSERT INTO subscription (IsActive, MonthlyFee, UpdatedAt) VALUES (1, 0, NOW())";
+                await seed.ExecuteNonQueryAsync();
+            }
+        }
+    }
+
+    /// <summary>
+    /// 007 — E-commerce: tablas catalogproducts, orders, orderitems.
+    /// </summary>
+    private static async Task Apply007(AppDbContext db)
+    {
+        var conn = db.Database.GetDbConnection();
+        if (conn.State != System.Data.ConnectionState.Open) await conn.OpenAsync();
+
+        // 1) Tabla catalogproducts
+        await using (var tblCheck = conn.CreateCommand())
+        {
+            tblCheck.CommandText = @"SELECT COUNT(*) FROM information_schema.tables
+                                     WHERE table_schema = DATABASE() AND table_name = 'catalogproducts'";
+            if (Convert.ToInt32(await tblCheck.ExecuteScalarAsync()) == 0)
+            {
+                await using var create = conn.CreateCommand();
+                create.CommandText = @"
+CREATE TABLE catalogproducts (
+    Id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    Slug VARCHAR(100) NOT NULL,
+    ProductLine VARCHAR(50) NOT NULL,
+    Brand VARCHAR(50) NOT NULL,
+    Model VARCHAR(100) NULL,
+    Title VARCHAR(200) NOT NULL,
+    Description TEXT NULL,
+    Price DECIMAL(18,2) NOT NULL DEFAULT 0,
+    ImageFileName VARCHAR(200) NOT NULL,
+    SortOrder INT NOT NULL DEFAULT 0,
+    IsActive TINYINT(1) NOT NULL DEFAULT 1,
+    CreatedAt DATETIME(6) NOT NULL,
+    UpdatedAt DATETIME(6) NOT NULL,
+    INDEX IX_catalogproducts_Slug (Slug),
+    INDEX IX_catalogproducts_ProductLine (ProductLine),
+    INDEX IX_catalogproducts_Brand (Brand)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
+                await create.ExecuteNonQueryAsync();
+            }
+            else
+            {
+                // Agrega columna Model si no existe (para BD existentes)
+                await using var colCheck = conn.CreateCommand();
+                colCheck.CommandText = @"SELECT COUNT(*) FROM information_schema.columns
+                    WHERE table_schema = DATABASE() AND table_name = 'catalogproducts' AND column_name = 'Model'";
+                if (Convert.ToInt32(await colCheck.ExecuteScalarAsync()) == 0)
+                {
+                    await using var alter = conn.CreateCommand();
+                    alter.CommandText = "ALTER TABLE catalogproducts ADD COLUMN Model VARCHAR(100) NULL AFTER Brand";
+                    await alter.ExecuteNonQueryAsync();
+                }
+            }
+        }
+
+        // 2) Tabla orders
+        await using (var tblCheck2 = conn.CreateCommand())
+        {
+            tblCheck2.CommandText = @"SELECT COUNT(*) FROM information_schema.tables
+                                      WHERE table_schema = DATABASE() AND table_name = 'orders'";
+            if (Convert.ToInt32(await tblCheck2.ExecuteScalarAsync()) == 0)
+            {
+                await using var create = conn.CreateCommand();
+                create.CommandText = @"
+CREATE TABLE orders (
+    Id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    OrderNumber VARCHAR(20) NOT NULL,
+    CustomerName VARCHAR(200) NOT NULL,
+    CustomerEmail VARCHAR(200) NOT NULL,
+    CustomerPhone VARCHAR(50) NOT NULL,
+    CustomerAddress VARCHAR(500) NULL,
+    City VARCHAR(100) NULL,
+    Department VARCHAR(100) NULL,
+    Notes TEXT NULL,
+    Subtotal DECIMAL(18,2) NOT NULL,
+    ShippingCost DECIMAL(18,2) NOT NULL DEFAULT 0,
+    Total DECIMAL(18,2) NOT NULL,
+    Status VARCHAR(20) NOT NULL DEFAULT 'pending',
+    MpPaymentId VARCHAR(100) NULL,
+    MpPaymentStatus VARCHAR(30) NULL,
+    PaymentMethod VARCHAR(30) NULL,
+    CreatedAt DATETIME(6) NOT NULL,
+    UpdatedAt DATETIME(6) NOT NULL,
+    INDEX IX_orders_OrderNumber (OrderNumber),
+    INDEX IX_orders_Status (Status)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
+                await create.ExecuteNonQueryAsync();
+            }
+        }
+
+        // 3) Tabla orderitems
+        await using (var tblCheck3 = conn.CreateCommand())
+        {
+            tblCheck3.CommandText = @"SELECT COUNT(*) FROM information_schema.tables
+                                      WHERE table_schema = DATABASE() AND table_name = 'orderitems'";
+            if (Convert.ToInt32(await tblCheck3.ExecuteScalarAsync()) == 0)
+            {
+                await using var create = conn.CreateCommand();
+                create.CommandText = @"
+CREATE TABLE orderitems (
+    Id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    OrderId INT NOT NULL,
+    CatalogProductId INT NOT NULL,
+    ProductTitle VARCHAR(200) NOT NULL,
+    Quantity INT NOT NULL,
+    UnitPrice DECIMAL(18,2) NOT NULL,
+    LineTotal DECIMAL(18,2) NOT NULL,
+    CONSTRAINT FK_orderitems_orders FOREIGN KEY (OrderId) REFERENCES orders(Id) ON DELETE CASCADE,
+    INDEX IX_orderitems_OrderId (OrderId)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
+                await create.ExecuteNonQueryAsync();
+            }
+        }
+    }
+
+    /// <summary>
+    /// 010 — Metadatos de catálogo: MenuModel, DesignRef, Color, InternalProductId.
+    /// </summary>
+    private static async Task Apply010(AppDbContext db)
+    {
+        var conn = db.Database.GetDbConnection();
+        if (conn.State != System.Data.ConnectionState.Open) await conn.OpenAsync();
+
+        await using var tblCheck = conn.CreateCommand();
+        tblCheck.CommandText = @"SELECT COUNT(*) FROM information_schema.tables
+                                 WHERE table_schema = DATABASE() AND table_name = 'catalogproducts'";
+        if (Convert.ToInt32(await tblCheck.ExecuteScalarAsync()) == 0) return;
+
+        var columns = new (string Name, string Sql)[]
+        {
+            ("MenuModel", "ALTER TABLE catalogproducts ADD COLUMN MenuModel VARCHAR(100) NULL AFTER Model"),
+            ("DesignRef", "ALTER TABLE catalogproducts ADD COLUMN DesignRef VARCHAR(100) NULL AFTER MenuModel"),
+            ("Color", "ALTER TABLE catalogproducts ADD COLUMN Color VARCHAR(50) NULL AFTER DesignRef"),
+            ("InternalProductId", "ALTER TABLE catalogproducts ADD COLUMN InternalProductId INT NULL AFTER Color"),
+        };
+
+        foreach (var (name, sql) in columns)
+        {
+            await using var colCheck = conn.CreateCommand();
+            colCheck.CommandText = @"SELECT COUNT(*) FROM information_schema.columns
+                WHERE table_schema = DATABASE() AND table_name = 'catalogproducts' AND column_name = @col";
+            var p = colCheck.CreateParameter();
+            p.ParameterName = "@col";
+            p.Value = name;
+            colCheck.Parameters.Add(p);
+            if (Convert.ToInt32(await colCheck.ExecuteScalarAsync()) == 0)
+            {
+                await using var alter = conn.CreateCommand();
+                alter.CommandText = sql;
+                await alter.ExecuteNonQueryAsync();
+            }
+        }
+
+        await using var idxCheck = conn.CreateCommand();
+        idxCheck.CommandText = @"SELECT COUNT(*) FROM information_schema.statistics
+            WHERE table_schema = DATABASE() AND table_name = 'catalogproducts' AND index_name = 'IX_catalogproducts_MenuModel'";
+        if (Convert.ToInt32(await idxCheck.ExecuteScalarAsync()) == 0)
+        {
+            await using var idx = conn.CreateCommand();
+            idx.CommandText = "CREATE INDEX IX_catalogproducts_MenuModel ON catalogproducts (ProductLine, Brand, MenuModel)";
+            await idx.ExecuteNonQueryAsync();
+        }
+    }
+
+    /// <summary>
+    /// 011 — Añade permisos nuevos al catálogo y a la matriz por defecto de cada rol (INSERT IGNORE).
+    /// Cubre permisos de e-commerce agregados después de la migración 006 inicial.
+    /// </summary>
+    private static async Task Apply011(AppDbContext db)
+    {
+        var conn = db.Database.GetDbConnection();
+        if (conn.State != System.Data.ConnectionState.Open) await conn.OpenAsync();
+
+        foreach (var p in PermissionService.Catalog)
+        {
+            await using var ins = conn.CreateCommand();
+            ins.CommandText = @"INSERT IGNORE INTO permissions (`Key`, Module, Action, Description)
+                                VALUES (@k, @m, @a, @d)";
+            var pk = ins.CreateParameter(); pk.ParameterName = "@k"; pk.Value = p.Key; ins.Parameters.Add(pk);
+            var pm = ins.CreateParameter(); pm.ParameterName = "@m"; pm.Value = p.Module; ins.Parameters.Add(pm);
+            var pa = ins.CreateParameter(); pa.ParameterName = "@a"; pa.Value = p.Action; ins.Parameters.Add(pa);
+            var pd = ins.CreateParameter(); pd.ParameterName = "@d"; pd.Value = p.Description; ins.Parameters.Add(pd);
+            await ins.ExecuteNonQueryAsync();
+        }
+
+        foreach (var (role, keys) in PermissionService.DefaultMatrix)
+        {
+            foreach (var key in keys)
+            {
+                await using var ins = conn.CreateCommand();
+                ins.CommandText = @"INSERT IGNORE INTO rolepermissions (Role, PermissionKey)
+                                    VALUES (@r, @k)";
+                var pr = ins.CreateParameter(); pr.ParameterName = "@r"; pr.Value = role; ins.Parameters.Add(pr);
+                var pk = ins.CreateParameter(); pk.ParameterName = "@k"; pk.Value = key; ins.Parameters.Add(pk);
+                await ins.ExecuteNonQueryAsync();
+            }
+        }
+    }
+
+    private static async Task Apply012(AppDbContext db)
+    {
+        var conn = db.Database.GetDbConnection();
+        if (conn.State != System.Data.ConnectionState.Open) await conn.OpenAsync();
+
+        await using var tblCheck = conn.CreateCommand();
+        tblCheck.CommandText = @"SELECT COUNT(*) FROM information_schema.tables
+                                 WHERE table_schema = DATABASE() AND table_name = 'orders'";
+        if (Convert.ToInt32(await tblCheck.ExecuteScalarAsync()) == 0) return;
+
+        await using var colCheck = conn.CreateCommand();
+        colCheck.CommandText = @"SELECT COUNT(*) FROM information_schema.columns
+            WHERE table_schema = DATABASE() AND table_name = 'orders' AND column_name = 'StockDeductedAt'";
+        if (Convert.ToInt32(await colCheck.ExecuteScalarAsync()) == 0)
+        {
+            await using var alter = conn.CreateCommand();
+            alter.CommandText = "ALTER TABLE orders ADD COLUMN StockDeductedAt DATETIME(6) NULL AFTER PaymentMethod";
+            await alter.ExecuteNonQueryAsync();
         }
     }
 }

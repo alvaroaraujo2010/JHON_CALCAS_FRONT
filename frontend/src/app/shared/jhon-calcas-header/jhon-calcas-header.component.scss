@@ -53,10 +53,6 @@
   color: rgba(255, 255, 255, 0.75);
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   overflow: visible;
-  transition:
-    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
-    box-shadow 0.45s ease;
-  will-change: transform;
 }
 
 .jc-header__top {
@@ -88,28 +84,6 @@
   .jc-header {
     font-size: 16px;
   }
-}
-
-.jc-header--pinned {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  width: 100%;
-  max-width: none;
-  transform: translateY(-100%);
-  box-shadow: none;
-}
-
-.jc-header--pinned.jc-header--visible {
-  transform: translateY(0);
-  box-shadow: 0 6px 28px rgba(0, 0, 0, 0.55);
-}
-
-.jc-header-placeholder {
-  display: block;
-  width: 100%;
-  pointer-events: none;
 }
 
 .jc-header__search {

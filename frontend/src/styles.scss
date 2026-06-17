@@ -27,6 +27,64 @@ body.jc-public-page {
   }
 }
 
+/* Botones públicos compatibles con Jhon Calcas */
+.jc-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.75rem;
+  min-height: 4.5rem;
+  min-width: 12rem;
+  border-radius: 0;
+  font-size: 1.05rem;
+  font-weight: 600;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  background: #fff;
+  color: #121212;
+}
+.jc-btn:hover {
+  background: #f3f3f3;
+  color: #000;
+}
+.jc-btn--primary {
+  background: #fff;
+  color: #121212;
+}
+.jc-btn--primary:hover {
+  background: #f3f3f3;
+  color: #000;
+}
+.jc-btn--collection {
+  background: #dd1d1d;
+  color: #fff;
+  margin-top: 0.5rem;
+}
+.jc-btn--collection:hover {
+  background: #c40303;
+  color: #fff;
+}
+.jc-btn--danger {
+  background: #d32f2f;
+  color: #fff;
+  border-color: #d32f2f;
+}
+
+.page-width {
+  max-width: 120rem;
+  margin: 0 auto;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+@media (min-width: 750px) {
+  .page-width {
+    padding-left: 5rem;
+    padding-right: 5rem;
+  }
+}
+
 body.jc-admin-page {
   font-family: 'Montserrat', system-ui, sans-serif;
   background: #f3f3f3;
@@ -202,6 +260,18 @@ body.jc-admin-page {
     color: #475569;
   }
   span { font-size: 0.85rem; color: #64748b; }
+}
+
+.data-card__search {
+  width: 100%;
+  padding: 0.65rem 1rem;
+  border: none;
+  border-bottom: 1px solid #e2e8f0;
+  font-size: 0.9rem;
+  font-family: inherit;
+  outline: none;
+  &::placeholder { color: #94a3b8; }
+  &:focus { background: #f8fafc; }
 }
 
 table.data {

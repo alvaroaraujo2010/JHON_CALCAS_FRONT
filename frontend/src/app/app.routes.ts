@@ -1,7 +1,11 @@
 import { Routes } from '@angular/router';
 import { authGuard, publicGuard } from './core/guards/auth.guard';
 import { permissionGuard } from './core/guards/permission.guard';
+import { PublicLayoutComponent } from './layout/public-layout/public-layout.component';
 import { HomeComponent } from './pages/public/home/home.component';
+import { GalleryComponent } from './pages/public/gallery/gallery.component';
+import { CheckoutComponent } from './pages/public/checkout/checkout.component';
+import { OrderConfirmationComponent } from './pages/public/order-confirmation/order-confirmation.component';
 import { LoginComponent } from './pages/public/login/login.component';
 import { AdminLayoutComponent } from './layout/admin-layout/admin-layout.component';
 import { DashboardComponent } from './pages/admin/dashboard/dashboard.component';
@@ -25,9 +29,19 @@ import { LegalParametersComponent } from './pages/admin/payroll/legal-parameters
 import { SettlementsComponent } from './pages/admin/payroll/settlements/settlements.component';
 import { ProvisionsComponent } from './pages/admin/payroll/provisions/provisions.component';
 import { RolesComponent } from './pages/admin/roles/roles.component';
+import { GalleryAdminComponent } from './pages/admin/gallery/gallery-admin.component';
+import { OrdersAdminComponent } from './pages/admin/orders/orders-admin.component';
 
 export const routes: Routes = [
-  { path: '', component: HomeComponent },
+  {
+    path: '', component: PublicLayoutComponent, children: [
+      { path: '', component: HomeComponent },
+      { path: 'categoria/:slug', component: GalleryComponent },
+      { path: 'galeria', component: GalleryComponent },
+      { path: 'checkout', component: CheckoutComponent },
+      { path: 'pedido/:id', component: OrderConfirmationComponent },
+    ]
+  },
   { path: 'login', component: LoginComponent, canActivate: [publicGuard] },
   {
     path: 'admin',
@@ -43,6 +57,8 @@ export const routes: Routes = [
       { path: 'compras',           component: PurchasesComponent,       canActivate: [permissionGuard], data: { permission: 'purchases.view' } },
       { path: 'ventas',            component: SalesComponent,           canActivate: [permissionGuard], data: { permission: 'sales.view' } },
       { path: 'contabilidad',      component: AccountingComponent,      canActivate: [permissionGuard], data: { permission: 'accounting.view' } },
+      { path: 'galeria',           component: GalleryAdminComponent,    canActivate: [permissionGuard], data: { permission: ['catalog.manage', 'products.edit'] } },
+      { path: 'pedidos',           component: OrdersAdminComponent,     canActivate: [permissionGuard], data: { permission: 'orders.view' } },
       { path: 'usuarios',          component: UsersComponent,           canActivate: [permissionGuard], data: { permission: 'users.view' } },
       { path: 'roles',             component: RolesComponent,           canActivate: [permissionGuard], data: { permission: 'users.permissions' } },
       { path: 'empresa',           component: CompanyComponent,         canActivate: [permissionGuard], data: { permission: 'company.view' } },

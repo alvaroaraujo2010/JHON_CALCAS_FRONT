@@ -30,12 +30,20 @@ export class ApiService {
     return this.http.delete<void>(`${this.base}/${path}`);
   }
 
+  putForm<T>(path: string, form: FormData): Observable<T> {
+    return this.http.put<T>(`${this.base}/${path}`, form);
+  }
+
   getPublic<T>(path: string): Observable<T> {
     return this.http.get<T>(`${this.base}/${path}`);
   }
 
   postPublic<T>(path: string, body: unknown): Observable<T> {
     return this.http.post<T>(`${this.base}/${path}`, body);
+  }
+
+  postForm<T>(path: string, form: FormData): Observable<T> {
+    return this.http.post<T>(`${this.base}/${path}`, form);
   }
 
   /** Ejecuta peticion y muestra toast de exito o error. */

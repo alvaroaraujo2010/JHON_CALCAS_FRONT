@@ -7,6 +7,18 @@
         <small>Panel administrativo</small>
       </div>
     </a>
+
+    <div class="sidebar-user">
+      <div class="sidebar-user__info">
+        <strong>{{ auth.user()?.fullName }}</strong>
+        <small>{{ auth.user()?.role }}</small>
+      </div>
+      <div class="sidebar-user__actions">
+        <button type="button" (click)="auth.logout()">Cerrar sesión</button>
+        <a routerLink="/">Sitio público</a>
+      </div>
+    </div>
+
     <nav>
       @for (item of menu(); track item.path) {
         <a [routerLink]="item.path" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: item.path === '/admin' }">
@@ -15,14 +27,36 @@
         </a>
       }
     </nav>
-    <div class="sidebar-foot">
-      <p>{{ auth.user()?.fullName }}</p>
-      <small>{{ auth.user()?.role }}</small>
-      <button type="button" (click)="auth.logout()">Cerrar sesion</button>
-      <a routerLink="/">Sitio publico</a>
-    </div>
+
+    @if (showChangePwd()) {
+      <div class="sidebar-pwd">
+        <input type="password" [(ngModel)]="changePwdCurrent" placeholder="Contraseña actual" />
+        <input type="password" [(ngModel)]="changePwdNew" placeholder="Nueva (6+ caracteres)" />
+        <button type="button" class="btn sm" (click)="changePassword()" [disabled]="changePwdSaving || changePwdNew.length < 6">Guardar</button>
+        <button type="button" class="btn sm" (click)="toggleChangePwd()">Cancelar</button>
+      </div>
+    } @else {
+      <button type="button" class="sidebar-pwd-btn" (click)="toggleChangePwd()">Cambiar contraseña</button>
+    }
   </aside>
   <main class="content">
-    <router-outlet />
+    @if (subscriptionChecking()) {
+      <div class="sub-overlay"><p>Verificando suscripción...</p></div>
+    } @else if (!subscriptionActive()) {
+      <div class="sub-overlay">
+        <div class="sub-overlay__card">
+          <div class="sub-overlay__icon">!</div>
+          <h2>Suscripción vencida</h2>
+          <p>La zona administrativa está desactivada porque la suscripción mensual no ha sido pagada.</p>
+          <p class="sub-overlay__hint">Contacte a su proveedor para renovar el servicio.</p>
+          @if (perms.can('subscription.manage')) {
+            <button class="btn primary" (click)="reactivateSubscription()">Reactivar zona administrativa</button>
+          }
+          <a routerLink="/" class="sub-overlay__back">Volver al sitio público</a>
+        </div>
+      </div>
+    } @else {
+      <router-outlet />
+    }
   </main>
 </div>

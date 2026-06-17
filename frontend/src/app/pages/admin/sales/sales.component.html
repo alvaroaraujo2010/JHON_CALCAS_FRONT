@@ -1,48 +1,110 @@
 <div class="module-page">
-  <app-module-header title="Ventas" subtitle="Facturacion electronica, clientes e inventario" badge="Operaciones">
-    <button class="btn" type="button" (click)="showForm = !showForm">{{ showForm ? 'Cancelar' : 'Nueva venta' }}</button>
-  </app-module-header>
+  <app-module-header title="Ventas" subtitle="Punto de venta rápido — busque producto, agregue y cobre" badge="Operaciones" />
 
-  @if (showForm) {
-    <form class="card-form" [formGroup]="form" (ngSubmit)="save()">
-      <div class="card-form__head">
-        <h3>Nueva venta</h3>
-        <p>Seleccione cliente y agregue lineas de productos</p>
+  <div class="pos-card">
+    <div class="pos-card__body">
+      <div class="pos-col pos-col--left">
+        <div class="pos-field">
+          <label>Cliente</label>
+          <div class="pos-search">
+            <input type="text" [ngModel]="customerQ()" (ngModelChange)="onCustomerSearch($event)" placeholder="Consumidor final — escriba para buscar..." />
+            @if (customerQ() && !customerSelected()) {
+              <div class="pos-search__drop">
+                @for (c of customers() | filter:customerQ(); track c.id) {
+                  <button type="button" (click)="selectCustomer(c)">{{ c.name }} <small>{{ c.taxId }}</small></button>
+                }
+                @if ((customers() | filter:customerQ()).length === 0) {
+                  <span class="pos-search__empty">Sin resultados</span>
+                }
+              </div>
+            }
+            @if (customerSelected(); as c) {
+              <span class="pos-search__tag">{{ c.name }} <button type="button" (click)="clearCustomer()">×</button></span>
+            }
+          </div>
+        </div>
+
+        <div class="pos-field">
+          <label>Producto</label>
+          <div class="pos-search">
+            <input #productInput type="text" [ngModel]="productQ()" (ngModelChange)="onProductSearch($event)" placeholder="Escriba nombre o SKU..." />
+            @if (productQ() && productResults().length) {
+              <div class="pos-search__drop">
+                @for (p of productResults(); track p.id) {
+                  <button type="button" (click)="selectProduct(p)">
+                    <strong>{{ p.name }}</strong>
+                    <small>SKU: {{ p.sku }} · Stock: {{ p.stock }} · ${{ p.unitPrice.toLocaleString('es-CO') }}</small>
+                  </button>
+                }
+              </div>
+            }
+          </div>
+        </div>
+
+        <div class="pos-field">
+          <label>Forma de pago</label>
+          <div class="pos-pay-btns">
+            @for (m of ['Efectivo','Tarjeta','Transferencia']; track m) {
+              <button type="button" class="pos-pay-btn" [class.active]="paymentMethod() === m" (click)="setPayment(m)">{{ m }}</button>
+            }
+          </div>
+        </div>
+
+        <div class="pos-field pos-invoice-opts">
+          <label>Factura</label>
+          <label class="pos-check"><input type="checkbox" [ngModel]="wantInvoice()" (ngModelChange)="wantInvoice.set($event)" /> ¿Imprimir factura?</label>
+          <label class="pos-check"><input type="checkbox" [ngModel]="wantElectronic()" (ngModelChange)="wantElectronic.set($event)" /> ¿Factura electrónica?</label>
+        </div>
       </div>
-      <div class="form-grid">
-        <label>Cliente
-          <select formControlName="customerId">
-            <option [value]="0">Consumidor final</option>
-            @for (c of customers(); track c.id) { <option [value]="c.id">{{ c.name }}</option> }
-          </select>
-        </label>
-        <label>Forma de pago
-          <select formControlName="paymentMethod">
-            <option>Efectivo</option><option>Tarjeta</option><option>Transferencia</option>
-          </select>
-        </label>
-        <label>IVA<input type="number" step="0.01" formControlName="taxRate" /></label>
-        <label>Producto
-          <select formControlName="productId">
-            <option [value]="0">Seleccione</option>
-            @for (p of products(); track p.id) { <option [value]="p.id">{{ p.name }} ({{ p.stock }})</option> }
-          </select>
-        </label>
-        <label>Cantidad<input type="number" formControlName="quantity" /></label>
-        <label>Precio<input type="number" formControlName="unitPrice" /></label>
+
+      <div class="pos-col pos-col--right">
+        <h3 class="pos-summary-title">Resumen</h3>
+        @if (lines().length) {
+          <div class="pos-lines">
+            @for (l of lines(); track $index; let i = $index) {
+              <div class="pos-line">
+                <div class="pos-line__info">
+                  <strong>{{ l.name }}</strong>
+                  <span>{{ l.quantity }} x ${{ l.unitPrice.toLocaleString('es-CO') }}</span>
+                </div>
+                <span class="pos-line__total">${{ l.lineTotal.toLocaleString('es-CO') }}</span>
+                <button type="button" class="pos-line__del" (click)="removeLine(i)">×</button>
+              </div>
+            }
+          </div>
+        } @else {
+          <p class="pos-empty">Seleccione productos para comenzar</p>
+        }
+
+        <div class="pos-totals">
+          <div class="pos-total-row"><span>Subtotal</span><span>${{ subtotal().toLocaleString('es-CO') }}</span></div>
+          <div class="pos-total-row"><span>IVA ({{ taxRate() * 100 }}%)</span><span>${{ tax().toLocaleString('es-CO') }}</span></div>
+          <div class="pos-total-row pos-total-row--grand"><span>Total</span><span>${{ total().toLocaleString('es-CO') }}</span></div>
+        </div>
+
+        <button class="btn primary pos-save" (click)="save()" [disabled]="!lines().length">Cobrar ${{ total().toLocaleString('es-CO') }}</button>
       </div>
-      <div class="form-actions">
-        <button class="btn" type="button" (click)="addLine()">Agregar linea</button>
-        <button class="btn primary" type="submit">Registrar venta</button>
+    </div>
+  </div>
+
+  @if (showQtyModal) {
+    <div class="pos-modal" (click)="cancelQty()">
+      <div class="pos-modal__card" (click)="$event.stopPropagation()">
+        <h3>Cantidad</h3>
+        <p><strong>{{ qtyProduct?.name }}</strong></p>
+        <label>Cantidad <input type="number" [(ngModel)]="qtyValue" min="1" (keydown.enter)="confirmQty(); $event.preventDefault()" autofocus /></label>
+        <label>Precio unitario $<input type="number" [(ngModel)]="qtyPrice" step="100" (keydown.enter)="confirmQty(); $event.preventDefault()" /></label>
+        <div class="pos-modal__actions">
+          <button class="btn" (click)="cancelQty()">Cancelar</button>
+          <button class="btn primary" (click)="confirmQty()" [disabled]="qtyValue < 1 || qtyPrice <= 0">Agregar — ${{ (qtyValue * qtyPrice).toLocaleString('es-CO') }}</button>
+        </div>
       </div>
-    </form>
-    @if (lines.length) {
-      <ul class="line-list">@for (l of lines; track l.productId) { <li>{{ l.name }} x {{ l.quantity }} @ {{ l.unitPrice | currency:'COP':'symbol-narrow':'1.0-0' }}</li> }</ul>
-    }
+    </div>
   }
 
-  <section class="data-card">
-    <div class="data-card__head"><h2>Historial de ventas</h2><span>{{ items().length }} registro(s)</span></div>
+  <section class="data-card" style="margin-top:1.5rem;">
+    <div class="data-card__head"><h2>Historial de ventas</h2><span>{{ filteredItems().length }} registro(s)</span></div>
+    <input type="search" class="data-card__search" placeholder="Buscar por documento o cliente..." (input)="searchTerm.set($any($event.target).value)" />
     <table class="data">
       <thead>
         <tr>
@@ -55,7 +117,7 @@
         </tr>
       </thead>
       <tbody>
-        @for (s of items(); track s.id) {
+        @for (s of filteredItems(); track s.id) {
           <tr>
             <td><strong>{{ s.documentNumber }}</strong></td>
             <td>

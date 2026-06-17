@@ -19,7 +19,7 @@
   display: flex;
   gap: 0.85rem;
   align-items: center;
-  margin-bottom: 2rem;
+  margin-bottom: 1.25rem;
   text-decoration: none;
   color: inherit;
 
@@ -41,6 +41,47 @@
     display: block;
     color: rgba(255, 255, 255, 0.55);
     font-size: 0.75rem;
+  }
+}
+
+.sidebar-user {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.65rem 0.85rem;
+  margin-bottom: 1rem;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 8px;
+
+  &__info {
+    strong {
+      display: block;
+      font-size: 0.85rem;
+      color: #fff;
+    }
+    small {
+      font-size: 0.7rem;
+      color: rgba(255, 255, 255, 0.5);
+    }
+  }
+
+  &__actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+
+    button, a {
+      background: none;
+      border: none;
+      color: rgba(255, 255, 255, 0.6);
+      cursor: pointer;
+      font-size: 0.7rem;
+      font-family: inherit;
+      text-decoration: none;
+      text-align: right;
+      padding: 0.15rem 0;
+      &:hover { color: #fff; }
+    }
   }
 }
 
@@ -88,43 +129,41 @@ nav {
   }
 }
 
-.sidebar-foot {
-  border-top: 1px solid rgba(255, 255, 255, 0.12);
-  padding-top: 1rem;
-  font-size: 0.85rem;
-  color: rgba(255, 255, 255, 0.85);
+.sidebar-pwd-btn {
+  width: 100%;
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 6px;
+  background: transparent;
+  color: rgba(255,255,255,0.6);
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-family: inherit;
+  &:hover { color: #fff; border-color: rgba(255,255,255,0.3); }
+}
 
-  button,
-  a {
-    display: block;
-    width: 100%;
-    margin-top: 0.5rem;
-    padding: 0.5rem;
-    border-radius: 6px;
-    text-align: center;
-    text-decoration: none;
-    font-size: 0.85rem;
-    font-family: inherit;
-  }
+.sidebar-pwd {
+  margin-top: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
 
-  button {
-    background: #de0404;
+  input {
+    padding: 0.4rem 0.6rem;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 4px;
+    background: rgba(255,255,255,0.08);
     color: #fff;
-    border: none;
-    cursor: pointer;
-    font-weight: 600;
-
-    &:hover {
-      background: #c40303;
-    }
+    font-size: 0.8rem;
+    font-family: inherit;
+    &::placeholder { color: rgba(255,255,255,0.35); }
   }
 
-  a {
-    color: rgba(255, 255, 255, 0.55);
-
-    &:hover {
-      color: #fff;
-    }
+  .btn.sm {
+    padding: 0.35rem;
+    font-size: 0.75rem;
+    border-radius: 4px;
   }
 }
 
@@ -132,6 +171,67 @@ nav {
   flex: 1;
   padding: 1.5rem 2rem;
   overflow: auto;
+  position: relative;
+}
+
+.sub-overlay {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 3rem);
+  text-align: center;
+
+  &__card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 3rem 2.5rem;
+    max-width: 480px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+  }
+
+  &__icon {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: #fef2f2;
+    color: #dc2626;
+    font-size: 2.5rem;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.25rem;
+  }
+
+  h2 {
+    margin: 0 0 0.75rem;
+    font-size: 1.5rem;
+    color: #121212;
+  }
+
+  p {
+    color: #64748b;
+    line-height: 1.6;
+    margin: 0 0 1rem;
+  }
+
+  &__hint {
+    font-size: 0.85rem;
+    color: #94a3b8;
+  }
+
+  .btn.primary {
+    margin-top: 0.5rem;
+    padding: 0.75rem 2rem;
+  }
+
+  &__back {
+    display: block;
+    margin-top: 1.25rem;
+    color: #64748b;
+    text-decoration: none;
+    &:hover { color: #121212; }
+  }
 }
 
 @media (max-width: 900px) {

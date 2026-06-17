@@ -63,11 +63,19 @@ public class PermissionService
         new() { Key = "sales.delete",     Module = "sales",       Action = "delete",   Description = "Eliminar o anular ventas" },
         new() { Key = "sales.emit_invoice",Module = "sales",       Action = "emit_invoice", Description = "Emitir factura electrónica ante la DIAN" },
 
+        // ──── E-commerce ────
+        new() { Key = "catalog.manage",  Module = "catalog",    Action = "manage",   Description = "Administrar galería de productos públicos" },
+        new() { Key = "orders.view",     Module = "orders",     Action = "view",     Description = "Ver pedidos del e-commerce" },
+        new() { Key = "orders.manage",   Module = "orders",     Action = "manage",   Description = "Actualizar estado de pedidos" },
+
         // ──── Contabilidad ────
         new() { Key = "accounting.view",  Module = "accounting",  Action = "view",     Description = "Ver libro diario y cuentas" },
         new() { Key = "accounting.manage",Module = "accounting",  Action = "manage",   Description = "Crear asientos manuales y cuentas PUC" },
         new() { Key = "accounting.period_close",Module = "accounting",Action = "period_close",Description = "Cerrar periodos contables" },
         new() { Key = "reports.view",     Module = "reports",     Action = "view",     Description = "Ver reportes financieros y fiscales" },
+
+        // ──── Suscripción ────
+        new() { Key = "subscription.manage",Module = "subscription", Action = "manage", Description = "Gestionar estado de suscripción (activar/inactivar admin)" },
 
         // ──── Nómina ────
         new() { Key = "payroll.view",     Module = "payroll",     Action = "view",     Description = "Ver nóminas" },
@@ -102,6 +110,7 @@ public class PermissionService
             "payroll.view", "payroll.manage", "payroll.approve", "payroll.settlement",
             "social_security.view", "social_security.pay", "social_security.pila",
             "legal_params.manage",
+            "orders.view", "orders.manage",
         },
 
         ["Vendedor"] = new[]
@@ -113,6 +122,7 @@ public class PermissionService
             "customers.view", "customers.manage",
             "sales.view", "sales.create", "sales.edit", "sales.emit_invoice",
             "reports.view",
+            "orders.view",
         },
 
         ["Almacen"] = new[]
@@ -123,6 +133,7 @@ public class PermissionService
             "inventory.view", "inventory.adjust",
             "suppliers.view", "suppliers.manage",
             "purchases.view", "purchases.create", "purchases.edit",
+            "catalog.manage",
         },
     };
 

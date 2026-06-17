@@ -29,6 +29,14 @@ public class AuthController(AppDbContext db, JwtService jwt, PermissionService p
         return Ok(new LoginResponse(token, user.FullName, user.Email, user.Role.ToString(), perms, expires));
     }
 
+    [HttpGet("permissions")]
+    [Authorize]
+    public async Task<ActionResult<List<string>>> Permissions()
+    {
+        var role = User.FindFirstValue(ClaimTypes.Role)!;
+        return Ok(await permissions.GetPermissionsForRoleAsync(role));
+    }
+
     [HttpGet("me")]
     [Authorize]
     public async Task<ActionResult<UserDto>> Me()
@@ -37,5 +45,24 @@ public class AuthController(AppDbContext db, JwtService jwt, PermissionService p
         var user = await db.Users.FindAsync(id);
         if (user == null) return NotFound();
         return Ok(new UserDto(user.Id, user.FullName, user.Email, user.Role.ToString(), user.IsActive));
+    }
+
+    [HttpPost("change-password")]
+    [Authorize]
+    public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordRequest req)
+    {
+        var id = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+        var user = await db.Users.FindAsync(id);
+        if (user == null) return NotFound();
+
+        if (!BCrypt.Net.BCrypt.Verify(req.CurrentPassword, user.PasswordHash))
+            return BadRequest(new { message = "Contraseña actual incorrecta" });
+
+        if (req.NewPassword.Length < 6)
+            return BadRequest(new { message = "La nueva contraseña debe tener al menos 6 caracteres" });
+
+        user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(req.NewPassword);
+        await db.SaveChangesAsync();
+        return Ok(new { message = "Contraseña actualizada correctamente" });
     }
 }

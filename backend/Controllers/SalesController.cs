@@ -90,9 +90,10 @@ public class SalesController(
             });
         }
 
-        sale.Subtotal = Math.Round(subtotal, 2);
-        sale.Tax = Math.Round(subtotal * req.TaxRate, 2);
-        sale.Total = Math.Round(sale.Subtotal + sale.Tax, 2);
+        var totalConIva = Math.Round(subtotal, 2);
+        sale.Total = totalConIva;
+        sale.Subtotal = Math.Round(totalConIva / (1m + req.TaxRate), 2);
+        sale.Tax = totalConIva - sale.Subtotal;
         db.Sales.Add(sale);
         await db.SaveChangesAsync();
 

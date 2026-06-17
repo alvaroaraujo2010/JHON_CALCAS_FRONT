@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CurrencyPipe, DatePipe } from '@angular/common';
 import { NavigationEnd, Router } from '@angular/router';
@@ -20,6 +20,12 @@ export class PurchasesComponent implements OnInit, OnDestroy {
   private navSub?: Subscription;
 
   items = signal<Purchase[]>([]);
+  readonly searchTerm = signal('');
+  readonly filteredItems = computed(() => {
+    const t = this.searchTerm().toLowerCase();
+    if (!t) return this.items();
+    return this.items().filter(p => p.documentNumber?.toLowerCase().includes(t) || p.supplierName?.toLowerCase().includes(t));
+  });
   suppliers = signal<Supplier[]>([]);
   products = signal<Product[]>([]);
   showForm = false;

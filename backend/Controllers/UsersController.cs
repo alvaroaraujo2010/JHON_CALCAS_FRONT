@@ -56,4 +56,27 @@ public class UsersController(AppDbContext db) : ControllerBase
         await db.SaveChangesAsync();
         return Ok(new UserDto(user.Id, user.FullName, user.Email, user.Role.ToString(), user.IsActive));
     }
+
+    [HttpPut("{id}/toggle-active")]
+    public async Task<ActionResult<UserDto>> ToggleActive(int id)
+    {
+        var user = await db.Users.FindAsync(id);
+        if (user == null) return NotFound();
+        user.IsActive = !user.IsActive;
+        await db.SaveChangesAsync();
+        return Ok(new UserDto(user.Id, user.FullName, user.Email, user.Role.ToString(), user.IsActive));
+    }
+
+    [HttpPut("{id}/reset-password")]
+    public async Task<ActionResult<UserDto>> ResetPassword(int id, [FromBody] ResetPasswordRequest req)
+    {
+        var user = await db.Users.FindAsync(id);
+        if (user == null) return NotFound();
+        if (req.NewPassword.Length < 6)
+            return BadRequest(new { message = "La contraseña debe tener al menos 6 caracteres" });
+
+        user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(req.NewPassword);
+        await db.SaveChangesAsync();
+        return Ok(new UserDto(user.Id, user.FullName, user.Email, user.Role.ToString(), user.IsActive));
+    }
 }

@@ -6,6 +6,8 @@ public record LoginResponse(string Token, string FullName, string Email, string 
 public record UserDto(int Id, string FullName, string Email, string Role, bool IsActive);
 public record CreateUserRequest(string FullName, string Email, string Password, string Role);
 public record UpdateUserRequest(string FullName, string Email, string Role, bool IsActive, string? Password);
+public record ChangePasswordRequest(string CurrentPassword, string NewPassword);
+public record ResetPasswordRequest(string NewPassword);
 
 public record CompanyDto(int Id, string BusinessName, string Tagline, string? Description, string? Address,
     string? Phone, string? Email, string? Website, string? LogoUrl, string? TaxId, string? Nit, string? NitVerificationDigit, string? NitFormatted, string Currency);
@@ -71,3 +73,6 @@ public record LowStockProductDto(int Id, string Sku, string Name, int Stock, int
 
 public record TrialBalanceLineDto(string Code, string Name, string Type, decimal Debit, decimal Credit, decimal Balance);
 public record TrialBalanceDto(List<TrialBalanceLineDto> Lines, decimal TotalDebit, decimal TotalCredit);
+
+public record SubscriptionDto(bool IsActive, decimal MonthlyFee, DateTime? DueDate, DateTime UpdatedAt);
+public record UpdateSubscriptionRequest(bool IsActive, decimal MonthlyFee, DateTime? DueDate);

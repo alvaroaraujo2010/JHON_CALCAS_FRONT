@@ -22,11 +22,12 @@
   }
 
   <section class="data-card">
-    <div class="data-card__head"><h2>Listado de proveedores</h2><span>{{ items().length }} registro(s)</span></div>
+    <div class="data-card__head"><h2>Listado de proveedores</h2><span>{{ filteredItems().length }} registro(s)</span></div>
+    <input type="search" class="data-card__search" placeholder="Buscar por nombre, NIT, contacto..." (input)="searchTerm.set($any($event.target).value)" />
     <table class="data">
       <thead><tr><th>Nombre</th><th>NIT</th><th>Contacto</th><th>Telefono</th><th>Email</th><th></th></tr></thead>
       <tbody>
-        @for (s of items(); track s.id) {
+        @for (s of filteredItems(); track s.id) {
           <tr>
             <td><strong>{{ s.name }}</strong></td>
             <td>{{ s.taxId }}</td>

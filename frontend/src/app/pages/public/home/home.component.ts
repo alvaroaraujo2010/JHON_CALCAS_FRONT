@@ -1,6 +1,5 @@
-import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { JhonCalcasHeaderComponent } from '../../../shared/jhon-calcas-header/jhon-calcas-header.component';
 import { ApiService } from '../../../core/services/api.service';
 import { Company } from '../../../core/models';
 import { DEFAULT_PUBLIC_COMPANY } from '../../../core/company-defaults';
@@ -13,16 +12,18 @@ import {
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [RouterLink, JhonCalcasHeaderComponent],
+  imports: [RouterLink],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
-export class HomeComponent implements OnInit, OnDestroy {
+export class HomeComponent implements OnInit {
   private api = inject(ApiService);
-  private readonly bodyClass = 'jc-public-page';
 
   readonly images = JHON_CALCAS_IMAGES;
-  readonly sections = JHON_CALCAS_SECTIONS;
+  readonly sections = JHON_CALCAS_SECTIONS.map(s => ({
+    ...s,
+    slug: s.id === 'calcas-moto' ? 'calcas-motos' : s.id
+  }));
   readonly whatsappUrl = JHON_CALCAS_WHATSAPP_URL;
   readonly company = signal<Company>(DEFAULT_PUBLIC_COMPANY);
 
@@ -35,14 +36,9 @@ export class HomeComponent implements OnInit, OnDestroy {
   ];
 
   ngOnInit() {
-    document.body.classList.add(this.bodyClass);
     this.api.getPublic<Company>('company/public').subscribe({
       next: c => this.company.set(c),
       error: () => this.company.set(DEFAULT_PUBLIC_COMPANY)
     });
-  }
-
-  ngOnDestroy() {
-    document.body.classList.remove(this.bodyClass);
   }
 }

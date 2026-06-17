@@ -23,6 +23,11 @@ public class AppDbContext : DbContext
     // RBAC
     public DbSet<Permission> Permissions => Set<Permission>();
     public DbSet<RolePermission> RolePermissions => Set<RolePermission>();
+
+    // E-commerce
+    public DbSet<CatalogProduct> CatalogProducts => Set<CatalogProduct>();
+    public DbSet<Order> Orders => Set<Order>();
+    public DbSet<OrderItem> OrderItems => Set<OrderItem>();
     public DbSet<Account> Accounts => Set<Account>();
     public DbSet<JournalEntry> JournalEntries => Set<JournalEntry>();
     public DbSet<JournalEntryLine> JournalEntryLines => Set<JournalEntryLine>();
@@ -35,6 +40,9 @@ public class AppDbContext : DbContext
     public DbSet<PayrollDeductionLine> PayrollDeductionLines => Set<PayrollDeductionLine>();
     public DbSet<SocialSecurityPayment> SocialSecurityPayments => Set<SocialSecurityPayment>();
     public DbSet<PaymentRecord> PaymentRecords => Set<PaymentRecord>();
+
+    // Suscripción / bloqueo admin
+    public DbSet<Subscription> Subscriptions => Set<Subscription>();
 
     // Módulo Nómina — Cumplimiento legal Colombia
     public DbSet<LegalParameter> LegalParameters => Set<LegalParameter>();
@@ -93,8 +101,22 @@ public class AppDbContext : DbContext
             .HasOne(p => p.Payroll).WithMany().HasForeignKey(p => p.PayrollId)
             .OnDelete(DeleteBehavior.SetNull);
 
+        // E-commerce
+        modelBuilder.Entity<CatalogProduct>().HasIndex(p => p.Slug);
+        modelBuilder.Entity<CatalogProduct>()
+            .HasOne(p => p.InternalProduct)
+            .WithMany()
+            .HasForeignKey(p => p.InternalProductId)
+            .OnDelete(DeleteBehavior.SetNull);
+        modelBuilder.Entity<Order>().HasIndex(o => o.OrderNumber).IsUnique();
+        modelBuilder.Entity<OrderItem>()
+            .HasOne(i => i.Order).WithMany(o => o.Items).HasForeignKey(i => i.OrderId)
+            .OnDelete(DeleteBehavior.Cascade);
+
         modelBuilder.Entity<PayrollSettlement>()
             .HasOne(s => s.Employee).WithMany().HasForeignKey(s => s.EmployeeId)
             .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<Subscription>().ToTable("subscription");
     }
 }

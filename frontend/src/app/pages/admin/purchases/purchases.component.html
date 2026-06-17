@@ -37,11 +37,12 @@
   }
 
   <section class="data-card">
-    <div class="data-card__head"><h2>Historial de compras</h2><span>{{ items().length }} registro(s)</span></div>
+    <div class="data-card__head"><h2>Historial de compras</h2><span>{{ filteredItems().length }} registro(s)</span></div>
+    <input type="search" class="data-card__search" placeholder="Buscar por documento o proveedor..." (input)="searchTerm.set($any($event.target).value)" />
     <table class="data">
       <thead><tr><th>Documento</th><th>Proveedor</th><th>Fecha</th><th>Total</th><th>Estado</th></tr></thead>
       <tbody>
-        @for (p of items(); track p.id) {
+        @for (p of filteredItems(); track p.id) {
           <tr>
             <td><strong>{{ p.documentNumber }}</strong></td>
             <td>{{ p.supplierName }}</td>

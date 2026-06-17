@@ -47,8 +47,10 @@ builder.Services.AddScoped<PayrollSettlementService>();
 builder.Services.AddScoped<SalesAccountingService>();
 builder.Services.AddScoped<PurchasesAccountingService>();
 builder.Services.AddScoped<InventoryValuationService>();
+builder.Services.AddScoped<CatalogOrderInventoryService>();
 builder.Services.AddScoped<DatabaseMigrationService>();
 builder.Services.AddScoped<PermissionService>();
+builder.Services.AddHttpClient<MercadoPagoService>();
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
@@ -74,7 +76,47 @@ using (var scope = app.Services.CreateScope())
 if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 
+var logFile = Path.Combine(Directory.GetCurrentDirectory(), "startup-log.txt");
+try { File.AppendAllText(logFile, $"[{DateTime.UtcNow:O}] App iniciando...\n"); } catch { }
+
+AppDomain.CurrentDomain.UnhandledException += (_, e) =>
+{
+    try { File.AppendAllText(logFile, $"[FATAL] {e.ExceptionObject}\n"); } catch { }
+};
+
+app.Use(async (ctx, next) =>
+{
+    try { await next(); }
+    catch (Exception ex)
+    {
+        try { File.AppendAllText(logFile, $"[{DateTime.UtcNow:O}] {ex.GetType().Name}: {ex.Message}\n{ex.StackTrace}\n"); } catch { }
+        throw;
+    }
+});
+
 app.UseCors("ContaNexo");
+
+app.UseMiddleware<SubscriptionFilter>();
+
+// Endpoint para servir imágenes de galería (evita PhysicalFileProvider / FileSystemWatcher)
+var galleryDir = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", "gallery");
+Directory.CreateDirectory(galleryDir);
+app.MapGet("uploads/gallery/{fileName}", async (string fileName, HttpContext ctx) =>
+{
+    var path = Path.Combine(galleryDir, fileName);
+    if (!File.Exists(path)) return Results.NotFound();
+    var ext = Path.GetExtension(fileName).ToLowerInvariant();
+    var contentType = ext switch
+    {
+        ".png" => "image/png",
+        ".jpg" or ".jpeg" => "image/jpeg",
+        ".webp" => "image/webp",
+        _ => "application/octet-stream"
+    };
+    ctx.Response.ContentType = contentType;
+    await ctx.Response.SendFileAsync(path);
+    return Results.Empty;
+});
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();

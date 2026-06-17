@@ -29,11 +29,12 @@
   </form>
 
   <section class="data-card">
-    <div class="data-card__head"><h2>Historial de movimientos</h2><span>{{ movements().length }} registro(s)</span></div>
+    <div class="data-card__head"><h2>Historial de movimientos</h2><span>{{ filteredMovements().length }} registro(s)</span></div>
+    <input type="search" class="data-card__search" placeholder="Buscar por producto, tipo, referencia..." (input)="searchTerm.set($any($event.target).value)" />
     <table class="data">
       <thead><tr><th>Fecha</th><th>Producto</th><th>Tipo</th><th>Cant.</th><th>Antes</th><th>Despues</th><th>Ref.</th></tr></thead>
       <tbody>
-        @for (m of movements(); track m.id) {
+        @for (m of filteredMovements(); track m.id) {
           <tr>
             <td>{{ m.createdAt | date:'short' }}</td>
             <td><strong>{{ m.productName }}</strong></td>

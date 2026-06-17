@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CurrencyPipe } from '@angular/common';
 import { NavigationEnd, Router } from '@angular/router';
@@ -21,6 +21,12 @@ export class ProductsComponent implements OnInit, OnDestroy {
 
   items = signal<Product[]>([]);
   categories = signal<Category[]>([]);
+  readonly searchTerm = signal('');
+  readonly filteredItems = computed(() => {
+    const t = this.searchTerm().toLowerCase();
+    if (!t) return this.items();
+    return this.items().filter(p => (p.sku?.toLowerCase().includes(t) || p.name?.toLowerCase().includes(t) || p.description?.toLowerCase().includes(t)));
+  });
   showForm = false;
   editingId: number | null = null;
   saving = false;

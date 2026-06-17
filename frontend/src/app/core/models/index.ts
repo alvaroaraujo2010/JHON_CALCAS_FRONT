@@ -207,6 +207,88 @@ export interface TrialBalance {
   totalCredit: number;
 }
 
+// ============ E-COMMERCE ============
+
+export interface CatalogProduct {
+  id: number;
+  slug: string;
+  productLine: string;
+  brand: string;
+  model?: string;
+  menuModel?: string;
+  designRef?: string;
+  color?: string;
+  title: string;
+  description?: string;
+  price: number;
+  imageFileName?: string;
+  imageUrl?: string;
+  sortOrder?: number;
+  isActive: boolean;
+  internalProductId?: number;
+  internalProductSku?: string;
+  internalProductName?: string;
+  comingSoon?: false;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface CartItem {
+  product: CatalogProduct;
+  quantity: number;
+}
+
+export interface CreateOrderDto {
+  customerName: string;
+  email: string;
+  phone: string;
+  address: string;
+  city?: string;
+  notes?: string;
+  items: { productId: number; quantity: number; unitPrice: number }[];
+}
+
+export interface OrderResponse {
+  id: number;
+  orderNumber: string;
+  total: number;
+  status: string;
+  mpPreferenceId?: string;
+  mpInitPoint?: string;
+  createdAt?: string;
+}
+
+export interface Order {
+  id: number;
+  orderNumber: string;
+  customerName: string;
+  customerEmail: string;
+  customerPhone: string;
+  customerAddress?: string;
+  city?: string;
+  department?: string;
+  notes?: string;
+  subtotal: number;
+  shippingCost: number;
+  total: number;
+  status: string;
+  mpPreferenceId?: string;
+  mpPaymentId?: string;
+  mpPaymentStatus?: string;
+  stockDeductedAt?: string;
+  items: OrderItemDetail[];
+  createdAt: string;
+  updatedAt?: string;
+}
+
+export interface OrderItemDetail {
+  productId: number;
+  productTitle: string;
+  quantity: number;
+  unitPrice: number;
+  lineTotal: number;
+}
+
 // ============ MÓDULO DE NÓMINA ============
 
 export interface Employee {
