@@ -66,13 +66,27 @@ export class OrderConfirmationComponent implements OnInit {
     const status = this.route.snapshot.queryParamMap.get('status');
 
     if (orderId) {
-      this.api.getPublic<Order>(`orders/${orderId}`).subscribe({
-        next: (o) => { this.order.set(o); this.loading.set(false); },
-        error: () => { this.error.set('No se pudo verificar el pedido.'); this.loading.set(false); }
-      });
+      if (mpPaymentId || status) {
+        const params = new URLSearchParams();
+        if (mpPaymentId) params.set('mpPaymentId', mpPaymentId);
+        if (status) params.set('status', status);
+        this.api.postPublic(`orders/${orderId}/confirm?${params.toString()}`, {}).subscribe({
+          next: () => this.loadOrder(orderId),
+          error: () => this.loadOrder(orderId)
+        });
+      } else {
+        this.loadOrder(orderId);
+      }
     } else {
       this.error.set('No se encontró información del pedido.');
       this.loading.set(false);
     }
+  }
+
+  private loadOrder(orderId: string) {
+    this.api.getPublic<Order>(`orders/${orderId}`).subscribe({
+      next: (o) => { this.order.set(o); this.loading.set(false); },
+      error: () => { this.error.set('No se pudo verificar el pedido.'); this.loading.set(false); }
+    });
   }
 }

@@ -8,6 +8,14 @@ body {
   background: #f1f5f9;
 }
 
+input,
+select,
+textarea,
+button,
+option {
+  font-family: inherit;
+}
+
 /* Dawn / jhoncalcas.com: html 62.5% para que rem en la landing coincida con el original */
 html:has(body.jc-public-page) {
   font-size: 62.5%;
@@ -348,6 +356,7 @@ table.data {
     padding: 0.65rem 0.85rem;
     border: 1px solid #cbd5e1;
     border-radius: 10px;
+    font-family: inherit;
     font-size: 0.95rem;
     font-weight: 400;
     color: #0f172a;

@@ -28,6 +28,7 @@ public class AppDbContext : DbContext
     public DbSet<CatalogProduct> CatalogProducts => Set<CatalogProduct>();
     public DbSet<Order> Orders => Set<Order>();
     public DbSet<OrderItem> OrderItems => Set<OrderItem>();
+    public DbSet<PaymentSettings> PaymentSettings => Set<PaymentSettings>();
     public DbSet<Account> Accounts => Set<Account>();
     public DbSet<JournalEntry> JournalEntries => Set<JournalEntry>();
     public DbSet<JournalEntryLine> JournalEntryLines => Set<JournalEntryLine>();
@@ -109,6 +110,7 @@ public class AppDbContext : DbContext
             .HasForeignKey(p => p.InternalProductId)
             .OnDelete(DeleteBehavior.SetNull);
         modelBuilder.Entity<Order>().HasIndex(o => o.OrderNumber).IsUnique();
+        modelBuilder.Entity<PaymentSettings>().HasIndex(p => p.Provider).IsUnique();
         modelBuilder.Entity<OrderItem>()
             .HasOne(i => i.Order).WithMany(o => o.Items).HasForeignKey(i => i.OrderId)
             .OnDelete(DeleteBehavior.Cascade);

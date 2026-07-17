@@ -77,6 +77,9 @@ public class PermissionService
         // ──── Suscripción ────
         new() { Key = "subscription.manage",Module = "subscription", Action = "manage", Description = "Gestionar estado de suscripción (activar/inactivar admin)" },
 
+        // ──── Pasarelas de pago ────
+        new() { Key = "payments.manage", Module = "payments", Action = "manage", Description = "Configurar pasarelas de pago" },
+
         // ──── Nómina ────
         new() { Key = "payroll.view",     Module = "payroll",     Action = "view",     Description = "Ver nóminas" },
         new() { Key = "payroll.manage",   Module = "payroll",     Action = "manage",   Description = "Crear y editar nóminas" },

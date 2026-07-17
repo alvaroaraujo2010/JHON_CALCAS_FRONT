@@ -31,18 +31,6 @@ public class DatabaseMigrationService
     /// </summary>
     public static readonly List<Migration> Migrations = new()
     {
-        new("001_ley_2277_2022_deductions",
-            "Deducciones Art. 387 ET (Ley 2277/2022): HasDependents, HousingInterestEnabled, PrepaidHealthEnabled, AfcMonthlyAmount",
-            Apply001),
-        new("002_customer_retention_agent",
-            "Bandera IsRetentionAgent en Customers (gran contribuyente / agente retenedor) y campos Company de NIT con DV",
-            Apply002),
-        new("003_nit_dv_general",
-            "NIT + NitVerificationDigit en Customers (DV calculado por módulo 11 DIAN)",
-            Apply003),
-        new("004_pila_operators",
-            "PILA: CotizanteTipo/Subtipo, operadores EPS/AFP/ARL/CCF, ArlRiskClass en Employees; Novedad* y operadores en SocialSecurityPayments",
-            Apply004),
         new("005_inventory_valuation",
             "Inventario: tabla inventorylots + ValuationMethod en products (PEPS/Promedio Ponderado)",
             Apply005),
@@ -67,6 +55,9 @@ public class DatabaseMigrationService
         new("012_order_stock_deducted",
             "Pedidos web: columna StockDeductedAt para descuento idempotente de inventario",
             Apply012),
+        new("013_payment_settings",
+            "Pasarelas: tabla paymentsettings y permisos para configurar Mercado Pago",
+            Apply013),
     };
 
     public async Task ApplyPendingAsync()
@@ -724,5 +715,43 @@ CREATE TABLE orderitems (
             alter.CommandText = "ALTER TABLE orders ADD COLUMN StockDeductedAt DATETIME(6) NULL AFTER PaymentMethod";
             await alter.ExecuteNonQueryAsync();
         }
+    }
+
+    private static async Task Apply013(AppDbContext db)
+    {
+        var conn = db.Database.GetDbConnection();
+        if (conn.State != System.Data.ConnectionState.Open) await conn.OpenAsync();
+
+        await using var create = conn.CreateCommand();
+        create.CommandText = @"
+CREATE TABLE IF NOT EXISTS paymentsettings (
+    Id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    Provider VARCHAR(50) NOT NULL,
+    IsActive TINYINT(1) NOT NULL DEFAULT 1,
+    UseSandbox TINYINT(1) NOT NULL DEFAULT 0,
+    PublicKey VARCHAR(255) NULL,
+    AccessToken VARCHAR(255) NULL,
+    BaseUrl VARCHAR(255) NULL,
+    WebhookUrl VARCHAR(255) NULL,
+    CreatedAt DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
+    UpdatedAt DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
+    UNIQUE INDEX IX_paymentsettings_Provider (Provider)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
+        await create.ExecuteNonQueryAsync();
+
+        await using var seed = conn.CreateCommand();
+        seed.CommandText = @"
+INSERT INTO paymentsettings (Provider, IsActive, UseSandbox, PublicKey, AccessToken, BaseUrl, WebhookUrl, CreatedAt, UpdatedAt)
+SELECT 'mercadopago', 1, 0, '', '', '', '', UTC_TIMESTAMP(6), UTC_TIMESTAMP(6)
+WHERE NOT EXISTS (SELECT 1 FROM paymentsettings WHERE Provider = 'mercadopago');";
+        await seed.ExecuteNonQueryAsync();
+
+        await db.Database.ExecuteSqlRawAsync(@"
+INSERT IGNORE INTO permissions (`Key`, Module, Action, Description)
+VALUES ('payments.manage', 'payments', 'manage', 'Configurar pasarelas de pago');");
+
+        await db.Database.ExecuteSqlRawAsync(@"
+INSERT IGNORE INTO rolepermissions (Role, PermissionKey)
+VALUES ('Administrador', 'payments.manage');");
     }
 }

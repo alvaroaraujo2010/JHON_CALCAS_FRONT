@@ -47,6 +47,7 @@ export class AdminLayoutComponent implements OnInit, OnDestroy {
     { path: '/admin/compras',                      label: 'Compras',            icon: 'compras',       permission: 'purchases.view' },
     { path: '/admin/ventas',                       label: 'Ventas',             icon: 'ventas',        permission: 'sales.view' },
     { path: '/admin/contabilidad',                 label: 'Contabilidad',       icon: 'contabilidad',  permission: 'accounting.view' },
+    { path: '/admin/pasarela-pago',                 label: 'Pasarela de pago',   icon: 'pagos',         permission: 'payments.manage' },
     { path: '/admin/nomina',                       label: 'Nómina',             icon: 'nomina',        permission: 'payroll.view' },
     { path: '/admin/nomina-empleados',             label: 'Empleados',          icon: 'empleados',     permission: 'payroll.manage', indent: true },
     { path: '/admin/nomina-deducciones',           label: 'Deducciones',        icon: 'deducciones',   permission: 'payroll.manage', indent: true },

@@ -22,8 +22,8 @@ export class LoginComponent {
   loading = false;
 
   form = this.fb.group({
-    username: ['administrador', Validators.required],
-    password: ['ingAlv4r0', Validators.required]
+    username: ['', Validators.required],
+    password: ['', Validators.required]
   });
 
   submit() {

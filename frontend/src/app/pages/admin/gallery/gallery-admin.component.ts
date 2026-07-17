@@ -95,6 +95,8 @@ import { ModuleHeaderComponent } from '../../../shared/module-header/module-head
                   <td>
                     @if (p.imageUrl) {
                       <img [src]="p.imageUrl" alt="" width="48" height="48" class="gallery-thumb" />
+                    } @else {
+                      <div class="gallery-thumb gallery-thumb--empty">Sin imagen</div>
                     }
                   </td>
                   <td>{{ p.productLine }}</td>
@@ -146,9 +148,21 @@ import { ModuleHeaderComponent } from '../../../shared/module-header/module-head
       box-shadow: 0 1px 0 #e2e8f0;
     }
     .gallery-thumb {
+      width: 48px;
+      height: 48px;
       object-fit: cover;
       border-radius: 6px;
       display: block;
+    }
+    .gallery-thumb--empty {
+      display: grid;
+      place-items: center;
+      background: #f1f5f9;
+      color: #94a3b8;
+      font-size: 0.62rem;
+      line-height: 1;
+      text-align: center;
+      border: 1px dashed #cbd5e1;
     }
     .gallery-preview {
       display: block;
@@ -224,8 +238,17 @@ export class GalleryAdminComponent implements OnInit {
 
   private loadProducts() {
     this.api.get<CatalogProduct[]>('catalog/admin').subscribe({
-      next: (data) => this.products.set(data),
+      next: (data) => this.products.set(this.sortWithImagesFirst(data)),
       error: () => this.toast.error('No se pudieron cargar los productos')
+    });
+  }
+
+  private sortWithImagesFirst(data: CatalogProduct[]) {
+    return [...data].sort((a, b) => {
+      const ai = a.imageUrl ? 0 : 1;
+      const bi = b.imageUrl ? 0 : 1;
+      if (ai !== bi) return ai - bi;
+      return a.title.localeCompare(b.title, 'es');
     });
   }
 

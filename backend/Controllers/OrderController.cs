@@ -12,8 +12,7 @@ namespace ContaNexo.API.Controllers;
 public class OrderController(
     AppDbContext db,
     MercadoPagoService mp,
-    CatalogOrderInventoryService catalogInventory,
-    IConfiguration config) : ControllerBase
+    CatalogOrderInventoryService catalogInventory) : ControllerBase
 {
     private static readonly HashSet<string> PaidStatuses = new(StringComparer.OrdinalIgnoreCase)
         { "paid", "approved" };
@@ -69,7 +68,7 @@ public class OrderController(
         await db.SaveChangesAsync();
 
         // Crear preferencia Mercado Pago
-        var baseUrl = config["MercadoPago:BaseUrl"] ?? "http://localhost:4200";
+        var baseUrl = await mp.GetBaseUrlAsync();
         var mpItems = items.Select(i => new MercadoPagoService.MpItem(
             i.ProductTitle, i.Quantity, i.UnitPrice,
             $"/api/catalog/products/{i.CatalogProductId}"
@@ -169,7 +168,7 @@ public class OrderController(
     }
 
     [HttpGet]
-    [Authorize(Policy = "sales.view")]
+    [Authorize(Policy = "orders.view")]
     public async Task<ActionResult<List<OrderDto>>> GetAll()
     {
         var orders = await db.Orders.Include(o => o.Items)
@@ -178,7 +177,7 @@ public class OrderController(
     }
 
     [HttpPut("{id}/status")]
-    [Authorize(Policy = "sales.edit")]
+    [Authorize(Policy = "orders.manage")]
     public async Task<ActionResult<OrderDto>> UpdateStatus(int id, [FromBody] UpdateOrderStatusRequest req)
     {
         var order = await db.Orders.Include(o => o.Items).FirstOrDefaultAsync(o => o.Id == id);

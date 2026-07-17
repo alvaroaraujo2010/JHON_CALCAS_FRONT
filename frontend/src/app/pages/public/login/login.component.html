@@ -16,10 +16,10 @@
 
     <form [formGroup]="form" (ngSubmit)="submit()">
       <label>Nombre de usuario</label>
-      <input type="text" formControlName="username" placeholder="administrador" autocomplete="username" />
+      <input type="text" formControlName="username" placeholder="Ingrese su usuario" autocomplete="username" />
 
       <label>Contrasena</label>
-      <input type="password" formControlName="password" placeholder="********" />
+      <input type="password" formControlName="password" placeholder="Ingrese su contraseña" autocomplete="current-password" />
 
       <button type="submit" [disabled]="loading || form.invalid">
         {{ loading ? 'Ingresando...' : 'Iniciar sesion' }}

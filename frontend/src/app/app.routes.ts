@@ -31,6 +31,7 @@ import { ProvisionsComponent } from './pages/admin/payroll/provisions/provisions
 import { RolesComponent } from './pages/admin/roles/roles.component';
 import { GalleryAdminComponent } from './pages/admin/gallery/gallery-admin.component';
 import { OrdersAdminComponent } from './pages/admin/orders/orders-admin.component';
+import { PaymentSettingsComponent } from './pages/admin/payment-settings/payment-settings.component';
 
 export const routes: Routes = [
   {
@@ -59,6 +60,7 @@ export const routes: Routes = [
       { path: 'contabilidad',      component: AccountingComponent,      canActivate: [permissionGuard], data: { permission: 'accounting.view' } },
       { path: 'galeria',           component: GalleryAdminComponent,    canActivate: [permissionGuard], data: { permission: ['catalog.manage', 'products.edit'] } },
       { path: 'pedidos',           component: OrdersAdminComponent,     canActivate: [permissionGuard], data: { permission: 'orders.view' } },
+      { path: 'pasarela-pago',     component: PaymentSettingsComponent, canActivate: [permissionGuard], data: { permission: 'payments.manage' } },
       { path: 'usuarios',          component: UsersComponent,           canActivate: [permissionGuard], data: { permission: 'users.view' } },
       { path: 'roles',             component: RolesComponent,           canActivate: [permissionGuard], data: { permission: 'users.permissions' } },
       { path: 'empresa',           component: CompanyComponent,         canActivate: [permissionGuard], data: { permission: 'company.view' } },

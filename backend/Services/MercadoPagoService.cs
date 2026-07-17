@@ -2,6 +2,9 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using ContaNexo.API.Data;
+using ContaNexo.API.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace ContaNexo.API.Services;
 
@@ -13,17 +16,22 @@ public class MercadoPagoService
 {
     private readonly HttpClient _http;
     private readonly IConfiguration _config;
+    private readonly AppDbContext _db;
     private readonly ILogger<MercadoPagoService> _log;
 
-    public MercadoPagoService(HttpClient http, IConfiguration config, ILogger<MercadoPagoService> log)
+    public MercadoPagoService(HttpClient http, IConfiguration config, AppDbContext db, ILogger<MercadoPagoService> log)
     {
         _http = http;
         _config = config;
+        _db = db;
         _log = log;
     }
 
-    private string AccessToken => _config["MercadoPago:AccessToken"] ?? "";
-    private string PublicKey => _config["MercadoPago:PublicKey"] ?? "";
+    public async Task<string> GetBaseUrlAsync()
+    {
+        var settings = await GetSettingsAsync();
+        return NormalizeBaseUrl(settings?.BaseUrl) ?? NormalizeBaseUrl(_config["MercadoPago:BaseUrl"]) ?? "http://localhost:4200";
+    }
 
     public record MpItem(string Title, int Quantity, decimal UnitPrice, string? PictureUrl = null);
     public record MpPreferenceResult(string Id, string InitPoint, string? SandboxInitPoint);
@@ -84,19 +92,31 @@ public class MercadoPagoService
     public async Task<MpPreferenceResult> CreatePreferenceAsync(
         string orderNumber, List<MpItem> items, string baseUrl, int? orderId)
     {
+        var settings = await GetSettingsAsync();
+        var accessToken = GetAccessToken(settings);
+        if (settings is { IsActive: false })
+            throw new InvalidOperationException("Mercado Pago está inactivo.");
+        if (string.IsNullOrWhiteSpace(accessToken))
+            throw new InvalidOperationException("Mercado Pago no tiene Access Token configurado.");
+
+        baseUrl = NormalizeBaseUrl(settings?.BaseUrl) ?? NormalizeBaseUrl(baseUrl) ?? "http://localhost:4200";
+        var webhookUrl = !string.IsNullOrWhiteSpace(settings?.WebhookUrl)
+            ? settings.WebhookUrl.Trim()
+            : $"{baseUrl}/api/payment/webhook";
+
         var mpItems = items.Select(i => new MpPreferenceItem(
             i.Title, i.Quantity, i.UnitPrice, "COP",
-            i.PictureUrl != null ? $"{baseUrl}{i.PictureUrl}" : null
+            BuildPictureUrl(baseUrl, i.PictureUrl)
         )).ToList();
 
         var request = new MpCreatePreferenceRequest(
             mpItems,
             new MpBackUrls(
-                $"{baseUrl}/checkout/{orderId}/success",
-                $"{baseUrl}/checkout/{orderId}/failure",
-                $"{baseUrl}/checkout/{orderId}/pending"
+                $"{baseUrl}/pedido/{orderId}",
+                $"{baseUrl}/pedido/{orderId}",
+                $"{baseUrl}/pedido/{orderId}"
             ),
-            $"{baseUrl}/api/payment/webhook",
+            webhookUrl,
             orderNumber,
             "approved"
         );
@@ -104,7 +124,7 @@ public class MercadoPagoService
         var json = JsonSerializer.Serialize(request);
         var content = new StringContent(json, Encoding.UTF8, "application/json");
         var msg = new HttpRequestMessage(HttpMethod.Post, "https://api.mercadopago.com/checkout/preferences");
-        msg.Headers.Authorization = new AuthenticationHeaderValue("Bearer", AccessToken);
+        msg.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
         msg.Content = content;
 
         var response = await _http.SendAsync(msg);
@@ -117,7 +137,10 @@ public class MercadoPagoService
         }
 
         var pref = JsonSerializer.Deserialize<MpPreferenceResponse>(body);
-        return new MpPreferenceResult(pref!.Id, pref.InitPoint ?? "", pref.SandboxInitPoint ?? "");
+        var initPoint = settings?.UseSandbox == true
+            ? pref!.SandboxInitPoint ?? pref.InitPoint ?? ""
+            : pref!.InitPoint ?? pref.SandboxInitPoint ?? "";
+        return new MpPreferenceResult(pref.Id, initPoint, pref.SandboxInitPoint ?? "");
     }
 
     /// <summary>
@@ -125,11 +148,34 @@ public class MercadoPagoService
     /// </summary>
     public async Task<MpPaymentInfo?> GetPaymentInfoAsync(string paymentId)
     {
+        var settings = await GetSettingsAsync();
+        var accessToken = GetAccessToken(settings);
+        if (string.IsNullOrWhiteSpace(accessToken)) return null;
+
         var msg = new HttpRequestMessage(HttpMethod.Get, $"https://api.mercadopago.com/v1/payments/{paymentId}");
-        msg.Headers.Authorization = new AuthenticationHeaderValue("Bearer", AccessToken);
+        msg.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
         var response = await _http.SendAsync(msg);
         if (!response.IsSuccessStatusCode) return null;
         var body = await response.Content.ReadAsStringAsync();
         return JsonSerializer.Deserialize<MpPaymentInfo>(body);
+    }
+
+    private async Task<PaymentSettings?> GetSettingsAsync() =>
+        await _db.PaymentSettings.AsNoTracking().FirstOrDefaultAsync(x => x.Provider == "mercadopago");
+
+    private string GetAccessToken(PaymentSettings? settings) =>
+        !string.IsNullOrWhiteSpace(settings?.AccessToken)
+            ? settings.AccessToken
+            : _config["MercadoPago:AccessToken"] ?? string.Empty;
+
+    private static string? NormalizeBaseUrl(string? value) =>
+        string.IsNullOrWhiteSpace(value) ? null : value.Trim().TrimEnd('/');
+
+    private static string? BuildPictureUrl(string baseUrl, string? pictureUrl)
+    {
+        if (string.IsNullOrWhiteSpace(pictureUrl)) return null;
+        if (pictureUrl.StartsWith("http://", StringComparison.OrdinalIgnoreCase) ||
+            pictureUrl.StartsWith("https://", StringComparison.OrdinalIgnoreCase)) return pictureUrl;
+        return pictureUrl.StartsWith('/') ? $"{baseUrl}{pictureUrl}" : $"{baseUrl}/{pictureUrl}";
     }
 }

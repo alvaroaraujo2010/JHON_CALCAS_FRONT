@@ -22,7 +22,14 @@ public class CatalogController(AppDbContext db, IConfiguration config) : Control
         if (!string.IsNullOrWhiteSpace(productLine))
             q = q.Where(p => p.ProductLine == productLine);
         if (!string.IsNullOrWhiteSpace(brand))
-            q = q.Where(p => p.Brand == brand);
+        {
+            var b = brand.Trim();
+            q = q.Where(p =>
+                p.Brand == b ||
+                p.Brand.StartsWith(b) ||
+                p.Brand.Contains(b) ||
+                b.StartsWith(p.Brand));
+        }
         if (!string.IsNullOrWhiteSpace(model))
         {
             var m = model.Trim();
@@ -32,10 +39,22 @@ public class CatalogController(AppDbContext db, IConfiguration config) : Control
                 (p.MenuModel != null && p.MenuModel.StartsWith(m)) ||
                 (p.Model != null && p.Model.StartsWith(m)) ||
                 (p.MenuModel != null && p.MenuModel.Contains(m)) ||
-                (p.Model != null && p.Model.Contains(m)));
+                (p.Model != null && p.Model.Contains(m)) ||
+                (p.MenuModel != null && m.StartsWith(p.MenuModel)) ||
+                (p.Model != null && m.StartsWith(p.Model)));
         }
 
         var list = await q.OrderBy(p => p.SortOrder).ThenBy(p => p.Title).ToListAsync();
+        if (list.Count == 0 && !string.IsNullOrWhiteSpace(productLine))
+        {
+            // Si el menu trae filtros mas especificos que los datos cargados, no caemos a placeholders:
+            // mostramos lo disponible para la linea solicitada.
+            list = await db.CatalogProducts
+                .Where(p => p.IsActive && p.ProductLine == productLine)
+                .OrderBy(p => p.SortOrder)
+                .ThenBy(p => p.Title)
+                .ToListAsync();
+        }
         return Ok(list.Select(ToDto).ToList());
     }
 
@@ -152,7 +171,8 @@ public class CatalogController(AppDbContext db, IConfiguration config) : Control
 
     private CatalogProductDto ToDto(CatalogProduct p) => new(
         p.Id, p.Slug, p.ProductLine, p.Brand, p.Model, p.MenuModel, p.DesignRef, p.Color,
-        p.Title, p.Description, p.Price, $"{MediaBaseUrl}/uploads/gallery/{p.ImageFileName}",
+        p.Title, p.Description, p.Price,
+        string.IsNullOrWhiteSpace(p.ImageFileName) ? string.Empty : $"{MediaBaseUrl}/uploads/gallery/{p.ImageFileName}",
         p.SortOrder, p.IsActive, p.InternalProductId, p.InternalProduct?.Sku, p.InternalProduct?.Name);
 
     private static CatalogProduct MapFormToEntity(CatalogProduct p, CatalogProductForm form, string slug, string fileName)
