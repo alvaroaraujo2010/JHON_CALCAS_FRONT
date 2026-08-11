@@ -13,14 +13,14 @@ Usuario → https://app.jhoncalcas.com.co  (443, SSL Let's Encrypt)
                 │
         ┌───────┴──────────┐
         ▼                  ▼
- / (frontend build)   /api → http://127.0.0.1:5002 (systemd: jhoncalcas-api)
+ / (frontend build)   /api → http://127.0.0.1:5001 (systemd: jhoncalcas-api)
                                      │
                                      ▼
                                   MySQL 8 (calcas_db)
 ```
 
 - **Frontend Angular** compilado estático servido por Nginx (`/var/www/jhoncalcas`).
-- **Backend .NET 9** publicado (`dotnet publish`) ejecutado como servicio `systemd` en el puerto 5002 (solo local).
+- **Backend .NET 9** publicado (`dotnet publish`) ejecutado como servicio `systemd` en el puerto 5001 (solo local).
 - **Nginx** sirve los estáticos y hace proxy de `/api` y `/uploads` hacia el backend.
 - **SSL** con Certbot (Let's Encrypt) para `app.jhoncalcas.com.co`.
 
@@ -125,7 +125,7 @@ sudo certbot --nginx -d app.jhoncalcas.com.co
 
 ## Notas y seguridad
 
-- El backend queda escuchando solo en `127.0.0.1:5002`, Nginx no lo expone.
+- El backend queda escuchando solo en `127.0.0.1:5001`, Nginx no lo expone.
 - `appsettings.production.json` NO debe subirse a Git: contiene credenciales.
 - Para el webhook de MercadoPago, Nginx lo redirige a la API automáticamente.
 - Las imágenes de galería se guardan en `api/wwwroot/uploads/gallery` (hacer respaldo).

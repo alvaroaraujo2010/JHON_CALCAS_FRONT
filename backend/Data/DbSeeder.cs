@@ -8,8 +8,8 @@ public static class DbSeeder
     public static async Task SeedAsync(AppDbContext db)
     {
         await db.Database.EnsureCreatedAsync();
-        await EnsureElectronicInvoiceColumnsAsync(db);
         await EnsureNewTablesAsync(db);
+        await EnsureElectronicInvoiceColumnsAsync(db);
         await EnsureSocialSecurityColumnsAsync(db);
         await EnsureEmployeesColumnsAsync(db);
         await EnsurePayrollColumnsAsync(db);

@@ -67,9 +67,9 @@ using (var scope = app.Services.CreateScope())
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     var withholdingSvc = scope.ServiceProvider.GetRequiredService<WithholdingTaxService>();
     var migrationSvc = scope.ServiceProvider.GetRequiredService<DatabaseMigrationService>();
-    // Aplica migraciones SQL pendientes (idempotente) ANTES del seed.
-    await migrationSvc.ApplyPendingAsync();
     await DbSeeder.SeedAsync(db);
+    // Aplica migraciones SQL pendientes después de asegurar las tablas base.
+    await migrationSvc.ApplyPendingAsync();
     // Sembrar tablas de retención 2025 y 2026 si no existen
     await withholdingSvc.SeedTableAsync(2025);
     await withholdingSvc.SeedTableAsync(2026);

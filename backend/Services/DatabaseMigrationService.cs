@@ -67,6 +67,14 @@ public class DatabaseMigrationService
     {
         await EnsureMigrationTableAsync();
         var applied = await GetAppliedVersionsAsync();
+        if (applied.Count == 0 && await CurrentSchemaAlreadyCreatedAsync())
+        {
+            _log.LogInformation("Esquema actual detectado; marcando migraciones históricas como aplicadas.");
+            foreach (var m in Migrations)
+                await MarkAppliedAsync(m.Version);
+            return;
+        }
+
         foreach (var m in Migrations)
         {
             if (applied.Contains(m.Version))
@@ -87,6 +95,31 @@ public class DatabaseMigrationService
                 throw;
             }
         }
+    }
+
+    private async Task<bool> CurrentSchemaAlreadyCreatedAsync()
+    {
+        var requiredTables = new[]
+        {
+            "Products", "Purchases", "Sales", "InventoryLots",
+            "CatalogProducts", "Orders", "OrderItems", "PaymentSettings", "subscription"
+        };
+
+        foreach (var table in requiredTables)
+        {
+            var exists = await _db.Database
+                .SqlQueryRaw<int>(
+                    @"SELECT COUNT(*) AS `Value`
+                      FROM information_schema.tables
+                      WHERE table_schema = DATABASE()
+                        AND table_name = {0}",
+                    table)
+                .SingleAsync();
+
+            if (exists == 0) return false;
+        }
+
+        return true;
     }
 
     private async Task EnsureMigrationTableAsync()
@@ -175,16 +208,16 @@ public class DatabaseMigrationService
 
         var statements = new (string Table, string Column, string DDL)[]
         {
-            ("customers", "IsRetentionAgent",
-                "ALTER TABLE customers ADD COLUMN IsRetentionAgent TINYINT(1) NOT NULL DEFAULT 0 AFTER IsActive"),
-            ("companysettings", "Nit",
-                "ALTER TABLE companysettings ADD COLUMN Nit VARCHAR(20) NULL AFTER TaxId"),
-            ("companysettings", "NitVerificationDigit",
-                "ALTER TABLE companysettings ADD COLUMN NitVerificationDigit VARCHAR(1) NULL AFTER Nit"),
-            ("suppliers", "Nit",
-                "ALTER TABLE suppliers ADD COLUMN Nit VARCHAR(20) NULL AFTER TaxId"),
-            ("suppliers", "NitVerificationDigit",
-                "ALTER TABLE suppliers ADD COLUMN NitVerificationDigit VARCHAR(1) NULL AFTER Nit"),
+            ("Customers", "IsRetentionAgent",
+                "ALTER TABLE Customers ADD COLUMN IsRetentionAgent TINYINT(1) NOT NULL DEFAULT 0 AFTER IsActive"),
+            ("CompanySettings", "Nit",
+                "ALTER TABLE CompanySettings ADD COLUMN Nit VARCHAR(20) NULL AFTER TaxId"),
+            ("CompanySettings", "NitVerificationDigit",
+                "ALTER TABLE CompanySettings ADD COLUMN NitVerificationDigit VARCHAR(1) NULL AFTER Nit"),
+            ("Suppliers", "Nit",
+                "ALTER TABLE Suppliers ADD COLUMN Nit VARCHAR(20) NULL AFTER TaxId"),
+            ("Suppliers", "NitVerificationDigit",
+                "ALTER TABLE Suppliers ADD COLUMN NitVerificationDigit VARCHAR(1) NULL AFTER Nit"),
         };
 
         foreach (var (table, column, ddl) in statements)
@@ -229,10 +262,10 @@ public class DatabaseMigrationService
 
         var statements = new (string Table, string Column, string DDL)[]
         {
-            ("customers", "Nit",
-                "ALTER TABLE customers ADD COLUMN Nit VARCHAR(20) NULL AFTER TaxId"),
-            ("customers", "NitVerificationDigit",
-                "ALTER TABLE customers ADD COLUMN NitVerificationDigit VARCHAR(1) NULL AFTER Nit"),
+            ("Customers", "Nit",
+                "ALTER TABLE Customers ADD COLUMN Nit VARCHAR(20) NULL AFTER TaxId"),
+            ("Customers", "NitVerificationDigit",
+                "ALTER TABLE Customers ADD COLUMN NitVerificationDigit VARCHAR(1) NULL AFTER Nit"),
         };
 
         foreach (var (table, column, ddl) in statements)
@@ -269,22 +302,22 @@ public class DatabaseMigrationService
 
         var statements = new (string Table, string Column, string DDL)[]
         {
-            ("employees", "CotizanteTipo",        "ALTER TABLE employees ADD COLUMN CotizanteTipo VARCHAR(2) NOT NULL DEFAULT '01' AFTER AfcMonthlyAmount"),
-            ("employees", "CotizanteSubtipo",     "ALTER TABLE employees ADD COLUMN CotizanteSubtipo VARCHAR(2) NOT NULL DEFAULT '00' AFTER CotizanteTipo"),
-            ("employees", "OperatorEps",          "ALTER TABLE employees ADD COLUMN OperatorEps VARCHAR(10) NULL AFTER CotizanteSubtipo"),
-            ("employees", "OperatorPension",      "ALTER TABLE employees ADD COLUMN OperatorPension VARCHAR(10) NULL AFTER OperatorEps"),
-            ("employees", "OperatorArl",          "ALTER TABLE employees ADD COLUMN OperatorArl VARCHAR(10) NULL AFTER OperatorPension"),
-            ("employees", "OperatorCcf",          "ALTER TABLE employees ADD COLUMN OperatorCcf VARCHAR(10) NULL AFTER OperatorArl"),
-            ("employees", "ArlRiskClass",         "ALTER TABLE employees ADD COLUMN ArlRiskClass INT NOT NULL DEFAULT 1 AFTER OperatorCcf"),
-            ("socialsecuritypayments", "NovedadTipo",         "ALTER TABLE socialsecuritypayments ADD COLUMN NovedadTipo VARCHAR(2) NOT NULL DEFAULT 'N' AFTER Reference"),
-            ("socialsecuritypayments", "NovedadFechaInicio",  "ALTER TABLE socialsecuritypayments ADD COLUMN NovedadFechaInicio DATETIME(6) NULL AFTER NovedadTipo"),
-            ("socialsecuritypayments", "NovedadFechaFin",     "ALTER TABLE socialsecuritypayments ADD COLUMN NovedadFechaFin DATETIME(6) NULL AFTER NovedadFechaInicio"),
-            ("socialsecuritypayments", "OperatorEps",         "ALTER TABLE socialsecuritypayments ADD COLUMN OperatorEps VARCHAR(10) NULL AFTER NovedadFechaFin"),
-            ("socialsecuritypayments", "OperatorPension",     "ALTER TABLE socialsecuritypayments ADD COLUMN OperatorPension VARCHAR(10) NULL AFTER OperatorEps"),
-            ("socialsecuritypayments", "OperatorArl",         "ALTER TABLE socialsecuritypayments ADD COLUMN OperatorArl VARCHAR(10) NULL AFTER OperatorPension"),
-            ("socialsecuritypayments", "OperatorCcf",         "ALTER TABLE socialsecuritypayments ADD COLUMN OperatorCcf VARCHAR(10) NULL AFTER OperatorArl"),
-            ("socialsecuritypayments", "CotizanteTipo",       "ALTER TABLE socialsecuritypayments ADD COLUMN CotizanteTipo VARCHAR(2) NULL AFTER OperatorCcf"),
-            ("socialsecuritypayments", "CotizanteSubtipo",    "ALTER TABLE socialsecuritypayments ADD COLUMN CotizanteSubtipo VARCHAR(2) NULL AFTER CotizanteTipo"),
+            ("Employees", "CotizanteTipo",        "ALTER TABLE Employees ADD COLUMN CotizanteTipo VARCHAR(2) NOT NULL DEFAULT '01' AFTER AfcMonthlyAmount"),
+            ("Employees", "CotizanteSubtipo",     "ALTER TABLE Employees ADD COLUMN CotizanteSubtipo VARCHAR(2) NOT NULL DEFAULT '00' AFTER CotizanteTipo"),
+            ("Employees", "OperatorEps",          "ALTER TABLE Employees ADD COLUMN OperatorEps VARCHAR(10) NULL AFTER CotizanteSubtipo"),
+            ("Employees", "OperatorPension",      "ALTER TABLE Employees ADD COLUMN OperatorPension VARCHAR(10) NULL AFTER OperatorEps"),
+            ("Employees", "OperatorArl",          "ALTER TABLE Employees ADD COLUMN OperatorArl VARCHAR(10) NULL AFTER OperatorPension"),
+            ("Employees", "OperatorCcf",          "ALTER TABLE Employees ADD COLUMN OperatorCcf VARCHAR(10) NULL AFTER OperatorArl"),
+            ("Employees", "ArlRiskClass",         "ALTER TABLE Employees ADD COLUMN ArlRiskClass INT NOT NULL DEFAULT 1 AFTER OperatorCcf"),
+            ("SocialSecurityPayments", "NovedadTipo",         "ALTER TABLE SocialSecurityPayments ADD COLUMN NovedadTipo VARCHAR(2) NOT NULL DEFAULT 'N' AFTER Reference"),
+            ("SocialSecurityPayments", "NovedadFechaInicio",  "ALTER TABLE SocialSecurityPayments ADD COLUMN NovedadFechaInicio DATETIME(6) NULL AFTER NovedadTipo"),
+            ("SocialSecurityPayments", "NovedadFechaFin",     "ALTER TABLE SocialSecurityPayments ADD COLUMN NovedadFechaFin DATETIME(6) NULL AFTER NovedadFechaInicio"),
+            ("SocialSecurityPayments", "OperatorEps",         "ALTER TABLE SocialSecurityPayments ADD COLUMN OperatorEps VARCHAR(10) NULL AFTER NovedadFechaFin"),
+            ("SocialSecurityPayments", "OperatorPension",     "ALTER TABLE SocialSecurityPayments ADD COLUMN OperatorPension VARCHAR(10) NULL AFTER OperatorEps"),
+            ("SocialSecurityPayments", "OperatorArl",         "ALTER TABLE SocialSecurityPayments ADD COLUMN OperatorArl VARCHAR(10) NULL AFTER OperatorPension"),
+            ("SocialSecurityPayments", "OperatorCcf",         "ALTER TABLE SocialSecurityPayments ADD COLUMN OperatorCcf VARCHAR(10) NULL AFTER OperatorArl"),
+            ("SocialSecurityPayments", "CotizanteTipo",       "ALTER TABLE SocialSecurityPayments ADD COLUMN CotizanteTipo VARCHAR(2) NULL AFTER OperatorCcf"),
+            ("SocialSecurityPayments", "CotizanteSubtipo",    "ALTER TABLE SocialSecurityPayments ADD COLUMN CotizanteSubtipo VARCHAR(2) NULL AFTER CotizanteTipo"),
         };
 
         foreach (var (table, column, ddl) in statements)
@@ -323,12 +356,12 @@ public class DatabaseMigrationService
         await using (var tblCheck = conn.CreateCommand())
         {
             tblCheck.CommandText = @"SELECT COUNT(*) FROM information_schema.tables
-                                     WHERE table_schema = DATABASE() AND table_name = 'inventorylots'";
+                                     WHERE table_schema = DATABASE() AND table_name = 'InventoryLots'";
             if (Convert.ToInt32(await tblCheck.ExecuteScalarAsync()) == 0)
             {
                 await using var create = conn.CreateCommand();
                 create.CommandText = @"
-CREATE TABLE inventorylots (
+CREATE TABLE InventoryLots (
     Id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     ProductId INT NOT NULL,
     PurchaseId INT NULL,
@@ -338,8 +371,8 @@ CREATE TABLE inventorylots (
     EntryDate DATETIME(6) NOT NULL,
     Reference VARCHAR(100) NULL,
     CreatedAt DATETIME(6) NOT NULL,
-    CONSTRAINT FK_inventorylots_products FOREIGN KEY (ProductId) REFERENCES products(Id),
-    CONSTRAINT FK_inventorylots_purchases FOREIGN KEY (PurchaseId) REFERENCES purchases(Id) ON DELETE SET NULL,
+    CONSTRAINT FK_inventorylots_products FOREIGN KEY (ProductId) REFERENCES Products(Id),
+    CONSTRAINT FK_inventorylots_purchases FOREIGN KEY (PurchaseId) REFERENCES Purchases(Id) ON DELETE SET NULL,
     INDEX IX_inventorylots_ProductId (ProductId),
     INDEX IX_inventorylots_EntryDate (EntryDate)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
@@ -347,17 +380,17 @@ CREATE TABLE inventorylots (
             }
         }
 
-        // 2) Columna ValuationMethod en products
+        // 2) Columna ValuationMethod en Products
         await using (var check = conn.CreateCommand())
         {
             check.CommandText = @"SELECT COUNT(*) FROM information_schema.columns
                                   WHERE table_schema = DATABASE()
-                                    AND table_name = 'products'
+                                    AND table_name = 'Products'
                                     AND column_name = 'ValuationMethod'";
             if (Convert.ToInt32(await check.ExecuteScalarAsync()) == 0)
             {
                 await using var alter = conn.CreateCommand();
-                alter.CommandText = "ALTER TABLE products ADD COLUMN ValuationMethod INT NOT NULL DEFAULT 1 AFTER IsActive";
+                alter.CommandText = "ALTER TABLE Products ADD COLUMN ValuationMethod INT NOT NULL DEFAULT 1 AFTER IsActive";
                 await alter.ExecuteNonQueryAsync();
             }
         }
@@ -376,12 +409,12 @@ CREATE TABLE inventorylots (
         await using (var tblCheck = conn.CreateCommand())
         {
             tblCheck.CommandText = @"SELECT COUNT(*) FROM information_schema.tables
-                                     WHERE table_schema = DATABASE() AND table_name = 'permissions'";
+                                      WHERE table_schema = DATABASE() AND table_name = 'Permissions'";
             if (Convert.ToInt32(await tblCheck.ExecuteScalarAsync()) == 0)
             {
                 await using var create = conn.CreateCommand();
                 create.CommandText = @"
-CREATE TABLE permissions (
+CREATE TABLE Permissions (
     `Key`       VARCHAR(60)  NOT NULL PRIMARY KEY,
     Module      VARCHAR(40)  NOT NULL,
     Action      VARCHAR(20)  NOT NULL,
@@ -396,16 +429,16 @@ CREATE TABLE permissions (
         await using (var tblCheck2 = conn.CreateCommand())
         {
             tblCheck2.CommandText = @"SELECT COUNT(*) FROM information_schema.tables
-                                      WHERE table_schema = DATABASE() AND table_name = 'rolepermissions'";
+                                      WHERE table_schema = DATABASE() AND table_name = 'RolePermissions'";
             if (Convert.ToInt32(await tblCheck2.ExecuteScalarAsync()) == 0)
             {
                 await using var create = conn.CreateCommand();
                 create.CommandText = @"
-CREATE TABLE rolepermissions (
+CREATE TABLE RolePermissions (
     Id            INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     Role          VARCHAR(40)  NOT NULL,
     PermissionKey VARCHAR(60)  NOT NULL,
-    CONSTRAINT FK_rolepermissions_permissions FOREIGN KEY (PermissionKey) REFERENCES permissions(`Key`) ON DELETE CASCADE,
+    CONSTRAINT FK_rolepermissions_permissions FOREIGN KEY (PermissionKey) REFERENCES Permissions(`Key`) ON DELETE CASCADE,
     CONSTRAINT UQ_rolepermissions_Role_Key UNIQUE (Role, PermissionKey),
     INDEX IX_rolepermissions_Role (Role)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
@@ -417,7 +450,7 @@ CREATE TABLE rolepermissions (
         foreach (var p in PermissionService.Catalog)
         {
             await using var ins = conn.CreateCommand();
-            ins.CommandText = @"INSERT IGNORE INTO permissions (`Key`, Module, Action, Description)
+            ins.CommandText = @"INSERT IGNORE INTO Permissions (`Key`, Module, Action, Description)
                                 VALUES (@k, @m, @a, @d)";
             var pk = ins.CreateParameter(); pk.ParameterName = "@k"; pk.Value = p.Key; ins.Parameters.Add(pk);
             var pm = ins.CreateParameter(); pm.ParameterName = "@m"; pm.Value = p.Module; ins.Parameters.Add(pm);
@@ -430,14 +463,14 @@ CREATE TABLE rolepermissions (
         foreach (var (role, keys) in PermissionService.DefaultMatrix)
         {
             await using var count = conn.CreateCommand();
-            count.CommandText = "SELECT COUNT(*) FROM rolepermissions WHERE Role = @r";
+            count.CommandText = "SELECT COUNT(*) FROM RolePermissions WHERE Role = @r";
             var pr = count.CreateParameter(); pr.ParameterName = "@r"; pr.Value = role; count.Parameters.Add(pr);
             if (Convert.ToInt32(await count.ExecuteScalarAsync()) > 0) continue;
 
             foreach (var key in keys)
             {
                 await using var ins = conn.CreateCommand();
-                ins.CommandText = @"INSERT IGNORE INTO rolepermissions (Role, PermissionKey)
+                ins.CommandText = @"INSERT IGNORE INTO RolePermissions (Role, PermissionKey)
                                     VALUES (@r, @k)";
                 var pr2 = ins.CreateParameter(); pr2.ParameterName = "@r"; pr2.Value = role; ins.Parameters.Add(pr2);
                 var pk2 = ins.CreateParameter(); pk2.ParameterName = "@k"; pk2.Value = key; ins.Parameters.Add(pk2);
@@ -456,16 +489,16 @@ CREATE TABLE rolepermissions (
 
         await using var tblCheck = conn.CreateCommand();
         tblCheck.CommandText = @"SELECT COUNT(*) FROM information_schema.tables
-                                 WHERE table_schema = DATABASE() AND table_name = 'catalogproducts'";
+                                 WHERE table_schema = DATABASE() AND table_name = 'CatalogProducts'";
         if (Convert.ToInt32(await tblCheck.ExecuteScalarAsync()) == 0) return;
 
         await using var colCheck = conn.CreateCommand();
         colCheck.CommandText = @"SELECT COUNT(*) FROM information_schema.columns
-            WHERE table_schema = DATABASE() AND table_name = 'catalogproducts' AND column_name = 'Model'";
+            WHERE table_schema = DATABASE() AND table_name = 'CatalogProducts' AND column_name = 'Model'";
         if (Convert.ToInt32(await colCheck.ExecuteScalarAsync()) == 0)
         {
             await using var alter = conn.CreateCommand();
-            alter.CommandText = "ALTER TABLE catalogproducts ADD COLUMN Model VARCHAR(100) NULL AFTER Brand";
+            alter.CommandText = "ALTER TABLE CatalogProducts ADD COLUMN Model VARCHAR(100) NULL AFTER Brand";
             await alter.ExecuteNonQueryAsync();
         }
     }
@@ -515,12 +548,12 @@ CREATE TABLE subscription (
         await using (var tblCheck = conn.CreateCommand())
         {
             tblCheck.CommandText = @"SELECT COUNT(*) FROM information_schema.tables
-                                     WHERE table_schema = DATABASE() AND table_name = 'catalogproducts'";
+                                      WHERE table_schema = DATABASE() AND table_name = 'CatalogProducts'";
             if (Convert.ToInt32(await tblCheck.ExecuteScalarAsync()) == 0)
             {
                 await using var create = conn.CreateCommand();
                 create.CommandText = @"
-CREATE TABLE catalogproducts (
+CREATE TABLE CatalogProducts (
     Id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     Slug VARCHAR(100) NOT NULL,
     ProductLine VARCHAR(50) NOT NULL,
@@ -545,11 +578,11 @@ CREATE TABLE catalogproducts (
                 // Agrega columna Model si no existe (para BD existentes)
                 await using var colCheck = conn.CreateCommand();
                 colCheck.CommandText = @"SELECT COUNT(*) FROM information_schema.columns
-                    WHERE table_schema = DATABASE() AND table_name = 'catalogproducts' AND column_name = 'Model'";
+                    WHERE table_schema = DATABASE() AND table_name = 'CatalogProducts' AND column_name = 'Model'";
                 if (Convert.ToInt32(await colCheck.ExecuteScalarAsync()) == 0)
                 {
                     await using var alter = conn.CreateCommand();
-                    alter.CommandText = "ALTER TABLE catalogproducts ADD COLUMN Model VARCHAR(100) NULL AFTER Brand";
+                    alter.CommandText = "ALTER TABLE CatalogProducts ADD COLUMN Model VARCHAR(100) NULL AFTER Brand";
                     await alter.ExecuteNonQueryAsync();
                 }
             }
@@ -559,12 +592,12 @@ CREATE TABLE catalogproducts (
         await using (var tblCheck2 = conn.CreateCommand())
         {
             tblCheck2.CommandText = @"SELECT COUNT(*) FROM information_schema.tables
-                                      WHERE table_schema = DATABASE() AND table_name = 'orders'";
+                                      WHERE table_schema = DATABASE() AND table_name = 'Orders'";
             if (Convert.ToInt32(await tblCheck2.ExecuteScalarAsync()) == 0)
             {
                 await using var create = conn.CreateCommand();
                 create.CommandText = @"
-CREATE TABLE orders (
+CREATE TABLE Orders (
     Id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     OrderNumber VARCHAR(20) NOT NULL,
     CustomerName VARCHAR(200) NOT NULL,
@@ -594,12 +627,12 @@ CREATE TABLE orders (
         await using (var tblCheck3 = conn.CreateCommand())
         {
             tblCheck3.CommandText = @"SELECT COUNT(*) FROM information_schema.tables
-                                      WHERE table_schema = DATABASE() AND table_name = 'orderitems'";
+                                      WHERE table_schema = DATABASE() AND table_name = 'OrderItems'";
             if (Convert.ToInt32(await tblCheck3.ExecuteScalarAsync()) == 0)
             {
                 await using var create = conn.CreateCommand();
                 create.CommandText = @"
-CREATE TABLE orderitems (
+CREATE TABLE OrderItems (
     Id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     OrderId INT NOT NULL,
     CatalogProductId INT NOT NULL,
@@ -607,7 +640,7 @@ CREATE TABLE orderitems (
     Quantity INT NOT NULL,
     UnitPrice DECIMAL(18,2) NOT NULL,
     LineTotal DECIMAL(18,2) NOT NULL,
-    CONSTRAINT FK_orderitems_orders FOREIGN KEY (OrderId) REFERENCES orders(Id) ON DELETE CASCADE,
+    CONSTRAINT FK_orderitems_orders FOREIGN KEY (OrderId) REFERENCES Orders(Id) ON DELETE CASCADE,
     INDEX IX_orderitems_OrderId (OrderId)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;";
                 await create.ExecuteNonQueryAsync();
@@ -625,22 +658,22 @@ CREATE TABLE orderitems (
 
         await using var tblCheck = conn.CreateCommand();
         tblCheck.CommandText = @"SELECT COUNT(*) FROM information_schema.tables
-                                 WHERE table_schema = DATABASE() AND table_name = 'catalogproducts'";
+                                 WHERE table_schema = DATABASE() AND table_name = 'CatalogProducts'";
         if (Convert.ToInt32(await tblCheck.ExecuteScalarAsync()) == 0) return;
 
         var columns = new (string Name, string Sql)[]
         {
-            ("MenuModel", "ALTER TABLE catalogproducts ADD COLUMN MenuModel VARCHAR(100) NULL AFTER Model"),
-            ("DesignRef", "ALTER TABLE catalogproducts ADD COLUMN DesignRef VARCHAR(100) NULL AFTER MenuModel"),
-            ("Color", "ALTER TABLE catalogproducts ADD COLUMN Color VARCHAR(50) NULL AFTER DesignRef"),
-            ("InternalProductId", "ALTER TABLE catalogproducts ADD COLUMN InternalProductId INT NULL AFTER Color"),
+            ("MenuModel", "ALTER TABLE CatalogProducts ADD COLUMN MenuModel VARCHAR(100) NULL AFTER Model"),
+            ("DesignRef", "ALTER TABLE CatalogProducts ADD COLUMN DesignRef VARCHAR(100) NULL AFTER MenuModel"),
+            ("Color", "ALTER TABLE CatalogProducts ADD COLUMN Color VARCHAR(50) NULL AFTER DesignRef"),
+            ("InternalProductId", "ALTER TABLE CatalogProducts ADD COLUMN InternalProductId INT NULL AFTER Color"),
         };
 
         foreach (var (name, sql) in columns)
         {
             await using var colCheck = conn.CreateCommand();
             colCheck.CommandText = @"SELECT COUNT(*) FROM information_schema.columns
-                WHERE table_schema = DATABASE() AND table_name = 'catalogproducts' AND column_name = @col";
+                WHERE table_schema = DATABASE() AND table_name = 'CatalogProducts' AND column_name = @col";
             var p = colCheck.CreateParameter();
             p.ParameterName = "@col";
             p.Value = name;
@@ -655,11 +688,11 @@ CREATE TABLE orderitems (
 
         await using var idxCheck = conn.CreateCommand();
         idxCheck.CommandText = @"SELECT COUNT(*) FROM information_schema.statistics
-            WHERE table_schema = DATABASE() AND table_name = 'catalogproducts' AND index_name = 'IX_catalogproducts_MenuModel'";
+            WHERE table_schema = DATABASE() AND table_name = 'CatalogProducts' AND index_name = 'IX_catalogproducts_MenuModel'";
         if (Convert.ToInt32(await idxCheck.ExecuteScalarAsync()) == 0)
         {
             await using var idx = conn.CreateCommand();
-            idx.CommandText = "CREATE INDEX IX_catalogproducts_MenuModel ON catalogproducts (ProductLine, Brand, MenuModel)";
+            idx.CommandText = "CREATE INDEX IX_catalogproducts_MenuModel ON CatalogProducts (ProductLine, Brand, MenuModel)";
             await idx.ExecuteNonQueryAsync();
         }
     }
@@ -676,7 +709,7 @@ CREATE TABLE orderitems (
         foreach (var p in PermissionService.Catalog)
         {
             await using var ins = conn.CreateCommand();
-            ins.CommandText = @"INSERT IGNORE INTO permissions (`Key`, Module, Action, Description)
+            ins.CommandText = @"INSERT IGNORE INTO Permissions (`Key`, Module, Action, Description)
                                 VALUES (@k, @m, @a, @d)";
             var pk = ins.CreateParameter(); pk.ParameterName = "@k"; pk.Value = p.Key; ins.Parameters.Add(pk);
             var pm = ins.CreateParameter(); pm.ParameterName = "@m"; pm.Value = p.Module; ins.Parameters.Add(pm);
@@ -690,7 +723,7 @@ CREATE TABLE orderitems (
             foreach (var key in keys)
             {
                 await using var ins = conn.CreateCommand();
-                ins.CommandText = @"INSERT IGNORE INTO rolepermissions (Role, PermissionKey)
+                ins.CommandText = @"INSERT IGNORE INTO RolePermissions (Role, PermissionKey)
                                     VALUES (@r, @k)";
                 var pr = ins.CreateParameter(); pr.ParameterName = "@r"; pr.Value = role; ins.Parameters.Add(pr);
                 var pk = ins.CreateParameter(); pk.ParameterName = "@k"; pk.Value = key; ins.Parameters.Add(pk);
@@ -706,16 +739,16 @@ CREATE TABLE orderitems (
 
         await using var tblCheck = conn.CreateCommand();
         tblCheck.CommandText = @"SELECT COUNT(*) FROM information_schema.tables
-                                 WHERE table_schema = DATABASE() AND table_name = 'orders'";
+                                 WHERE table_schema = DATABASE() AND table_name = 'Orders'";
         if (Convert.ToInt32(await tblCheck.ExecuteScalarAsync()) == 0) return;
 
         await using var colCheck = conn.CreateCommand();
         colCheck.CommandText = @"SELECT COUNT(*) FROM information_schema.columns
-            WHERE table_schema = DATABASE() AND table_name = 'orders' AND column_name = 'StockDeductedAt'";
+            WHERE table_schema = DATABASE() AND table_name = 'Orders' AND column_name = 'StockDeductedAt'";
         if (Convert.ToInt32(await colCheck.ExecuteScalarAsync()) == 0)
         {
             await using var alter = conn.CreateCommand();
-            alter.CommandText = "ALTER TABLE orders ADD COLUMN StockDeductedAt DATETIME(6) NULL AFTER PaymentMethod";
+            alter.CommandText = "ALTER TABLE Orders ADD COLUMN StockDeductedAt DATETIME(6) NULL AFTER PaymentMethod";
             await alter.ExecuteNonQueryAsync();
         }
     }
@@ -727,7 +760,7 @@ CREATE TABLE orderitems (
 
         await using var create = conn.CreateCommand();
         create.CommandText = @"
-CREATE TABLE IF NOT EXISTS paymentsettings (
+CREATE TABLE IF NOT EXISTS PaymentSettings (
     Id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     Provider VARCHAR(50) NOT NULL,
     IsActive TINYINT(1) NOT NULL DEFAULT 1,
@@ -744,17 +777,17 @@ CREATE TABLE IF NOT EXISTS paymentsettings (
 
         await using var seed = conn.CreateCommand();
         seed.CommandText = @"
-INSERT INTO paymentsettings (Provider, IsActive, UseSandbox, PublicKey, AccessToken, BaseUrl, WebhookUrl, CreatedAt, UpdatedAt)
+INSERT INTO PaymentSettings (Provider, IsActive, UseSandbox, PublicKey, AccessToken, BaseUrl, WebhookUrl, CreatedAt, UpdatedAt)
 SELECT 'mercadopago', 1, 0, '', '', '', '', UTC_TIMESTAMP(6), UTC_TIMESTAMP(6)
-WHERE NOT EXISTS (SELECT 1 FROM paymentsettings WHERE Provider = 'mercadopago');";
+WHERE NOT EXISTS (SELECT 1 FROM PaymentSettings WHERE Provider = 'mercadopago');";
         await seed.ExecuteNonQueryAsync();
 
         await db.Database.ExecuteSqlRawAsync(@"
-INSERT IGNORE INTO permissions (`Key`, Module, Action, Description)
+INSERT IGNORE INTO Permissions (`Key`, Module, Action, Description)
 VALUES ('payments.manage', 'payments', 'manage', 'Configurar pasarelas de pago');");
 
         await db.Database.ExecuteSqlRawAsync(@"
-INSERT IGNORE INTO rolepermissions (Role, PermissionKey)
+INSERT IGNORE INTO RolePermissions (Role, PermissionKey)
 VALUES ('Administrador', 'payments.manage');");
     }
 
@@ -765,16 +798,16 @@ VALUES ('Administrador', 'payments.manage');");
 
         await using var tblCheck = conn.CreateCommand();
         tblCheck.CommandText = @"SELECT COUNT(*) FROM information_schema.tables
-                                 WHERE table_schema = DATABASE() AND table_name = 'orders'";
+                                 WHERE table_schema = DATABASE() AND table_name = 'Orders'";
         if (Convert.ToInt32(await tblCheck.ExecuteScalarAsync()) == 0) return;
 
         await using var colCheck = conn.CreateCommand();
         colCheck.CommandText = @"SELECT COUNT(*) FROM information_schema.columns
-            WHERE table_schema = DATABASE() AND table_name = 'orders' AND column_name = 'SaleId'";
+            WHERE table_schema = DATABASE() AND table_name = 'Orders' AND column_name = 'SaleId'";
         if (Convert.ToInt32(await colCheck.ExecuteScalarAsync()) == 0)
         {
             await using var alter = conn.CreateCommand();
-            alter.CommandText = "ALTER TABLE orders ADD COLUMN SaleId INT NULL AFTER StockDeductedAt";
+            alter.CommandText = "ALTER TABLE Orders ADD COLUMN SaleId INT NULL AFTER StockDeductedAt";
             await alter.ExecuteNonQueryAsync();
         }
     }
