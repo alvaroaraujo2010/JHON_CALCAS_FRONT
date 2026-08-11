@@ -110,6 +110,11 @@ public class AppDbContext : DbContext
             .HasForeignKey(p => p.InternalProductId)
             .OnDelete(DeleteBehavior.SetNull);
         modelBuilder.Entity<Order>().HasIndex(o => o.OrderNumber).IsUnique();
+        modelBuilder.Entity<Order>()
+            .HasOne(o => o.Sale)
+            .WithMany()
+            .HasForeignKey(o => o.SaleId)
+            .OnDelete(DeleteBehavior.SetNull);
         modelBuilder.Entity<PaymentSettings>().HasIndex(p => p.Provider).IsUnique();
         modelBuilder.Entity<OrderItem>()
             .HasOne(i => i.Order).WithMany(o => o.Items).HasForeignKey(i => i.OrderId)

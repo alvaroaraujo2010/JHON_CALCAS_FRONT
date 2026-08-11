@@ -101,26 +101,33 @@ interface OrderResponse {
     </div>
   `,
   styles: [`
-    .jc-checkout { padding: 2rem 1.5rem 4rem; max-width: 900px; margin: 0 auto; }
-    .jc-checkout h1 { font-size: 1.75rem; margin-bottom: 2rem; }
+    .jc-checkout { padding: 2rem 1.5rem 4rem; max-width: 900px; margin: 0 auto; color: var(--jc-fg); }
+    .jc-checkout h1 { font-size: 1.75rem; margin-bottom: 2rem; color: var(--jc-fg); }
     .jc-checkout__empty { text-align: center; padding: 4rem 0; }
     .jc-checkout__grid { display: grid; grid-template-columns: 1fr 320px; gap: 2rem; }
     @media (max-width: 768px) { .jc-checkout__grid { grid-template-columns: 1fr; } }
-    .jc-checkout__form h2, .jc-checkout__summary h2 { font-size: 1.1rem; margin-bottom: 1rem; }
+    .jc-checkout__form h2, .jc-checkout__summary h2 { font-size: 1.1rem; margin-bottom: 1rem; color: var(--jc-fg); }
     .jc-field { margin-bottom: 1rem; }
-    .jc-field label { display: block; font-size: 0.85rem; font-weight: 500; margin-bottom: 0.3rem; }
-    .jc-field input, .jc-field textarea { width: 100%; padding: 0.6rem; border: 1px solid #ccc; border-radius: 4px; font-size: 0.95rem; }
+    .jc-field label { display: block; font-size: 0.85rem; font-weight: 500; margin-bottom: 0.3rem; color: var(--jc-fg); }
+    .jc-field input, .jc-field textarea {
+      width: 100%; padding: 0.6rem; border: 1px solid var(--jc-input-border, #ccc); border-radius: 4px; font-size: 0.95rem;
+      background: var(--jc-input-bg, #fff); color: var(--jc-input-fg, #121212);
+    }
     .jc-field textarea { resize: vertical; }
     .jc-btn--lg { width: 100%; padding: 0.8rem; font-size: 1.05rem; margin-top: 0.5rem; }
-    .jc-checkout__summary { background: #f9f9f9; padding: 1.25rem; border-radius: 8px; align-self: start; position: sticky; top: 1rem; }
-    .jc-checkout__item { display: flex; gap: 0.5rem; padding: 0.5rem 0; border-bottom: 1px solid #eee; font-size: 0.9rem; }
-    .jc-checkout__item-qty { color: #666; min-width: 2rem; }
+    .jc-checkout__summary {
+      background: var(--jc-surface); color: var(--jc-surface-fg); padding: 1.25rem; border-radius: 8px;
+      align-self: start; position: sticky; top: 1rem; border: 1px solid var(--jc-border);
+    }
+    .jc-checkout__item { display: flex; gap: 0.5rem; padding: 0.5rem 0; border-bottom: 1px solid var(--jc-border); font-size: 0.9rem; color: var(--jc-surface-fg); }
+    .jc-checkout__item-qty { color: var(--jc-surface-muted); min-width: 2rem; }
     .jc-checkout__item-title { flex: 1; }
     .jc-checkout__item-price { font-weight: 500; white-space: nowrap; }
-    .jc-checkout__total { display: flex; justify-content: space-between; padding: 1rem 0 0; font-size: 1.1rem; }
-    .jc-checkout__done { text-align: center; padding: 3rem 0; }
+    .jc-checkout__total { display: flex; justify-content: space-between; padding: 1rem 0 0; font-size: 1.1rem; color: var(--jc-surface-fg); }
+    .jc-checkout__done { text-align: center; padding: 3rem 0; color: var(--jc-fg); }
     .jc-checkout__num { font-size: 1.3rem; font-weight: 700; margin: 1rem 0; }
-    .jc-checkout__alt { font-size: 0.85rem; color: #666; margin-top: 1rem; }
+    .jc-checkout__alt { font-size: 0.85rem; color: var(--jc-fg-muted); margin-top: 1rem; }
+    .jc-checkout__alt a { color: var(--jc-red, #dd1d1d); }
   `]
 })
 export class CheckoutComponent {

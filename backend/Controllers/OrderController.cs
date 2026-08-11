@@ -12,10 +12,11 @@ namespace ContaNexo.API.Controllers;
 public class OrderController(
     AppDbContext db,
     MercadoPagoService mp,
-    CatalogOrderInventoryService catalogInventory) : ControllerBase
+    CatalogOrderFulfillmentService fulfillment) : ControllerBase
 {
     private static readonly HashSet<string> PaidStatuses = new(StringComparer.OrdinalIgnoreCase)
         { "paid", "approved" };
+
     [HttpPost]
     public async Task<ActionResult<OrderDto>> Create([FromBody] CreateOrderRequest req)
     {
@@ -84,7 +85,7 @@ public class OrderController(
                 order.Id, order.OrderNumber, order.CustomerName, order.CustomerEmail,
                 order.CustomerPhone, order.CustomerAddress, order.City, order.Department,
                 order.Subtotal, order.ShippingCost, order.Total, order.Status,
-                pref.Id, pref.InitPoint, order.CreatedAt, null,
+                pref.Id, pref.InitPoint, order.CreatedAt, null, order.SaleId,
                 items.Select(i => new OrderItemDto(
                     i.CatalogProductId, i.ProductTitle, i.Quantity, i.UnitPrice, i.LineTotal)).ToList()
             ));
@@ -96,7 +97,7 @@ public class OrderController(
                 order.Id, order.OrderNumber, order.CustomerName, order.CustomerEmail,
                 order.CustomerPhone, order.CustomerAddress, order.City, order.Department,
                 order.Subtotal, order.ShippingCost, order.Total, "pending_error",
-                null, null, order.CreatedAt, null,
+                null, null, order.CreatedAt, null, order.SaleId,
                 items.Select(i => new OrderItemDto(
                     i.CatalogProductId, i.ProductTitle, i.Quantity, i.UnitPrice, i.LineTotal)).ToList()
             ));
@@ -116,7 +117,6 @@ public class OrderController(
     {
         var order = await db.Orders.Include(o => o.Items).FirstOrDefaultAsync(o => o.Id == id);
         if (order == null) return NotFound();
-
 
         if (!string.IsNullOrWhiteSpace(mpPaymentId))
         {
@@ -150,9 +150,9 @@ public class OrderController(
 
         order.UpdatedAt = DateTime.UtcNow;
 
-        CatalogOrderInventoryService.StockDeductionResult? stockResult = null;
-        if (IsPaidStatus(order.Status) && !order.StockDeductedAt.HasValue)
-            stockResult = await catalogInventory.TryDeductStockForPaidOrderAsync(order);
+        CatalogOrderFulfillmentService.FulfillmentResult? fulfilled = null;
+        if (IsPaidStatus(order.Status))
+            fulfilled = await fulfillment.FulfillPaidOrderAsync(order);
         else
             await db.SaveChangesAsync();
 
@@ -162,8 +162,12 @@ public class OrderController(
             order.Status,
             order.MpPaymentStatus,
             order.StockDeductedAt,
-            stockDeducted = stockResult?.Deducted ?? [],
-            stockWarnings = stockResult?.Warnings ?? []
+            order.SaleId,
+            stockDeducted = fulfilled?.Stock.Deducted ?? [],
+            stockWarnings = fulfilled?.Stock.Warnings ?? [],
+            saleCreated = fulfilled?.Sale.Created ?? false,
+            saleDocument = fulfilled?.Sale.DocumentNumber,
+            saleWarnings = fulfilled?.Sale.Warnings ?? []
         });
     }
 
@@ -178,7 +182,7 @@ public class OrderController(
 
     [HttpPut("{id}/status")]
     [Authorize(Policy = "orders.manage")]
-    public async Task<ActionResult<OrderDto>> UpdateStatus(int id, [FromBody] UpdateOrderStatusRequest req)
+    public async Task<ActionResult<object>> UpdateStatus(int id, [FromBody] UpdateOrderStatusRequest req)
     {
         var order = await db.Orders.Include(o => o.Items).FirstOrDefaultAsync(o => o.Id == id);
         if (order == null) return NotFound();
@@ -186,20 +190,27 @@ public class OrderController(
         order.Status = req.Status;
         order.UpdatedAt = DateTime.UtcNow;
 
-        CatalogOrderInventoryService.StockDeductionResult? stockResult = null;
-        if (IsPaidStatus(order.Status) && !order.StockDeductedAt.HasValue)
-            stockResult = await catalogInventory.TryDeductStockForPaidOrderAsync(order);
+        CatalogOrderFulfillmentService.FulfillmentResult? fulfilled = null;
+        if (IsPaidStatus(order.Status))
+            fulfilled = await fulfillment.FulfillPaidOrderAsync(order);
         else
             await db.SaveChangesAsync();
 
         var dto = ToDto(order);
-        if (stockResult != null && (stockResult.Warnings.Count > 0 || !stockResult.Processed))
-            return Ok(new { order = dto, stockWarnings = stockResult.Warnings, stockDeducted = stockResult.Deducted, stockProcessed = stockResult.Processed });
+        if (fulfilled == null)
+            return Ok(dto);
 
-        if (stockResult?.Deducted.Count > 0)
-            return Ok(new { order = dto, stockDeducted = stockResult.Deducted, stockProcessed = true });
-
-        return Ok(dto);
+        return Ok(new
+        {
+            order = dto,
+            stockWarnings = fulfilled.Stock.Warnings,
+            stockDeducted = fulfilled.Stock.Deducted,
+            stockProcessed = fulfilled.Stock.Processed,
+            saleCreated = fulfilled.Sale.Created,
+            saleId = fulfilled.Sale.SaleId,
+            saleDocument = fulfilled.Sale.DocumentNumber,
+            saleWarnings = fulfilled.Sale.Warnings
+        });
     }
 
     private static bool IsPaidStatus(string? status) =>
@@ -209,7 +220,7 @@ public class OrderController(
         o.Id, o.OrderNumber, o.CustomerName, o.CustomerEmail,
         o.CustomerPhone, o.CustomerAddress, o.City, o.Department,
         o.Subtotal, o.ShippingCost, o.Total, o.Status,
-        o.MpPaymentId, null, o.CreatedAt, o.StockDeductedAt,
+        o.MpPaymentId, null, o.CreatedAt, o.StockDeductedAt, o.SaleId,
         o.Items.Select(i => new OrderItemDto(
             i.CatalogProductId, i.ProductTitle, i.Quantity, i.UnitPrice, i.LineTotal)).ToList()
     );
@@ -227,6 +238,7 @@ public record OrderDto(
     string CustomerPhone, string? CustomerAddress, string? City, string? Department,
     decimal Subtotal, decimal ShippingCost, decimal Total, string Status,
     string? MpPreferenceId, string? MpInitPoint, DateTime CreatedAt, DateTime? StockDeductedAt,
+    int? SaleId,
     List<OrderItemDto> Items);
 
 public record OrderItemDto(int ProductId, string ProductTitle, int Quantity, decimal UnitPrice, decimal LineTotal);

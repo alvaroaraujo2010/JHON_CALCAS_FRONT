@@ -202,15 +202,28 @@ export class OrdersAdminComponent implements OnInit {
   }
 
   updateStatus(orderId: number, status: string) {
-    this.api.put<Order | { order: Order; stockWarnings?: string[]; stockDeducted?: string[]; stockProcessed?: boolean }>(`orders/${orderId}/status`, { status }).subscribe({
+    this.api.put<Order | {
+      order: Order;
+      stockWarnings?: string[];
+      stockDeducted?: string[];
+      stockProcessed?: boolean;
+      saleCreated?: boolean;
+      saleDocument?: string;
+      saleWarnings?: string[];
+    }>(`orders/${orderId}/status`, { status }).subscribe({
       next: (res) => {
         const payload = 'order' in res ? res : null;
         const order = payload?.order ?? (res as Order);
-        const warnings = payload?.stockWarnings ?? [];
+        const warnings = [
+          ...(payload?.stockWarnings ?? []),
+          ...(payload?.saleWarnings ?? [])
+        ];
         const deducted = payload?.stockDeducted ?? [];
 
         if (warnings.length) {
           this.toast.error(warnings.join(' · '));
+        } else if (payload?.saleCreated && payload.saleDocument) {
+          this.toast.success(`Pedido pagado → venta ${payload.saleDocument}`);
         } else if (deducted.length) {
           this.toast.success(`Estado actualizado. Stock descontado: ${deducted.join(', ')}`);
         } else {

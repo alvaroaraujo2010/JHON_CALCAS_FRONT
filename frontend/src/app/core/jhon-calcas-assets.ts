@@ -15,6 +15,46 @@ export const JHON_CALCAS_IMAGES = {
 
 export const JHON_CALCAS_WHATSAPP_URL = 'https://wa.link/122ehn';
 
+/** Enlaces de redes (mismo orden del banner hero). left/width en % del banner. */
+export const JHON_CALCAS_SOCIAL_LINKS = [
+  {
+    label: 'Instagram',
+    href: 'https://www.instagram.com/jhoncalcas',
+    left: 38.1,
+    width: 2.8,
+  },
+  {
+    label: 'Facebook',
+    href: 'https://www.facebook.com/people/Jhoncalcas/100063970326433/',
+    left: 41.4,
+    width: 2.9,
+  },
+  {
+    label: 'TikTok',
+    href: 'https://www.tiktok.com/@jhoncalcasmedellin',
+    left: 44.9,
+    width: 2.4,
+  },
+  {
+    label: 'YouTube',
+    href: 'https://www.youtube.com/@jhoncalcas6757',
+    left: 47.6,
+    width: 2.9,
+  },
+  {
+    label: 'Google Maps — Tienda física',
+    href: 'https://www.google.com/maps/search/?api=1&query=Centro+Comercial+Florida+Cl.+71+%2365-150+Medell%C3%ADn',
+    left: 51.0,
+    width: 2.5,
+  },
+  {
+    label: 'Mercado Libre',
+    href: 'https://listado.mercadolibre.com.co/jhoncalcas',
+    left: 54.0,
+    width: 8.2,
+  },
+] as const;
+
 export interface JhonCalcasSection {
   id: string;
   title: string;

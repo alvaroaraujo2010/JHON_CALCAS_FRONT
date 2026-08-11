@@ -48,6 +48,8 @@ builder.Services.AddScoped<SalesAccountingService>();
 builder.Services.AddScoped<PurchasesAccountingService>();
 builder.Services.AddScoped<InventoryValuationService>();
 builder.Services.AddScoped<CatalogOrderInventoryService>();
+builder.Services.AddScoped<CatalogOrderSaleService>();
+builder.Services.AddScoped<CatalogOrderFulfillmentService>();
 builder.Services.AddScoped<DatabaseMigrationService>();
 builder.Services.AddScoped<PermissionService>();
 builder.Services.AddHttpClient<MercadoPagoService>();

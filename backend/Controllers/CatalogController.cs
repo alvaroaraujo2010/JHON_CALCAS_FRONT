@@ -16,11 +16,28 @@ public class CatalogController(AppDbContext db, IConfiguration config) : Control
 
     [HttpGet("products")]
     public async Task<ActionResult<List<CatalogProductDto>>> GetProducts(
-        [FromQuery] string? productLine, [FromQuery] string? brand, [FromQuery] string? model)
+        [FromQuery] string? productLine, [FromQuery] string? brand, [FromQuery] string? model,
+        [FromQuery] string? search)
     {
-        var q = db.CatalogProducts.Where(p => p.IsActive).AsQueryable();
+        var q = db.CatalogProducts
+            .Include(p => p.InternalProduct)
+            .Where(p => p.IsActive)
+            .AsQueryable();
         if (!string.IsNullOrWhiteSpace(productLine))
             q = q.Where(p => p.ProductLine == productLine);
+        if (!string.IsNullOrWhiteSpace(search))
+        {
+            var s = search.Trim().ToLower();
+            q = q.Where(p =>
+                (p.Title != null && p.Title.ToLower().Contains(s)) ||
+                (p.Brand != null && p.Brand.ToLower().Contains(s)) ||
+                (p.Model != null && p.Model.ToLower().Contains(s)) ||
+                (p.MenuModel != null && p.MenuModel.ToLower().Contains(s)) ||
+                (p.Color != null && p.Color.ToLower().Contains(s)) ||
+                (p.DesignRef != null && p.DesignRef.ToLower().Contains(s)) ||
+                (p.ProductLine != null && p.ProductLine.ToLower().Contains(s)) ||
+                (p.InternalProduct != null && p.InternalProduct.Name != null && p.InternalProduct.Name.ToLower().Contains(s)));
+        }
         if (!string.IsNullOrWhiteSpace(brand))
         {
             var b = brand.Trim();

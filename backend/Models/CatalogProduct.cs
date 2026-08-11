@@ -41,6 +41,9 @@ public class Order
     public string? MpPaymentStatus { get; set; }
     public string? PaymentMethod { get; set; }
     public DateTime? StockDeductedAt { get; set; }
+    /// <summary>Venta ERP generada al marcar el pedido como pagado (idempotente).</summary>
+    public int? SaleId { get; set; }
+    public Sale? Sale { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 

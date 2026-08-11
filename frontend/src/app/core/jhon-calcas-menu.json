@@ -33,6 +33,34 @@
           {
             "label": "NKD",
             "href": "/categoria/protectores-tanque?brand=AKT&model=NKD"
+          },
+          {
+            "label": "DYNAMIC",
+            "href": "/categoria/protectores-tanque?brand=AKT&model=DYNAMIC"
+          },
+          {
+            "label": "EVO",
+            "href": "/categoria/protectores-tanque?brand=AKT&model=EVO"
+          },
+          {
+            "label": "FLEX",
+            "href": "/categoria/protectores-tanque?brand=AKT&model=FLEX"
+          },
+          {
+            "label": "TT ADVENTOUR",
+            "href": "/categoria/protectores-tanque?brand=AKT&model=TT ADVENTOUR"
+          },
+          {
+            "label": "TTR",
+            "href": "/categoria/protectores-tanque?brand=AKT&model=TTR"
+          },
+          {
+            "label": "SPECIAL",
+            "href": "/categoria/protectores-tanque?brand=AKT&model=SPECIAL"
+          },
+          {
+            "label": "BMW",
+            "href": "/categoria/protectores-tanque?brand=AKT&model=BMW"
           }
         ]
       },
@@ -78,6 +106,14 @@
           {
             "label": "BMW",
             "href": "/categoria/protectores-tanque?brand=BAJAJ&model=BMW"
+          },
+          {
+            "label": "PULSAR 220",
+            "href": "/categoria/protectores-tanque?brand=BAJAJ&model=PULSAR 220"
+          },
+          {
+            "label": "PLATINO",
+            "href": "/categoria/protectores-tanque?brand=BAJAJ&model=PLATINO"
           }
         ]
       },
@@ -87,6 +123,18 @@
           {
             "label": "BENELLI 180",
             "href": "/categoria/protectores-tanque?brand=BENELLI&model=BENELLI 180"
+          },
+          {
+            "label": "BENELLI 135",
+            "href": "/categoria/protectores-tanque?brand=BENELLI&model=BENELLI 135"
+          },
+          {
+            "label": "BENELLI 180S",
+            "href": "/categoria/protectores-tanque?brand=BENELLI&model=BENELLI 180S"
+          },
+          {
+            "label": "TRK 251",
+            "href": "/categoria/protectores-tanque?brand=BENELLI&model=TRK 251"
           }
         ]
       },
@@ -120,6 +168,22 @@
           {
             "label": "PCX",
             "href": "/categoria/protectores-tanque?brand=HONDA&model=PCX"
+          },
+          {
+            "label": "DIO",
+            "href": "/categoria/protectores-tanque?brand=HONDA&model=DIO"
+          },
+          {
+            "label": "NAVI",
+            "href": "/categoria/protectores-tanque?brand=HONDA&model=NAVI"
+          },
+          {
+            "label": "XLR",
+            "href": "/categoria/protectores-tanque?brand=HONDA&model=XLR"
+          },
+          {
+            "label": "WAVE",
+            "href": "/categoria/protectores-tanque?brand=HONDA&model=WAVE"
           }
         ]
       },
@@ -133,6 +197,14 @@
           {
             "label": "THRILLER",
             "href": "/categoria/protectores-tanque?brand=HERO&model=THRILLER"
+          },
+          {
+            "label": "ECO",
+            "href": "/categoria/protectores-tanque?brand=HERO&model=ECO"
+          },
+          {
+            "label": "XPULSE",
+            "href": "/categoria/protectores-tanque?brand=HERO&model=XPULSE"
           }
         ]
       },
@@ -142,6 +214,14 @@
           {
             "label": "ER-6N",
             "href": "/categoria/protectores-tanque?brand=KAWASAKI&model=ER-6N"
+          },
+          {
+            "label": "KLX",
+            "href": "/categoria/protectores-tanque?brand=KAWASAKI&model=KLX"
+          },
+          {
+            "label": "Z",
+            "href": "/categoria/protectores-tanque?brand=KAWASAKI&model=Z"
           }
         ]
       },
@@ -184,6 +264,30 @@
           {
             "label": "V-STROM",
             "href": "/categoria/protectores-tanque?brand=SUZUKI&model=V-STROM"
+          },
+          {
+            "label": "BEST",
+            "href": "/categoria/protectores-tanque?brand=SUZUKI&model=BEST"
+          },
+          {
+            "label": "GIXXER 150",
+            "href": "/categoria/protectores-tanque?brand=SUZUKI&model=GIXXER 150"
+          },
+          {
+            "label": "GIXXER 250",
+            "href": "/categoria/protectores-tanque?brand=SUZUKI&model=GIXXER 250"
+          },
+          {
+            "label": "GIXXER SF",
+            "href": "/categoria/protectores-tanque?brand=SUZUKI&model=GIXXER SF"
+          },
+          {
+            "label": "VIVA X",
+            "href": "/categoria/protectores-tanque?brand=SUZUKI&model=VIVA X"
+          },
+          {
+            "label": "VIVA R",
+            "href": "/categoria/protectores-tanque?brand=SUZUKI&model=VIVA R"
           }
         ]
       },
@@ -197,6 +301,14 @@
           {
             "label": "RAIDER",
             "href": "/categoria/protectores-tanque?brand=TVS&model=RAIDER"
+          },
+          {
+            "label": "TVS SPORT",
+            "href": "/categoria/protectores-tanque?brand=TVS&model=TVS SPORT"
+          },
+          {
+            "label": "NTORQ",
+            "href": "/categoria/protectores-tanque?brand=TVS&model=NTORQ"
           }
         ]
       },
@@ -218,6 +330,38 @@
           {
             "label": "SWITCH",
             "href": "/categoria/protectores-tanque?brand=VICTORY&model=SWITCH"
+          },
+          {
+            "label": "ADVANCE",
+            "href": "/categoria/protectores-tanque?brand=VICTORY&model=ADVANCE"
+          },
+          {
+            "label": "BOMBER",
+            "href": "/categoria/protectores-tanque?brand=VICTORY&model=BOMBER"
+          },
+          {
+            "label": "BLACK",
+            "href": "/categoria/protectores-tanque?brand=VICTORY&model=BLACK"
+          },
+          {
+            "label": "LIFE",
+            "href": "/categoria/protectores-tanque?brand=VICTORY&model=LIFE"
+          },
+          {
+            "label": "MACH",
+            "href": "/categoria/protectores-tanque?brand=VICTORY&model=MACH"
+          },
+          {
+            "label": "ZS",
+            "href": "/categoria/protectores-tanque?brand=VICTORY&model=ZS"
+          },
+          {
+            "label": "ONE ST",
+            "href": "/categoria/protectores-tanque?brand=VICTORY&model=ONE ST"
+          },
+          {
+            "label": "VENOM",
+            "href": "/categoria/protectores-tanque?brand=VICTORY&model=VENOM"
           }
         ]
       },
@@ -267,351 +411,6 @@
           {
             "label": "VOGE",
             "href": "/categoria/protectores-tanque?brand=YAMAHA&model=VOGE"
-          }
-        ]
-      },
-      {
-        "label": "AKT",
-        "children": [
-          {
-            "label": "CR",
-            "href": "/categoria/protectores-tanque?brand=AKT&model=CR"
-          },
-          {
-            "label": "DYNAMIC",
-            "href": "/categoria/protectores-tanque?brand=AKT&model=DYNAMIC"
-          },
-          {
-            "label": "EVO",
-            "href": "/categoria/protectores-tanque?brand=AKT&model=EVO"
-          },
-          {
-            "label": "FLEX",
-            "href": "/categoria/protectores-tanque?brand=AKT&model=FLEX"
-          },
-          {
-            "label": "NKD",
-            "href": "/categoria/protectores-tanque?brand=AKT&model=NKD"
-          },
-          {
-            "label": "RTX",
-            "href": "/categoria/protectores-tanque?brand=AKT&model=RTX"
-          },
-          {
-            "label": "TT ADVENTOUR",
-            "href": "/categoria/protectores-tanque?brand=AKT&model=TT ADVENTOUR"
-          },
-          {
-            "label": "TTDS",
-            "href": "/categoria/protectores-tanque?brand=AKT&model=TTDS"
-          },
-          {
-            "label": "TTR",
-            "href": "/categoria/protectores-tanque?brand=AKT&model=TTR"
-          },
-          {
-            "label": "TTX",
-            "href": "/categoria/protectores-tanque?brand=AKT&model=TTX"
-          },
-          {
-            "label": "SPECIAL",
-            "href": "/categoria/protectores-tanque?brand=AKT&model=SPECIAL"
-          },
-          {
-            "label": "BMW",
-            "href": "/categoria/protectores-tanque?brand=AKT&model=BMW"
-          }
-        ]
-      },
-      {
-        "label": "BAJAJ",
-        "children": [
-          {
-            "label": "BOXER",
-            "href": "/categoria/protectores-tanque?brand=BAJAJ&model=BOXER"
-          },
-          {
-            "label": "DISCOVER",
-            "href": "/categoria/protectores-tanque?brand=BAJAJ&model=DISCOVER"
-          },
-          {
-            "label": "DOMINAR",
-            "href": "/categoria/protectores-tanque?brand=BAJAJ&model=DOMINAR"
-          },
-          {
-            "label": "PULSAR 135",
-            "href": "/categoria/protectores-tanque?brand=BAJAJ&model=PULSAR 135"
-          },
-          {
-            "label": "PULSAR 180",
-            "href": "/categoria/protectores-tanque?brand=BAJAJ&model=PULSAR 180"
-          },
-          {
-            "label": "PULSAR NS",
-            "href": "/categoria/protectores-tanque?brand=BAJAJ&model=PULSAR NS"
-          },
-          {
-            "label": "PULSAR 220",
-            "href": "/categoria/protectores-tanque?brand=BAJAJ&model=PULSAR 220"
-          },
-          {
-            "label": "PLATINO",
-            "href": "/categoria/protectores-tanque?brand=BAJAJ&model=PLATINO"
-          }
-        ]
-      },
-      {
-        "label": "BENELLI",
-        "children": [
-          {
-            "label": "BENELLI 135",
-            "href": "/categoria/protectores-tanque?brand=BENELLI&model=BENELLI 135"
-          },
-          {
-            "label": "BENELLI 180S",
-            "href": "/categoria/protectores-tanque?brand=BENELLI&model=BENELLI 180S"
-          },
-          {
-            "label": "TRK 251",
-            "href": "/categoria/protectores-tanque?brand=BENELLI&model=TRK 251"
-          }
-        ]
-      },
-      {
-        "label": "HERO",
-        "children": [
-          {
-            "label": "ECO",
-            "href": "/categoria/protectores-tanque?brand=HERO&model=ECO"
-          },
-          {
-            "label": "XPULSE",
-            "href": "/categoria/protectores-tanque?brand=HERO&model=XPULSE"
-          }
-        ]
-      },
-      {
-        "label": "HONDA",
-        "children": [
-          {
-            "label": "CB",
-            "href": "/categoria/protectores-tanque?brand=HONDA&model=CB"
-          },
-          {
-            "label": "DIO",
-            "href": "/categoria/protectores-tanque?brand=HONDA&model=DIO"
-          },
-          {
-            "label": "NAVI",
-            "href": "/categoria/protectores-tanque?brand=HONDA&model=NAVI"
-          },
-          {
-            "label": "XR",
-            "href": "/categoria/protectores-tanque?brand=HONDA&model=XR"
-          },
-          {
-            "label": "XLR",
-            "href": "/categoria/protectores-tanque?brand=HONDA&model=XLR"
-          },
-          {
-            "label": "XRE",
-            "href": "/categoria/protectores-tanque?brand=HONDA&model=XRE"
-          },
-          {
-            "label": "WAVE",
-            "href": "/categoria/protectores-tanque?brand=HONDA&model=WAVE"
-          },
-          {
-            "label": "XBLADE",
-            "href": "/categoria/protectores-tanque?brand=HONDA&model=XBLADE"
-          },
-          {
-            "label": "PCX",
-            "href": "/categoria/protectores-tanque?brand=HONDA&model=PCX"
-          }
-        ]
-      },
-      {
-        "label": "KTM",
-        "children": [
-          {
-            "label": "DUKE",
-            "href": "/categoria/protectores-tanque?brand=KTM&model=DUKE"
-          }
-        ]
-      },
-      {
-        "label": "KAWASAKI",
-        "children": [
-          {
-            "label": "KLX",
-            "href": "/categoria/protectores-tanque?brand=KAWASAKI&model=KLX"
-          },
-          {
-            "label": "Z",
-            "href": "/categoria/protectores-tanque?brand=KAWASAKI&model=Z"
-          }
-        ]
-      },
-      {
-        "label": "KYMCO",
-        "children": [
-          {
-            "label": "AGILITY",
-            "href": "/categoria/protectores-tanque?brand=KYMCO&model=AGILITY"
-          },
-          {
-            "label": "ACTIV",
-            "href": "/categoria/protectores-tanque?brand=KYMCO&model=ACTIV"
-          },
-          {
-            "label": "ROCKET",
-            "href": "/categoria/protectores-tanque?brand=KYMCO&model=ROCKET"
-          },
-          {
-            "label": "TWIST",
-            "href": "/categoria/protectores-tanque?brand=KYMCO&model=TWIST"
-          }
-        ]
-      },
-      {
-        "label": "SUZUKI",
-        "children": [
-          {
-            "label": "AX",
-            "href": "/categoria/protectores-tanque?brand=SUZUKI&model=AX"
-          },
-          {
-            "label": "BEST",
-            "href": "/categoria/protectores-tanque?brand=SUZUKI&model=BEST"
-          },
-          {
-            "label": "DR",
-            "href": "/categoria/protectores-tanque?brand=SUZUKI&model=DR"
-          },
-          {
-            "label": "GN",
-            "href": "/categoria/protectores-tanque?brand=SUZUKI&model=GN"
-          },
-          {
-            "label": "GIXXER 150",
-            "href": "/categoria/protectores-tanque?brand=SUZUKI&model=GIXXER 150"
-          },
-          {
-            "label": "GIXXER 250",
-            "href": "/categoria/protectores-tanque?brand=SUZUKI&model=GIXXER 250"
-          },
-          {
-            "label": "GIXXER SF",
-            "href": "/categoria/protectores-tanque?brand=SUZUKI&model=GIXXER SF"
-          },
-          {
-            "label": "V-STROM",
-            "href": "/categoria/protectores-tanque?brand=SUZUKI&model=V-STROM"
-          },
-          {
-            "label": "VIVA X",
-            "href": "/categoria/protectores-tanque?brand=SUZUKI&model=VIVA X"
-          },
-          {
-            "label": "VIVA R",
-            "href": "/categoria/protectores-tanque?brand=SUZUKI&model=VIVA R"
-          }
-        ]
-      },
-      {
-        "label": "SYM",
-        "children": [
-          {
-            "label": "CROXX",
-            "href": "/categoria/protectores-tanque?brand=SYM&model=CROXX"
-          },
-          {
-            "label": "NHX 190",
-            "href": "/categoria/protectores-tanque?brand=SYM&model=NHX 190"
-          }
-        ]
-      },
-      {
-        "label": "TVS",
-        "children": [
-          {
-            "label": "TVS SPORT",
-            "href": "/categoria/protectores-tanque?brand=TVS&model=TVS SPORT"
-          },
-          {
-            "label": "APACHE",
-            "href": "/categoria/protectores-tanque?brand=TVS&model=APACHE"
-          },
-          {
-            "label": "RAIDER",
-            "href": "/categoria/protectores-tanque?brand=TVS&model=RAIDER"
-          },
-          {
-            "label": "NTORQ",
-            "href": "/categoria/protectores-tanque?brand=TVS&model=NTORQ"
-          }
-        ]
-      },
-      {
-        "label": "VICTORY",
-        "children": [
-          {
-            "label": "ADVANCE",
-            "href": "/categoria/protectores-tanque?brand=VICTORY&model=ADVANCE"
-          },
-          {
-            "label": "ARIZONA",
-            "href": "/categoria/protectores-tanque?brand=VICTORY&model=ARIZONA"
-          },
-          {
-            "label": "BOMBER",
-            "href": "/categoria/protectores-tanque?brand=VICTORY&model=BOMBER"
-          },
-          {
-            "label": "BLACK",
-            "href": "/categoria/protectores-tanque?brand=VICTORY&model=BLACK"
-          },
-          {
-            "label": "LIFE",
-            "href": "/categoria/protectores-tanque?brand=VICTORY&model=LIFE"
-          },
-          {
-            "label": "MACH",
-            "href": "/categoria/protectores-tanque?brand=VICTORY&model=MACH"
-          },
-          {
-            "label": "MRX",
-            "href": "/categoria/protectores-tanque?brand=VICTORY&model=MRX"
-          },
-          {
-            "label": "NITRO",
-            "href": "/categoria/protectores-tanque?brand=VICTORY&model=NITRO"
-          },
-          {
-            "label": "SWITCH",
-            "href": "/categoria/protectores-tanque?brand=VICTORY&model=SWITCH"
-          },
-          {
-            "label": "ZS",
-            "href": "/categoria/protectores-tanque?brand=VICTORY&model=ZS"
-          },
-          {
-            "label": "ONE ST",
-            "href": "/categoria/protectores-tanque?brand=VICTORY&model=ONE ST"
-          },
-          {
-            "label": "VENOM",
-            "href": "/categoria/protectores-tanque?brand=VICTORY&model=VENOM"
-          }
-        ]
-      },
-      {
-        "label": "YAMAHA",
-        "children": [
-          {
-            "label": "AEROX",
-            "href": "/categoria/protectores-tanque?brand=YAMAHA&model=AEROX"
           },
           {
             "label": "BWS",
@@ -634,10 +433,6 @@
             "href": "/categoria/protectores-tanque?brand=YAMAHA&model=FZS 150"
           },
           {
-            "label": "FZ 3.0",
-            "href": "/categoria/protectores-tanque?brand=YAMAHA&model=FZ 3.0"
-          },
-          {
             "label": "FZ 160",
             "href": "/categoria/protectores-tanque?brand=YAMAHA&model=FZ 160"
           },
@@ -650,20 +445,8 @@
             "href": "/categoria/protectores-tanque?brand=YAMAHA&model=LIBERO"
           },
           {
-            "label": "MT",
-            "href": "/categoria/protectores-tanque?brand=YAMAHA&model=MT"
-          },
-          {
-            "label": "NMAX",
-            "href": "/categoria/protectores-tanque?brand=YAMAHA&model=NMAX"
-          },
-          {
             "label": "RX",
             "href": "/categoria/protectores-tanque?brand=YAMAHA&model=RX"
-          },
-          {
-            "label": "SZR",
-            "href": "/categoria/protectores-tanque?brand=YAMAHA&model=SZR"
           },
           {
             "label": "XT",
@@ -688,10 +471,6 @@
           {
             "label": "YBR",
             "href": "/categoria/protectores-tanque?brand=YAMAHA&model=YBR"
-          },
-          {
-            "label": "YCZ",
-            "href": "/categoria/protectores-tanque?brand=YAMAHA&model=YCZ"
           },
           {
             "label": "UNIVERSALES JC",
@@ -720,18 +499,6 @@
           {
             "label": "Ver Colecciones",
             "href": "https://jhoncalcas.com/collections/calcas-motos"
-          },
-          {
-            "label": "Ver Colecciones",
-            "href": "https://jhoncalcas.com/collections/calcomanias-para-rines"
-          },
-          {
-            "label": "Ver Colecciones",
-            "href": "https://jhoncalcas.com/collections/protectores-de-tanque"
-          },
-          {
-            "label": "Ver Colecciones",
-            "href": "https://jhoncalcas.com/collections/emblemas"
           },
           {
             "label": "Contáctanos",
@@ -784,6 +551,40 @@
           {
             "label": "Jhon Calcas",
             "href": "https://jhoncalcas.com/"
+          }
+        ]
+      },
+      {
+        "label": "KYMCO",
+        "children": [
+          {
+            "label": "AGILITY",
+            "href": "/categoria/protectores-tanque?brand=KYMCO&model=AGILITY"
+          },
+          {
+            "label": "ACTIV",
+            "href": "/categoria/protectores-tanque?brand=KYMCO&model=ACTIV"
+          },
+          {
+            "label": "ROCKET",
+            "href": "/categoria/protectores-tanque?brand=KYMCO&model=ROCKET"
+          },
+          {
+            "label": "TWIST",
+            "href": "/categoria/protectores-tanque?brand=KYMCO&model=TWIST"
+          }
+        ]
+      },
+      {
+        "label": "SYM",
+        "children": [
+          {
+            "label": "CROXX",
+            "href": "/categoria/protectores-tanque?brand=SYM&model=CROXX"
+          },
+          {
+            "label": "NHX 190",
+            "href": "/categoria/protectores-tanque?brand=SYM&model=NHX 190"
           }
         ]
       }
@@ -1244,18 +1045,6 @@
             "href": "https://jhoncalcas.com/collections/calcas-motos"
           },
           {
-            "label": "Ver Colecciones",
-            "href": "https://jhoncalcas.com/collections/calcomanias-para-rines"
-          },
-          {
-            "label": "Ver Colecciones",
-            "href": "https://jhoncalcas.com/collections/protectores-de-tanque"
-          },
-          {
-            "label": "Ver Colecciones",
-            "href": "https://jhoncalcas.com/collections/emblemas"
-          },
-          {
             "label": "Contáctanos",
             "href": "https://wa.link/122ehn"
           },
@@ -1316,113 +1105,79 @@
     "children": [
       {
         "label": "UNIVERSALES JC",
-        "href": "/categoria/calcas-rines?tipo=UNIVERSALES JC",
-        "children": []
+        "href": "/categoria/calcas-rines?tipo=UNIVERSALES JC"
       },
       {
         "label": "BARRAS",
-        "href": "/categoria/calcas-rines?tipo=BARRAS",
-        "children": []
+        "href": "/categoria/calcas-rines?tipo=BARRAS"
       },
       {
         "label": "CASCOS",
-        "href": "/categoria/calcas-rines?tipo=CASCOS",
-        "children": []
+        "href": "/categoria/calcas-rines?tipo=CASCOS"
       },
       {
         "label": "CUPULAS O VISORES",
-        "href": "/categoria/calcas-rines?tipo=CUPULAS O VISORES",
-        "children": []
+        "href": "/categoria/calcas-rines?tipo=CUPULAS O VISORES"
       },
       {
         "label": "MALETEROS",
-        "href": "/categoria/calcas-rines?tipo=MALETEROS",
-        "children": []
+        "href": "/categoria/calcas-rines?tipo=MALETEROS"
       },
       {
         "label": "PPF",
-        "href": "/categoria/calcas-rines?tipo=PPF",
-        "children": []
+        "href": "/categoria/calcas-rines?tipo=PPF"
       },
       {
         "label": "Ver Colecciones",
-        "href": "https://jhoncalcas.com/collections/calcas-motos",
-        "children": []
-      },
-      {
-        "label": "Ver Colecciones",
-        "href": "https://jhoncalcas.com/collections/calcomanias-para-rines",
-        "children": []
-      },
-      {
-        "label": "Ver Colecciones",
-        "href": "https://jhoncalcas.com/collections/protectores-de-tanque",
-        "children": []
-      },
-      {
-        "label": "Ver Colecciones",
-        "href": "https://jhoncalcas.com/collections/emblemas",
-        "children": []
+        "href": "https://jhoncalcas.com/collections/calcas-motos"
       },
       {
         "label": "¿Quiénes Somos?",
-        "href": "https://jhoncalcas.com/pages/nuestra-historia",
-        "children": []
+        "href": "https://jhoncalcas.com/pages/nuestra-historia"
       },
       {
         "label": "Preguntas Frecuentes (FAQ)",
-        "href": "https://jhoncalcas.com/pages/preguntas-frecuentes",
-        "children": []
+        "href": "https://jhoncalcas.com/pages/preguntas-frecuentes"
       },
       {
         "label": "Nuestro Valores",
-        "href": "https://jhoncalcas.com/pages/nuestros-valores-1",
-        "children": []
+        "href": "https://jhoncalcas.com/pages/nuestros-valores-1"
       },
       {
         "label": "Cliente Minorista",
-        "href": "https://jhoncalcas.com/pages/cliente-minorista",
-        "children": []
+        "href": "https://jhoncalcas.com/pages/cliente-minorista"
       },
       {
         "label": "Reserva cita de Instalación",
-        "href": "https://jhoncalcas.com/pages/reserva-de-citas",
-        "children": []
+        "href": "https://jhoncalcas.com/pages/reserva-de-citas"
       },
       {
         "label": "Tienda Física",
-        "href": "https://jhoncalcas.com/pages/tienda-fisica",
-        "children": []
+        "href": "https://jhoncalcas.com/pages/tienda-fisica"
       },
       {
         "label": "Política de devolución y reembolso",
-        "href": "https://jhoncalcas.com/policies/refund-policy",
-        "children": []
+        "href": "https://jhoncalcas.com/policies/refund-policy"
       },
       {
         "label": "Política de privacidad",
-        "href": "https://jhoncalcas.com/policies/privacy-policy",
-        "children": []
+        "href": "https://jhoncalcas.com/policies/privacy-policy"
       },
       {
         "label": "Términos de servicio",
-        "href": "https://jhoncalcas.com/policies/terms-of-service",
-        "children": []
+        "href": "https://jhoncalcas.com/policies/terms-of-service"
       },
       {
         "label": "Política de envío",
-        "href": "https://jhoncalcas.com/policies/shipping-policy",
-        "children": []
+        "href": "https://jhoncalcas.com/policies/shipping-policy"
       },
       {
         "label": "Contacto",
-        "href": "https://jhoncalcas.com/policies/contact-information",
-        "children": []
+        "href": "https://jhoncalcas.com/policies/contact-information"
       },
       {
         "label": "Jhon Calcas",
-        "href": "https://jhoncalcas.com/",
-        "children": []
+        "href": "https://jhoncalcas.com/"
       }
     ]
   },
@@ -1431,108 +1186,75 @@
     "children": [
       {
         "label": "BARRAS",
-        "href": "/categoria/calcas-rines?tipo=BARRAS",
-        "children": []
+        "href": "/categoria/calcas-rines?tipo=BARRAS"
       },
       {
         "label": "CASCOS",
-        "href": "/categoria/calcas-rines?tipo=CASCOS",
-        "children": []
+        "href": "/categoria/calcas-rines?tipo=CASCOS"
       },
       {
         "label": "CUPULAS O VISORES",
-        "href": "/categoria/calcas-rines?tipo=CUPULAS O VISORES",
-        "children": []
+        "href": "/categoria/calcas-rines?tipo=CUPULAS O VISORES"
       },
       {
         "label": "MALETEROS",
-        "href": "/categoria/calcas-rines?tipo=MALETEROS",
-        "children": []
+        "href": "/categoria/calcas-rines?tipo=MALETEROS"
       },
       {
         "label": "PPF",
-        "href": "/categoria/calcas-rines?tipo=PPF",
-        "children": []
+        "href": "/categoria/calcas-rines?tipo=PPF"
       },
       {
         "label": "Ver Colecciones",
-        "href": "https://jhoncalcas.com/collections/calcas-motos",
-        "children": []
-      },
-      {
-        "label": "Ver Colecciones",
-        "href": "https://jhoncalcas.com/collections/calcomanias-para-rines",
-        "children": []
-      },
-      {
-        "label": "Ver Colecciones",
-        "href": "https://jhoncalcas.com/collections/protectores-de-tanque",
-        "children": []
-      },
-      {
-        "label": "Ver Colecciones",
-        "href": "https://jhoncalcas.com/collections/emblemas",
-        "children": []
+        "href": "https://jhoncalcas.com/collections/calcas-motos"
       },
       {
         "label": "¿Quiénes Somos?",
-        "href": "https://jhoncalcas.com/pages/nuestra-historia",
-        "children": []
+        "href": "https://jhoncalcas.com/pages/nuestra-historia"
       },
       {
         "label": "Preguntas Frecuentes (FAQ)",
-        "href": "https://jhoncalcas.com/pages/preguntas-frecuentes",
-        "children": []
+        "href": "https://jhoncalcas.com/pages/preguntas-frecuentes"
       },
       {
         "label": "Nuestro Valores",
-        "href": "https://jhoncalcas.com/pages/nuestros-valores-1",
-        "children": []
+        "href": "https://jhoncalcas.com/pages/nuestros-valores-1"
       },
       {
         "label": "Cliente Minorista",
-        "href": "https://jhoncalcas.com/pages/cliente-minorista",
-        "children": []
+        "href": "https://jhoncalcas.com/pages/cliente-minorista"
       },
       {
         "label": "Reserva cita de Instalación",
-        "href": "https://jhoncalcas.com/pages/reserva-de-citas",
-        "children": []
+        "href": "https://jhoncalcas.com/pages/reserva-de-citas"
       },
       {
         "label": "Tienda Física",
-        "href": "https://jhoncalcas.com/pages/tienda-fisica",
-        "children": []
+        "href": "https://jhoncalcas.com/pages/tienda-fisica"
       },
       {
         "label": "Política de devolución y reembolso",
-        "href": "https://jhoncalcas.com/policies/refund-policy",
-        "children": []
+        "href": "https://jhoncalcas.com/policies/refund-policy"
       },
       {
         "label": "Política de privacidad",
-        "href": "https://jhoncalcas.com/policies/privacy-policy",
-        "children": []
+        "href": "https://jhoncalcas.com/policies/privacy-policy"
       },
       {
         "label": "Términos de servicio",
-        "href": "https://jhoncalcas.com/policies/terms-of-service",
-        "children": []
+        "href": "https://jhoncalcas.com/policies/terms-of-service"
       },
       {
         "label": "Política de envío",
-        "href": "https://jhoncalcas.com/policies/shipping-policy",
-        "children": []
+        "href": "https://jhoncalcas.com/policies/shipping-policy"
       },
       {
         "label": "Contacto",
-        "href": "https://jhoncalcas.com/policies/contact-information",
-        "children": []
+        "href": "https://jhoncalcas.com/policies/contact-information"
       },
       {
         "label": "Jhon Calcas",
-        "href": "https://jhoncalcas.com/",
-        "children": []
+        "href": "https://jhoncalcas.com/"
       }
     ]
   }

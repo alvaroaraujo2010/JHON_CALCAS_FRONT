@@ -7,6 +7,19 @@
       height="2161"
       fetchpriority="high"
     />
+    <nav class="jc-hero__social" aria-label="Redes sociales">
+      @for (link of socialLinks; track link.label) {
+        <a
+          class="jc-hero__social-link"
+          [href]="link.href"
+          [attr.aria-label]="link.label"
+          [style.left.%]="link.left"
+          [style.width.%]="link.width"
+          target="_blank"
+          rel="noopener noreferrer"
+        ></a>
+      }
+    </nav>
   </section>
 
   <div class="jc-multirow">

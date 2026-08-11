@@ -59,12 +59,22 @@ public class SalesAccountingService
         var reteFuente = customer?.IsRetentionAgent == true ? Math.Round(sale.Subtotal * ReteFuenteRate, 2) : 0m;
         var isCash = string.Equals(sale.PaymentMethod, "Efectivo", StringComparison.OrdinalIgnoreCase)
                   || string.Equals(sale.PaymentMethod, "Contado", StringComparison.OrdinalIgnoreCase);
+        var isBank = string.Equals(sale.PaymentMethod, "MercadoPago", StringComparison.OrdinalIgnoreCase)
+                  || string.Equals(sale.PaymentMethod, "Transferencia", StringComparison.OrdinalIgnoreCase)
+                  || string.Equals(sale.PaymentMethod, "Tarjeta", StringComparison.OrdinalIgnoreCase)
+                  || string.Equals(sale.PaymentMethod, "PSE", StringComparison.OrdinalIgnoreCase)
+                  || string.Equals(sale.PaymentMethod, "Bancos", StringComparison.OrdinalIgnoreCase);
 
-        // ─── DÉBITO: Caja o Clientes (CxC) por el monto BRUTO facturado ───
+        // ─── DÉBITO: Caja, Bancos o Clientes (CxC) por el monto BRUTO facturado ───
         if (isCash)
         {
             AddLine(lines, GetAccount(accounts, "111005"), sale.Total, 0,
                 $"Cobro en efectivo de venta {sale.DocumentNumber}");
+        }
+        else if (isBank)
+        {
+            AddLine(lines, GetAccount(accounts, "111010"), sale.Total, 0,
+                $"Cobro electrónico / bancos — venta {sale.DocumentNumber}");
         }
         else
         {

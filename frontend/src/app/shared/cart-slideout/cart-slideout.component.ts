@@ -73,7 +73,7 @@ import { CartService } from '../../core/services/cart.service';
     }
   `,
   styles: [`
-    .jc-cart-btn { position: relative; background: none; border: none; cursor: pointer; color: inherit; padding: 0.5rem; }
+    .jc-cart-btn { position: relative; background: none; border: none; cursor: pointer; color: var(--jc-icon, inherit); padding: 0.5rem; }
     .jc-cart-badge { position: absolute; top: 0; right: 0; background: #e53935; color: #fff; font-size: 0.65rem; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; }
     .jc-cart-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 999; }
     .jc-cart-drawer { position: fixed; top: 0; right: 0; bottom: 0; width: 430px; max-width: 100vw; background: #fff; z-index: 1000; display: flex; flex-direction: column; box-shadow: -2px 0 12px rgba(0,0,0,0.15); color: #121212; }

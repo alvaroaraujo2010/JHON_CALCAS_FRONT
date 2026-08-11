@@ -1,22 +1,13 @@
 :host {
   display: block;
   min-height: 100vh;
-  background: #121212;
+  background: var(--jc-page, #121212);
 }
 
 .jc-site {
-  --jc-red: #dd1d1d;
-  --jc-red-dark: #c40303;
-  --jc-text: #121212;
-  --jc-muted: rgba(18, 18, 18, 0.75);
-  --jc-page: #121212;
-  --jc-on-dark: #f3f3f3;
-  --jc-card: #ffffff;
-  --jc-page-width: 120rem;
-
   font-family: 'Montserrat', system-ui, sans-serif;
-  color: var(--jc-on-dark);
-  background: var(--jc-page);
+  color: var(--jc-fg, var(--jc-on-dark, #f3f3f3));
+  background: var(--jc-page, #121212);
 }
 
 .jc-site main {
@@ -24,7 +15,7 @@
 }
 
 .page-width {
-  max-width: var(--jc-page-width);
+  max-width: var(--jc-page-width, 120rem);
   margin: 0 auto;
   padding-left: 1.5rem;
   padding-right: 1.5rem;
@@ -69,22 +60,24 @@
 }
 
 .jc-btn--primary {
-  background: #fff;
-  color: var(--jc-text);
+  background: var(--jc-btn-bg, #fff);
+  color: var(--jc-btn-fg, var(--jc-text));
   min-height: auto;
   min-width: auto;
   padding: 0.75rem 1.75rem;
 
   &:hover {
-    background: #f3f3f3;
-    color: #000;
+    background: var(--jc-btn-hover-bg, #f3f3f3);
+    color: var(--jc-btn-fg, #000);
   }
 }
 
 /* —— Hero poster —— */
 .jc-hero {
+  position: relative;
   width: 100%;
   background: #000;
+  overflow: hidden;
 }
 
 .jc-hero__poster {
@@ -93,6 +86,39 @@
   height: auto;
   aspect-ratio: 5921 / 2161;
   object-fit: cover;
+}
+
+/* Hotspots alineados a los iconos reales del banner (medidos sobre la imagen). */
+.jc-hero__social {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.jc-hero__social-link {
+  position: absolute;
+  top: 90.2%;
+  height: 8%;
+  border-radius: 10px;
+  pointer-events: auto;
+  cursor: pointer;
+  background: transparent;
+  outline: none;
+  transition: background 0.15s ease, box-shadow 0.15s ease;
+
+  &:hover,
+  &:focus-visible {
+    background: rgba(255, 255, 255, 0.14);
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.4);
+  }
+}
+
+@media (max-width: 749px) {
+  .jc-hero__social-link {
+    top: 89.6%;
+    height: 9%;
+  }
 }
 
 /* —— Filas imagen + texto (estilo Dawn / Shopify) —— */
@@ -122,7 +148,7 @@
 .jc-image-text__media {
   width: 100%;
   line-height: 0;
-  background: #121212;
+  background: var(--jc-page, #121212);
   overflow: visible;
 
   img {
@@ -136,7 +162,7 @@
 }
 
 .global-media-settings {
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 1px solid var(--jc-border, rgba(255, 255, 255, 0.12));
 }
 
 .jc-image-text__content {
@@ -196,7 +222,7 @@
 .jc-payments {
   padding: 2.5rem 0 3rem;
   background: var(--jc-page);
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-top: 1px solid var(--jc-border, rgba(255, 255, 255, 0.06));
 }
 
 .jc-payments__title {
@@ -204,7 +230,7 @@
   text-align: center;
   font-size: 1.125rem;
   font-weight: 700;
-  color: var(--jc-on-dark);
+  color: var(--jc-fg, var(--jc-on-dark));
 }
 
 .jc-payments__grid {
@@ -225,8 +251,8 @@
 
 /* —— Footer —— */
 .jc-footer {
-  background: #121212;
-  color: rgba(255, 255, 255, 0.78);
+  background: var(--jc-footer-bg, #121212);
+  color: var(--jc-fg-muted, rgba(255, 255, 255, 0.78));
   padding: 2.5rem 0;
   text-align: center;
 }
@@ -250,7 +276,7 @@
 }
 
 .jc-footer a {
-  color: #fff;
+  color: var(--jc-fg-strong, #fff);
   text-decoration: none;
 
   &:hover {
@@ -264,10 +290,10 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: rgba(255, 255, 255, 0.65) !important;
+  color: var(--jc-fg-muted, rgba(255, 255, 255, 0.65)) !important;
 
   &:hover {
-    color: #fff !important;
+    color: var(--jc-fg-strong, #fff) !important;
   }
 }
 

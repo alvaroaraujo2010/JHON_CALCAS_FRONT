@@ -10,25 +10,23 @@ namespace ContaNexo.API.Controllers;
 public class PaymentWebhookController(
     AppDbContext db,
     MercadoPagoService mp,
+    CatalogOrderFulfillmentService fulfillment,
     ILogger<PaymentWebhookController> log) : ControllerBase
 {
+    private static readonly HashSet<string> PaidStatuses = new(StringComparer.OrdinalIgnoreCase)
+        { "paid", "approved" };
+
     /// <summary>
     /// IPN (Instant Payment Notification) de Mercado Pago.
-    /// MP envía una notificación con topic=payment y el ID del pago.
-    /// Consultamos el pago y actualizamos la orden.
     /// </summary>
     [HttpPost("webhook")]
     public async Task<IActionResult> Webhook([FromBody] MercadoPagoService.MpPaymentNotification? notification)
     {
         if (notification == null)
-        {
-            // MP envía a veces un GET sin body como "ping"
             return Ok();
-        }
 
         log.LogInformation("MP Webhook recibido: topic={Topic}, id={Id}", notification.Topic, notification.Id);
 
-        // Si el topic es "payment", consultamos el pago
         if (notification.Topic == "payment" || notification.Type == "payment")
         {
             var paymentId = notification.Id;
@@ -47,7 +45,7 @@ public class PaymentWebhookController(
 
             if (!string.IsNullOrEmpty(payment.ExternalReference))
             {
-                var order = await db.Orders.FirstOrDefaultAsync(o =>
+                var order = await db.Orders.Include(o => o.Items).FirstOrDefaultAsync(o =>
                     o.OrderNumber == payment.ExternalReference);
                 if (order != null)
                 {
@@ -65,7 +63,19 @@ public class PaymentWebhookController(
                         _ => order.Status
                     };
                     order.UpdatedAt = DateTime.UtcNow;
-                    await db.SaveChangesAsync();
+
+                    if (PaidStatuses.Contains(order.Status))
+                    {
+                        var result = await fulfillment.FulfillPaidOrderAsync(order);
+                        log.LogInformation(
+                            "Orden {OrderNumber} pagada → stock={Stock} sale={Sale}",
+                            order.OrderNumber, result.Stock.Processed, result.Sale.Created);
+                    }
+                    else
+                    {
+                        await db.SaveChangesAsync();
+                    }
+
                     log.LogInformation("Orden {OrderNumber} actualizada a {Status}",
                         order.OrderNumber, order.Status);
                 }
@@ -75,9 +85,6 @@ public class PaymentWebhookController(
         return Ok();
     }
 
-    /// <summary>
-    /// GET del webhook (MP envía un GET para verificar el endpoint).
-    /// </summary>
     [HttpGet("webhook")]
     public IActionResult WebhookGet()
     {

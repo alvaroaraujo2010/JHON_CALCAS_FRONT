@@ -21,12 +21,62 @@ html:has(body.jc-public-page) {
   font-size: 62.5%;
 }
 
+/* Tema tienda: oscuro (default) / claro */
 body.jc-public-page {
-  background: #121212;
-  color: #f3f3f3;
+  --jc-red: #dd1d1d;
+  --jc-red-dark: #c40303;
+  --jc-page: #121212;
+  --jc-header-bg: #121212;
+  --jc-footer-bg: #121212;
+  --jc-menu-bg: #121212;
+  --jc-fg: #f3f3f3;
+  --jc-fg-muted: rgba(255, 255, 255, 0.75);
+  --jc-fg-strong: #ffffff;
+  --jc-border: rgba(255, 255, 255, 0.12);
+  --jc-card: #ffffff;
+  --jc-text: #121212;
+  --jc-muted: rgba(18, 18, 18, 0.75);
+  --jc-on-dark: #f3f3f3;
+  --jc-surface: #1c1c1c;
+  --jc-surface-fg: #f3f3f3;
+  --jc-surface-muted: rgba(255, 255, 255, 0.55);
+  --jc-input-bg: #ffffff;
+  --jc-input-fg: #121212;
+  --jc-input-border: #ccc;
+  --jc-btn-bg: #ffffff;
+  --jc-btn-fg: #121212;
+  --jc-btn-hover-bg: #f3f3f3;
+  --jc-icon: #ffffff;
+  --jc-gallery-bg: #f8fafc;
+  --jc-page-width: 120rem;
+  color-scheme: dark;
+  background: var(--jc-page);
+  color: var(--jc-fg);
   font-size: 1.5rem;
   letter-spacing: 0.06rem;
   line-height: 1.8;
+  transition: background 0.25s ease, color 0.25s ease;
+}
+
+html[data-jc-theme='light'] body.jc-public-page {
+  --jc-page: #f4f4f4;
+  --jc-header-bg: #ffffff;
+  --jc-footer-bg: #ececec;
+  --jc-menu-bg: #ffffff;
+  --jc-fg: #121212;
+  --jc-fg-muted: rgba(18, 18, 18, 0.7);
+  --jc-fg-strong: #000000;
+  --jc-border: rgba(0, 0, 0, 0.1);
+  --jc-on-dark: #121212;
+  --jc-surface: #ffffff;
+  --jc-surface-fg: #121212;
+  --jc-surface-muted: rgba(18, 18, 18, 0.55);
+  --jc-btn-bg: #121212;
+  --jc-btn-fg: #ffffff;
+  --jc-btn-hover-bg: #2a2a2a;
+  --jc-icon: #121212;
+  --jc-gallery-bg: #f8fafc;
+  color-scheme: light;
 }
 
 @media (min-width: 750px) {
@@ -50,20 +100,20 @@ body.jc-public-page {
   border: none;
   cursor: pointer;
   transition: background 0.2s, color 0.2s;
-  background: #fff;
-  color: #121212;
+  background: var(--jc-btn-bg, #fff);
+  color: var(--jc-btn-fg, #121212);
 }
 .jc-btn:hover {
-  background: #f3f3f3;
-  color: #000;
+  background: var(--jc-btn-hover-bg, #f3f3f3);
+  color: var(--jc-btn-fg, #000);
 }
 .jc-btn--primary {
-  background: #fff;
-  color: #121212;
+  background: var(--jc-btn-bg, #fff);
+  color: var(--jc-btn-fg, #121212);
 }
 .jc-btn--primary:hover {
-  background: #f3f3f3;
-  color: #000;
+  background: var(--jc-btn-hover-bg, #f3f3f3);
+  color: var(--jc-btn-fg, #000);
 }
 .jc-btn--collection {
   background: #dd1d1d;

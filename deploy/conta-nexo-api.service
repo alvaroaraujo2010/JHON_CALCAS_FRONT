@@ -1,0 +1,19 @@
+[Unit]
+Description=JHON CALCAS API
+After=network.target mysql.service
+
+[Service]
+Type=simple
+WorkingDirectory=/var/www/jhoncalcas/api
+ExecStart=/usr/bin/dotnet ContaNexo.API.dll
+Restart=always
+RestartSec=10
+Environment=ASPNETCORE_ENVIRONMENT=Production
+Environment=ASPNETCORE_URLS=http://127.0.0.1:5002
+KillSignal=SIGINT
+SyslogIdentifier=jhoncalcas-api
+User=www-data
+Group=www-data
+
+[Install]
+WantedBy=multi-user.target

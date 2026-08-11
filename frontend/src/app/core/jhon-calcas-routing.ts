@@ -33,6 +33,7 @@ export interface GalleryFilters {
   slug: string;
   brand: string;
   model: string;
+  search: string;
 }
 
 /** Lee slug, marca y modelo desde la ruta (incluye query embebido en pathname). */
@@ -40,6 +41,7 @@ export function resolveGalleryFilters(route: ActivatedRoute): GalleryFilters {
   let slug = route.snapshot.paramMap.get('slug') || '';
   let brand = route.snapshot.queryParamMap.get('brand') || '';
   let model = route.snapshot.queryParamMap.get('model') || '';
+  let search = route.snapshot.queryParamMap.get('search') || '';
 
   ({ slug, brand, model } = absorbEmbeddedQuery(slug, brand, model));
 
@@ -51,31 +53,34 @@ export function resolveGalleryFilters(route: ActivatedRoute): GalleryFilters {
       if (catMatch) slug = catMatch[1];
     }
 
-    if (!brand || !model) {
-      const search = new URLSearchParams(window.location.search);
-      if (!brand) brand = search.get('brand') || '';
-      if (!model) model = search.get('model') || '';
+    if (!brand || !model || !search) {
+      const query = new URLSearchParams(window.location.search);
+      if (!brand) brand = query.get('brand') || '';
+      if (!model) model = query.get('model') || '';
+      if (!search) search = query.get('search') || '';
     }
 
     const pathQm = decoded.indexOf('?');
-    if (pathQm >= 0 && (!brand || !model)) {
+    if (pathQm >= 0 && (!brand || !model || !search)) {
       const embedded = new URLSearchParams(decoded.slice(pathQm + 1));
       if (!brand) brand = embedded.get('brand') || '';
       if (!model) model = embedded.get('model') || '';
+      if (!search) search = embedded.get('search') || '';
     }
   }
 
-  return { slug, brand, model };
+  return { slug, brand, model, search };
 }
 
 function absorbEmbeddedQuery(slug: string, brand: string, model: string): GalleryFilters {
   const qm = slug.indexOf('?');
-  if (qm < 0) return { slug, brand, model };
+  if (qm < 0) return { slug, brand, model, search: '' };
 
   const embedded = new URLSearchParams(slug.slice(qm + 1));
   return {
     slug: slug.slice(0, qm),
     brand: brand || embedded.get('brand') || '',
     model: model || embedded.get('model') || '',
+    search: embedded.get('search') || '',
   };
 }

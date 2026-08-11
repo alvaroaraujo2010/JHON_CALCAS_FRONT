@@ -44,7 +44,7 @@ import { Order } from '../../../core/models';
     </div>
   `,
   styles: [`
-    .jc-confirm { padding: 4rem 1.5rem; text-align: center; max-width: 600px; }
+    .jc-confirm { padding: 4rem 1.5rem; text-align: center; max-width: 600px; color: var(--jc-fg); }
     .jc-confirm h2 { font-size: 1.5rem; margin-bottom: 1rem; }
     .jc-confirm__success h2 { color: #2e7d32; }
     .jc-confirm__pending h2 { color: #f57f17; }

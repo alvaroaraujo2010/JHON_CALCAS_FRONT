@@ -6,6 +6,7 @@ import { DEFAULT_PUBLIC_COMPANY } from '../../../core/company-defaults';
 import {
   JHON_CALCAS_IMAGES,
   JHON_CALCAS_SECTIONS,
+  JHON_CALCAS_SOCIAL_LINKS,
   JHON_CALCAS_WHATSAPP_URL
 } from '../../../core/jhon-calcas-assets';
 
@@ -25,6 +26,7 @@ export class HomeComponent implements OnInit {
     slug: s.id === 'calcas-moto' ? 'calcas-motos' : s.id
   }));
   readonly whatsappUrl = JHON_CALCAS_WHATSAPP_URL;
+  readonly socialLinks = JHON_CALCAS_SOCIAL_LINKS;
   readonly company = signal<Company>(DEFAULT_PUBLIC_COMPANY);
 
   readonly paymentMethods = [

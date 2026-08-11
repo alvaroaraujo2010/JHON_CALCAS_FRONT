@@ -276,6 +276,7 @@ export interface Order {
   mpPaymentId?: string;
   mpPaymentStatus?: string;
   stockDeductedAt?: string;
+  saleId?: number | null;
   items: OrderItemDetail[];
   createdAt: string;
   updatedAt?: string;

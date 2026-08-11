@@ -5,7 +5,13 @@
     </div>
 
     <div class="jc-header__search">
-      <button type="button" class="jc-header__icon jc-header__icon--search" aria-label="Buscar">
+      <button
+        type="button"
+        class="jc-header__icon jc-header__icon--search"
+        aria-label="Buscar"
+        [attr.aria-expanded]="searchOpen()"
+        (click)="toggleSearch()"
+      >
         <svg viewBox="0 0 18 19" aria-hidden="true" class="jc-header__icon-svg">
           <path
             fill="currentColor"
@@ -15,15 +21,68 @@
           />
         </svg>
       </button>
+      @if (searchOpen()) {
+        <form
+          class="jc-header__search-panel"
+          role="search"
+          (submit)="$event.preventDefault(); submitSearch()"
+        >
+          <input
+            #searchInput
+            type="search"
+            name="q"
+            class="jc-header__search-input"
+            placeholder="Buscar productos..."
+            autocomplete="off"
+            [ngModel]="searchTerm()"
+            (ngModelChange)="searchTerm.set($event)"
+            [ngModelOptions]="{standalone: true}"
+            (keydown.esc)="searchOpen.set(false)"
+          />
+          <button type="submit" class="jc-header__search-go" aria-label="Buscar">
+            <svg viewBox="0 0 18 19" aria-hidden="true" class="jc-header__icon-svg">
+              <path
+                fill="currentColor"
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M11.03 11.68A5.784 5.784 0 112.85 3.5a5.784 5.784 0 018.18 8.18zm.26 1.12a6.78 6.78 0 11.72-.7l5.4 5.4a.5.5 0 11-.71.7l-5.41-5.4z"
+              />
+            </svg>
+          </button>
+        </form>
+      }
     </div>
 
     <div class="jc-header__brand-wrap">
-      <a routerLink="/" class="jc-header__brand" (click)="closeMenus()">
+      <a routerLink="/" class="jc-header__brand" (click)="closeMenus(); searchOpen.set(false)">
         <img [src]="images.logo" alt="Jhon Calcas" width="110" height="76" />
       </a>
     </div>
 
     <div class="jc-header__icons">
+      <button
+        type="button"
+        class="jc-header__icon jc-header__theme"
+        (click)="theme.toggle()"
+        [attr.aria-label]="theme.isDark() ? 'Cambiar a tema claro' : 'Cambiar a tema oscuro'"
+        [attr.title]="theme.isDark() ? 'Tema claro' : 'Tema oscuro'"
+      >
+        @if (theme.isDark()) {
+          <svg viewBox="0 0 24 24" aria-hidden="true" class="jc-header__icon-svg">
+            <path
+              fill="currentColor"
+              d="M12 18a6 6 0 100-12 6 6 0 000 12zm0 2.25a.75.75 0 01.75.75v1.25a.75.75 0 01-1.5 0V21a.75.75 0 01.75-.75zM12 1.25a.75.75 0 01.75.75v1.25a.75.75 0 01-1.5 0V2A.75.75 0 0112 1.25zm8.485 3.015a.75.75 0 010 1.06l-.884.885a.75.75 0 11-1.06-1.061l.884-.884a.75.75 0 011.06 0zM6.46 17.54a.75.75 0 010 1.06l-.885.885a.75.75 0 11-1.06-1.06l.884-.885a.75.75 0 011.061 0zM21 11.25a.75.75 0 010 1.5h-1.25a.75.75 0 010-1.5H21zM4.25 12a.75.75 0 01-.75.75H2.25a.75.75 0 010-1.5H3.5A.75.75 0 014.25 12zm14.29 5.54a.75.75 0 011.061 0l.884.885a.75.75 0 11-1.06 1.06l-.885-.884a.75.75 0 010-1.061zM5.4 4.265a.75.75 0 011.06 0l.885.884A.75.75 0 116.285 6.21l-.884-.885a.75.75 0 010-1.06z"
+            />
+          </svg>
+        } @else {
+          <svg viewBox="0 0 24 24" aria-hidden="true" class="jc-header__icon-svg">
+            <path
+              fill="currentColor"
+              d="M21 14.3A9.03 9.03 0 019.7 3a.75.75 0 00-.9-.9A10.5 10.5 0 1021.9 15.2a.75.75 0 00-.9-.9z"
+            />
+          </svg>
+        }
+      </button>
       <a routerLink="/login" class="jc-header__icon" aria-label="Zona administrativa" title="Zona administrativa">
         <svg viewBox="0 0 18 19" aria-hidden="true" class="jc-header__icon-svg">
           <path
@@ -36,9 +95,9 @@
       <button
         type="button"
         class="jc-header__burger"
-        [attr.aria-expanded]="mobileOpen"
+        [attr.aria-expanded]="mobileOpen()"
         aria-controls="jc-mobile-menu"
-        (click)="mobileOpen = !mobileOpen"
+        (click)="mobileOpen.set(!mobileOpen())"
       >
         <span class="visually-hidden">Menu</span>
         <span></span><span></span><span></span>
@@ -50,7 +109,7 @@
         @for (item of menu; track item.label) {
           <li
             class="jc-nav__item"
-            [class.jc-nav__item--open]="openMenu === item.label"
+            [class.jc-nav__item--open]="openMenu() === item.label"
             (mouseenter)="onNavEnter(item)"
           >
             @if (!item.children.length) {
@@ -67,8 +126,8 @@
               <button
                 type="button"
                 class="jc-nav__link jc-nav__link--has-menu"
-                [class.jc-nav__link--open]="openMenu === item.label"
-                [attr.aria-expanded]="openMenu === item.label"
+                [class.jc-nav__link--open]="openMenu() === item.label"
+                [attr.aria-expanded]="openMenu() === item.label"
                 (click)="toggleMenu(item.label)"
               >
                 <span>{{ item.label }}</span>
@@ -82,12 +141,12 @@
                 </svg>
               </button>
 
-              @if (openMenu === item.label) {
+              @if (openMenu() === item.label) {
                 <ul class="jc-dropdown">
                   @for (brand of item.children; track brand.label) {
                     <li
                       class="jc-dropdown__brand"
-                      [class.jc-dropdown__brand--open]="openBrand === brand.label"
+                      [class.jc-dropdown__brand--open]="openBrand() === brand.label"
                       (mouseenter)="onBrandEnter(brand)"
                     >
                       @if (brandHref(brand); as href) {
@@ -125,9 +184,9 @@
                         </button>
                       }
 
-                      @if (brand.children?.length && openBrand === brand.label) {
+                      @if (brand.children?.length && openBrand() === brand.label) {
                         <ul class="jc-dropdown__models">
-                          @for (model of brand.children; track model.label) {
+                          @for (model of brand.children; track model.href || model.label) {
                             <li>
                               @if (isExternal(model.href!)) {
                                 <a [href]="model.href!" (click)="closeMenus()">
@@ -152,8 +211,19 @@
       </ul>
     </nav>
 
-    @if (mobileOpen) {
+    @if (mobileOpen()) {
       <nav id="jc-mobile-menu" class="jc-mobile jc-header__mobile">
+        <form class="jc-mobile__search" role="search" (submit)="$event.preventDefault(); submitSearch()">
+          <input
+            type="search"
+            name="qMobile"
+            placeholder="Buscar productos..."
+            [ngModel]="searchTerm()"
+            (ngModelChange)="searchTerm.set($event)"
+            [ngModelOptions]="{standalone: true}"
+          />
+          <button type="submit" class="btn">Buscar</button>
+        </form>
         <a routerLink="/login" class="jc-mobile__admin" (click)="closeMenus()">Zona administrativa</a>
         @for (item of menu; track item.label) {
           @if (!item.children.length) {
@@ -180,7 +250,7 @@
                 } @else if (brand.children?.length) {
                   <details class="jc-mobile__sub">
                     <summary>{{ brand.label }}</summary>
-                    @for (model of brand.children; track model.label) {
+                    @for (model of brand.children; track model.href || model.label) {
                       @if (isExternal(model.href!)) {
                         <a [href]="model.href!" class="jc-mobile__link jc-mobile__link--sub" (click)="closeMenus()">
                           {{ model.label }}

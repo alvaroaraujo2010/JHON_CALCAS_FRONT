@@ -58,6 +58,9 @@ public class DatabaseMigrationService
         new("013_payment_settings",
             "Pasarelas: tabla paymentsettings y permisos para configurar Mercado Pago",
             Apply013),
+        new("014_order_sale_link",
+            "Pedidos web: columna SaleId para vincular venta ERP al pagar",
+            Apply014),
     };
 
     public async Task ApplyPendingAsync()
@@ -753,5 +756,26 @@ VALUES ('payments.manage', 'payments', 'manage', 'Configurar pasarelas de pago')
         await db.Database.ExecuteSqlRawAsync(@"
 INSERT IGNORE INTO rolepermissions (Role, PermissionKey)
 VALUES ('Administrador', 'payments.manage');");
+    }
+
+    private static async Task Apply014(AppDbContext db)
+    {
+        var conn = db.Database.GetDbConnection();
+        if (conn.State != System.Data.ConnectionState.Open) await conn.OpenAsync();
+
+        await using var tblCheck = conn.CreateCommand();
+        tblCheck.CommandText = @"SELECT COUNT(*) FROM information_schema.tables
+                                 WHERE table_schema = DATABASE() AND table_name = 'orders'";
+        if (Convert.ToInt32(await tblCheck.ExecuteScalarAsync()) == 0) return;
+
+        await using var colCheck = conn.CreateCommand();
+        colCheck.CommandText = @"SELECT COUNT(*) FROM information_schema.columns
+            WHERE table_schema = DATABASE() AND table_name = 'orders' AND column_name = 'SaleId'";
+        if (Convert.ToInt32(await colCheck.ExecuteScalarAsync()) == 0)
+        {
+            await using var alter = conn.CreateCommand();
+            alter.CommandText = "ALTER TABLE orders ADD COLUMN SaleId INT NULL AFTER StockDeductedAt";
+            await alter.ExecuteNonQueryAsync();
+        }
     }
 }

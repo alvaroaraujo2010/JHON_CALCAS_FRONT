@@ -6,7 +6,11 @@ namespace ContaNexo.API.Services;
 
 public class CatalogOrderInventoryService(AppDbContext db, InventoryValuationService valuation)
 {
-    public record StockDeductionResult(bool Processed, List<string> Deducted, List<string> Warnings);
+    public record StockDeductionResult(
+        bool Processed,
+        List<string> Deducted,
+        List<string> Warnings,
+        decimal CostOfGoodsSold = 0m);
 
     /// <summary>
     /// Descuenta inventario cuando un pedido web pasa a pagado.
@@ -15,14 +19,14 @@ public class CatalogOrderInventoryService(AppDbContext db, InventoryValuationSer
     public async Task<StockDeductionResult> TryDeductStockForPaidOrderAsync(Order order)
     {
         if (order.StockDeductedAt.HasValue)
-            return new StockDeductionResult(true, [], []);
+            return new StockDeductionResult(true, [], [], 0m);
 
         await db.Entry(order).Collection(o => o.Items).LoadAsync();
         if (order.Items.Count == 0)
         {
             order.StockDeductedAt = DateTime.UtcNow;
             await db.SaveChangesAsync();
-            return new StockDeductionResult(true, [], []);
+            return new StockDeductionResult(true, [], [], 0m);
         }
 
         var catalogIds = order.Items.Select(i => i.CatalogProductId).Distinct().ToList();
@@ -65,10 +69,12 @@ public class CatalogOrderInventoryService(AppDbContext db, InventoryValuationSer
         }
 
         var deducted = new List<string>();
+        decimal totalCmv = 0m;
         foreach (var (item, product) in linesToDeduct)
         {
             var stockBefore = product.Stock;
-            await valuation.OnSaleAsync(product, item.Quantity, order.OrderNumber);
+            var vRes = await valuation.OnSaleAsync(product, item.Quantity, order.OrderNumber);
+            totalCmv += vRes.TotalCmv;
             await db.Entry(product).ReloadAsync();
 
             db.InventoryMovements.Add(new InventoryMovement
@@ -88,6 +94,6 @@ public class CatalogOrderInventoryService(AppDbContext db, InventoryValuationSer
         order.StockDeductedAt = DateTime.UtcNow;
         order.UpdatedAt = DateTime.UtcNow;
         await db.SaveChangesAsync();
-        return new StockDeductionResult(true, deducted, warnings);
+        return new StockDeductionResult(true, deducted, warnings, Math.Round(totalCmv, 2));
     }
 }
